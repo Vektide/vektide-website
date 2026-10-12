@@ -1,0 +1,138 @@
+---
+// How we work: title column on the left (sticky on desktop), four numbered steps on the right.
+// Each step draws its top rule and corner mark as it scrolls in.
+const steps = [
+  [
+    "Understand",
+    "We sit with your team and map the work as it happens today: the registers, the counter, the end-of-day tally.",
+  ],
+  [
+    "Build",
+    "We design the system around your real workflow, not a template, and show you progress as we go.",
+  ],
+  [
+    "Launch",
+    "We set up your private system, with its own database, move your data over and train your staff.",
+  ],
+  [
+    "Support",
+    "We keep it running, updated and backed up. When something comes up, you talk to the people who built it.",
+  ],
+];
+const arrow = `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 3v6h8M9 6l3 3-3 3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+---
+
+<section data-process class="relative z-10 bg-white">
+  <div
+    class="mx-auto grid max-w-[1280px] gap-14 px-4 py-24 sm:px-8 md:grid-cols-[1fr_1.6fr] md:gap-20 md:py-36"
+  >
+    <div class="md:sticky md:top-32 md:self-start">
+      <h2
+        data-pr-in
+        class="text-5xl leading-[0.95] font-bold tracking-tighter sm:text-6xl"
+      >
+        How we<br />work
+      </h2>
+
+      <p data-pr-in class="mt-6 max-w-xs text-soft">
+        Four steps, one team. The people who map your workflow are the ones who
+        build, launch and support it.
+      </p>
+      <a
+        data-pr-in
+        href="/contact"
+        class="group/link mt-8 inline-flex items-center gap-2 text-[15px] font-medium [&_svg]:size-4 [&_svg]:transition-transform [&_svg]:duration-300 hover:[&_svg]:translate-x-0.5"
+      >
+        <Fragment set:html={arrow} />
+        <span
+          class="border-b border-transparent transition-colors group-hover/link:border-ink"
+          >Get in touch</span
+        >
+      </a>
+    </div>
+
+    <ol>
+      {
+        steps.map(([title, body], i) => (
+          <li
+            data-pr-step
+            class="relative grid grid-cols-[auto_1fr] gap-5 py-9 pr-10 sm:gap-7"
+          >
+            <span
+              data-pr-rule
+              aria-hidden="true"
+              class="absolute inset-x-0 top-0 h-px origin-left bg-line"
+            />
+            <span
+              data-pr-mark
+              aria-hidden="true"
+              class="absolute top-3 right-0 size-4 border-t-2 border-r-2 border-ink"
+            />
+            <span
+              data-pr-fade
+              class="grid size-11 place-items-center rounded-lg bg-pill text-sm font-medium tabular-nums"
+            >
+              0{i + 1}
+            </span>
+            <div data-pr-fade>
+              <h3 class="text-2xl font-bold tracking-tight sm:text-[28px]">
+                {title}
+              </h3>
+              <p class="mt-3 max-w-lg text-soft">{body}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<script>
+  import gsap from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const section = document.querySelector<HTMLElement>("[data-process]")!;
+
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    // Title column rises in once.
+    gsap.from(section.querySelectorAll("[data-pr-in]"), {
+      opacity: 0,
+      y: 24,
+      duration: 0.9,
+      stagger: 0.08,
+      ease: "power3.out",
+      scrollTrigger: { trigger: section, start: "top 70%", once: true },
+    });
+
+    // Each step: the rule draws across, the corner mark snaps in, then number and text rise.
+    section.querySelectorAll<HTMLElement>("[data-pr-step]").forEach((step) => {
+      gsap
+        .timeline({
+          scrollTrigger: { trigger: step, start: "top 82%", once: true },
+        })
+        .from(step.querySelector("[data-pr-rule]"), {
+          scaleX: 0,
+          duration: 0.9,
+          ease: "power3.inOut",
+        })
+        .from(
+          step.querySelector("[data-pr-mark]"),
+          { opacity: 0, x: -8, y: 8, duration: 0.5, ease: "back.out(2)" },
+          0.55,
+        )
+        .from(
+          step.querySelectorAll("[data-pr-fade]"),
+          {
+            opacity: 0,
+            y: 20,
+            duration: 0.8,
+            stagger: 0.08,
+            ease: "power3.out",
+          },
+          0.25,
+        );
+    });
+  }
+</script>
