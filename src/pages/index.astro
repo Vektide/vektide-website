@@ -1,8 +1,10 @@
 ---
 import '../styles/global.css';
+import 'lenis/dist/lenis.css';
 import Navbar from '../components/Navbar.astro';
 import Hero from '../components/Hero.astro';
 import Problems from '../components/Problems.astro';
+import Featured from '../components/Featured.astro';
 ---
 
 <!doctype html>
@@ -19,9 +21,13 @@ import Problems from '../components/Problems.astro';
   </head>
   <body class="bg-white font-sans text-ink antialiased">
     <Navbar />
-    <main class="mx-auto min-h-screen max-w-[1400px]">
+    <main class="min-h-screen">
       <Hero />
       <Problems />
+      <Featured />
     </main>
+    <script>
+      import '../scripts/smooth-scroll';
+    </script>
   </body>
 </html>
