@@ -1,0 +1,269 @@
+---
+// Pill navbar. Every item opens a sheet that drops from the top; the page behind
+// it dims. Each sheet has a big "Explore ..." heading, then a list or a card.
+type Menu = {
+  id: string;
+  label: string;
+  heading: [href: string, text: string];
+  section: string;
+  links?: [href: string, text: string][];
+  card?: { href: string; tags: string; title: string; date: string };
+};
+
+const menus: Menu[] = [
+  {
+    id: 'products',
+    label: 'Products',
+    heading: ['/products', 'Explore Products'],
+    section: 'Healthcare',
+    links: [['/pcms', 'Polyclinic Management System (PCMS)']],
+  },
+  {
+    id: 'services',
+    label: 'Services',
+    heading: ['/services', 'Explore Services'],
+    section: 'Custom software',
+    links: [['/custom', 'Custom Systems']],
+  },
+  {
+    id: 'company',
+    label: 'Company',
+    heading: ['/about', 'About Vektide'],
+    section: 'Company & legal',
+    links: [
+      ['/about', 'About us'],
+      ['/privacy', 'Privacy policy'],
+      ['/terms', 'Terms of service'],
+    ],
+  },
+  {
+    id: 'case-studies',
+    label: 'Case Studies',
+    heading: ['/case-studies', 'Explore Case Studies'],
+    section: 'Featured',
+    card: {
+      href: '/case-studies/gorkhakali-polyclinic',
+      tags: 'Healthcare, PCMS',
+      title: 'How Gorkhakali Polyclinic moved reception, lab and billing off paper',
+      date: '[Month Year]',
+    },
+  },
+];
+
+// TODO: real profile URLs.
+const socials = [
+  ['#', 'LinkedIn'],
+  ['#', 'Facebook'],
+  ['#', 'Instagram'],
+  ['mailto:contact@vektide.com', 'contact@vektide.com'],
+];
+
+const arrow = `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const arrowRight = `<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+---
+
+<header data-nav class="fixed inset-x-0 top-0 z-100 px-4 pt-3">
+  <!-- Sheet: drops from the top. Stacking: pill (z-2) > sheet (z-1) > contact,
+       so the sheet covers the Contact button while the pill stays above it. -->
+  <div
+    data-sheet
+    id="nav-sheet"
+    aria-hidden="true"
+    class="invisible absolute inset-x-4 top-3 z-1 overflow-hidden rounded bg-white px-4 pb-7 [clip-path:inset(0%_0%_100%_0%)] max-md:max-h-[calc(100dvh-24px)] max-md:overflow-y-auto max-md:overscroll-contain sm:px-8 md:pt-[130px]"
+  >
+    <!-- Phones: white band under the pill that stays put while the menu scrolls -->
+    <span aria-hidden="true" class="sticky top-0 z-1 -mx-4 block h-[76px] bg-white sm:-mx-8 md:hidden"></span>
+    {menus.map((m) => (
+      <div class="hidden max-md:mt-12 max-md:first-of-type:mt-3" data-menu={m.id}>
+        <a class="group/lead inline-flex items-center gap-3 text-2xl font-medium tracking-tight md:text-[28px] lg:text-4xl" href={m.heading[0]} tabindex="-1" data-row>
+          {m.heading[1]}
+          <span class="grid size-8 place-items-center rounded-full bg-ink text-white transition duration-350 ease-out-expo group-hover/lead:translate-x-1 group-hover/lead:bg-lime group-hover/lead:text-ink motion-reduce:transition-none [&_svg]:size-4">
+            <Fragment set:html={arrowRight} />
+          </span>
+        </a>
+        <p class="mt-5 mb-3 text-[15px] text-soft md:mt-20 md:mb-5" data-row>{m.section}</p>
+        {m.links && (
+          <ul class="max-w-[430px]">
+            {m.links.map(([href, text]) => (
+              <li class="border-t border-line" data-row>
+                <a href={href} tabindex="-1" class="flex items-center justify-between py-[11px] text-[15px] text-soft transition-colors hover:text-ink [&_svg]:size-3.5 [&_svg]:shrink-0">
+                  {text}<Fragment set:html={arrow} />
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+        {m.card && (
+          <a class="group/card inline-grid grid-cols-[120px_1fr] gap-4 sm:grid-cols-[205px_minmax(0,220px)]" href={m.card.href} tabindex="-1" data-row>
+            <span class="relative grid aspect-square place-items-center overflow-hidden bg-lime">
+              <svg viewBox="0 0 64 64" aria-hidden="true" class="size-[62%] fill-ink transition-transform duration-600 ease-out-expo group-hover/card:scale-106 group-hover/card:-rotate-4 motion-reduce:transition-none">
+                <rect x="39.431" y="37.6577" width="12" height="22.8723" rx="6" transform="rotate(146.007 39.431 37.6577)" />
+                <rect x="37.4481" y="19.2258" width="12" height="24" rx="6" transform="rotate(34.9142 37.4481 19.2258)" />
+              </svg>
+              <span class="absolute top-2.5 right-2.5 grid size-10 place-items-center rounded-full bg-white transition-transform duration-350 ease-out-expo group-hover/card:-rotate-45 motion-reduce:transition-none [&_svg]:size-[18px]">
+                <Fragment set:html={arrowRight} />
+              </span>
+            </span>
+            <span class="flex flex-col gap-2">
+              <span class="text-xs font-bold tracking-[0.06em] uppercase">{m.card.tags}</span>
+              <span class="text-[15px] leading-snug">{m.card.title}</span>
+              <span class="mt-auto text-sm text-soft">{m.card.date}</span>
+            </span>
+          </a>
+        )}
+      </div>
+    ))}
+    <ul data-socials class="mt-12 flex flex-wrap gap-x-8 gap-y-2 md:mt-[110px]">
+      {socials.map(([href, text]) => (
+        <li>
+          <a href={href} tabindex="-1" class="inline-flex items-center gap-0.5 text-[15px] text-soft transition-colors hover:text-ink [&_svg]:size-3.5">
+            {text}<Fragment set:html={arrow} />
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <div class="relative flex items-center justify-between gap-4 py-3 sm:px-[clamp(0px,3vw,32px)]">
+    <nav data-pill aria-label="Main" class="relative z-2 flex items-center gap-0.5 rounded-full bg-pill py-1.5 pr-1.5 pl-1.5 md:pr-3">
+      <a href="/" aria-label="Vektide home" class="mr-2 grid size-10 shrink-0 place-items-center rounded-full bg-ink sm:size-12">
+        <img src="/logo.svg" alt="" width="48" height="48" class="size-full" />
+      </a>
+      {menus.map((m) => (
+        <button
+          type="button"
+          data-open={m.id}
+          aria-expanded="false"
+          aria-controls="nav-sheet"
+          class="group/item max-md:hidden inline-flex h-10 cursor-pointer items-center rounded-full px-2.5 text-sm whitespace-nowrap text-soft transition-[background-color,color,box-shadow] duration-300 hover:bg-white hover:text-ink hover:shadow-xs aria-expanded:bg-lime aria-expanded:text-ink aria-expanded:shadow-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink sm:h-12 md:px-4 md:text-[15px]"
+        >
+          {m.label}
+          <!-- Chevron grows from zero width, so the button (and its neighbours) widen smoothly -->
+          <span class="grid grid-cols-[0fr] transition-[grid-template-columns] duration-350 ease-out-expo group-hover/item:grid-cols-[1fr] group-aria-expanded/item:grid-cols-[1fr] motion-reduce:transition-none">
+            <span class="overflow-hidden">
+              <svg viewBox="0 0 12 12" aria-hidden="true" class="ml-1.5 size-3 transition-transform duration-350 ease-out-expo group-aria-expanded/item:rotate-180 motion-reduce:transition-none">
+                <path d="m3 4.5 3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+          </span>
+        </button>
+      ))}
+      <!-- Phones: one Menu button opens every group, stacked -->
+      <button type="button" data-open="menu" aria-expanded="false" aria-controls="nav-sheet" class="group/item inline-flex h-10 cursor-pointer items-center gap-2 rounded-full px-4 text-sm text-ink transition-colors duration-300 aria-expanded:bg-lime focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink sm:h-12 md:hidden">
+        Menu
+        <svg viewBox="0 0 12 12" aria-hidden="true" class="size-3 transition-transform duration-350 ease-out-expo group-aria-expanded/item:rotate-180 motion-reduce:transition-none">
+          <path d="m3 4.5 3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+    </nav>
+
+    <!-- Contact us + arrow, sharing one grey capsule like the left pill -->
+    <div data-contact class="relative flex gap-1 rounded-full bg-pill p-1.5">
+      <a href="/contact" class="hidden h-10 place-items-center rounded-full bg-white px-5 text-[15px] shadow-xs transition-colors duration-300 hover:bg-lime sm:h-12 md:grid">
+        Contact us
+      </a>
+      <a href="/contact" aria-label="Contact us" class="grid size-10 place-items-center rounded-full bg-white shadow-xs transition-colors duration-300 hover:bg-lime sm:size-12 [&_svg]:size-5 [&_svg]:transition-transform [&_svg]:duration-300 hover:[&_svg]:translate-x-0.5 motion-reduce:[&_svg]:transition-none">
+        <Fragment set:html={arrowRight} />
+      </a>
+    </div>
+  </div>
+</header>
+<!-- Everything behind the sheet washes out -->
+<div data-scrim class="invisible fixed inset-0 z-99 bg-scrim opacity-0"></div>
+
+<script>
+  import gsap from 'gsap';
+
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const nav = document.querySelector<HTMLElement>('[data-nav]')!;
+  const sheet = nav.querySelector<HTMLElement>('[data-sheet]')!;
+  const contact = nav.querySelector<HTMLElement>('[data-contact]')!;
+  const scrim = document.querySelector<HTMLElement>('[data-scrim]')!;
+  const buttons = nav.querySelectorAll<HTMLButtonElement>('[data-open]');
+  const socials = sheet.querySelectorAll('[data-socials] li');
+  const allGroups = [...sheet.querySelectorAll<HTMLElement>('[data-menu]')];
+  const groups = (id: string) => (id === 'menu' ? allGroups : allGroups.filter((g) => g.dataset.menu === id));
+  const rows = (gs: HTMLElement[]) => gs.flatMap((g) => [...g.querySelectorAll<HTMLElement>('[data-row]')]);
+  const button = (id: string) => nav.querySelector<HTMLElement>(`[data-open="${id}"]`)!;
+
+  let current: string | null = null;
+  let tl: gsap.core.Timeline | null = null;
+  const d = (s: number) => (reduce ? 0 : s);
+
+  // Reduced motion: every timeline jumps straight to its end state.
+  const run = (t: gsap.core.Timeline) => {
+    tl?.kill();
+    tl = t;
+    if (reduce) t.progress(1);
+  };
+
+  function mark(id: string | null) {
+    buttons.forEach((b) => b.setAttribute('aria-expanded', String(b.dataset.open === id)));
+    // Closed sheet links stay out of the tab order.
+    sheet.querySelectorAll<HTMLElement>('a').forEach((a) => (a.tabIndex = -1));
+    if (id) [...groups(id), sheet.querySelector('[data-socials]')!].forEach((g) => g.querySelectorAll<HTMLElement>('a').forEach((a) => (a.tabIndex = 0)));
+    sheet.setAttribute('aria-hidden', String(!id));
+  }
+
+  function open(id: string) {
+    const prev = current;
+    current = id;
+    mark(id);
+    const next = groups(id);
+
+    if (!prev) {
+      allGroups.forEach((g) => (g.style.display = next.includes(g) ? 'block' : 'none'));
+      run(
+        gsap
+          .timeline()
+          .set(sheet, { visibility: 'visible' }, 0)
+          .to(scrim, { autoAlpha: 1, duration: 0.4, ease: 'power2.out' }, 0)
+          .to(contact, { autoAlpha: 0, y: -6, duration: 0.25, ease: 'power2.in' }, 0)
+          .to(sheet, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.8, ease: 'expo.out' }, 0)
+          .fromTo([...rows(next), ...socials], { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.05, ease: 'power3.out' }, 0.18),
+      );
+      return;
+    }
+
+    // Switching menus: old rows out, sheet eases to the new height, new rows in.
+    const old = groups(prev);
+    const h0 = sheet.offsetHeight;
+    run(
+      gsap
+        .timeline()
+        .to(rows(old), { autoAlpha: 0, y: -8, duration: 0.18, stagger: 0.02, ease: 'power2.in' }, 0)
+        .add(() => {
+          allGroups.forEach((g) => (g.style.display = next.includes(g) ? 'block' : 'none'));
+          gsap.set(rows(next), { autoAlpha: 0, y: 16 });
+          gsap.fromTo(sheet, { height: h0 }, { height: sheet.offsetHeight, duration: d(0.45), ease: 'power3.inOut', clearProps: 'height' });
+        })
+        .to(rows(next), { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.05, ease: 'power3.out' }, '+=0.05'),
+    );
+  }
+
+  function close() {
+    if (!current) return;
+    const old = groups(current);
+    current = null;
+    mark(null);
+    run(
+      gsap
+        .timeline({ onComplete: () => gsap.set(sheet, { visibility: 'hidden' }) })
+        .to([...rows(old), ...socials], { autoAlpha: 0, y: -8, duration: 0.2, stagger: 0.015, ease: 'power2.in' }, 0)
+        .to(sheet, { clipPath: 'inset(0% 0% 100% 0%)', duration: 0.6, ease: 'expo.inOut' }, 0.1)
+        .to(scrim, { autoAlpha: 0, duration: 0.4, ease: 'power2.out' }, 0.25)
+        .to(contact, { autoAlpha: 1, y: 0, duration: 0.35, ease: 'power2.out' }, 0.4),
+    );
+  }
+
+  buttons.forEach((b) => b.addEventListener('click', () => (current === b.dataset.open ? close() : open(b.dataset.open!))));
+  scrim.addEventListener('click', close);
+  // Phone and desktop sheets differ, so close on crossing the breakpoint.
+  matchMedia('(min-width: 768px)').addEventListener('change', close);
+  addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && current) {
+      button(current).focus();
+      close();
+    }
+  });
+</script>

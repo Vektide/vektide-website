@@ -1,0 +1,12 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Satoshi', system-ui, sans-serif;
+  --color-ink: #111;
+  --color-soft: #5c5c5c;
+  --color-line: #e4e4e4;
+  --color-pill: #f2f2f2;
+  --color-lime: #d4fb4f;
+  --color-scrim: rgb(236 236 236 / 0.86);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
