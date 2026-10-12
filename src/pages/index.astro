@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import Navbar from '../components/Navbar.astro';
+import Hero from '../components/Hero.astro';
 ---
 
 <!doctype html>
@@ -12,8 +13,13 @@ import Navbar from '../components/Navbar.astro';
     <link rel="preconnect" href="https://api.fontshare.com" />
     <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet" />
     <title>Vektide</title>
+    <!-- Lets Tailwind's in-[.js] hide intro elements only when GSAP will reveal them -->
+    <script is:inline>document.documentElement.classList.add('js');</script>
   </head>
   <body class="bg-white font-sans text-ink antialiased">
     <Navbar />
+    <main class="mx-auto min-h-screen max-w-[1400px]">
+      <Hero />
+    </main>
   </body>
 </html>

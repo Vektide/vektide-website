@@ -1,0 +1,54 @@
+---
+import AppFrame from './AppFrame.astro';
+
+const users = [
+  ['RT', 'Rajesh Tamang', 'Owner', 'Active now'],
+  ['SS', 'Sunita Shrestha', 'Manager', '10 min ago'],
+  ['BR', 'Bikash Rai', 'Cashier', '1 hour ago'],
+  ['PM', 'Pooja Maharjan', 'Store keeper', '3 hours ago'],
+  ['AK', 'Anil Karki', 'Sales rep', 'Yesterday'],
+];
+const permissions = [
+  ['Create invoices', true],
+  ['Record payments', true],
+  ['Give discounts', false],
+  ['Edit stock', false],
+  ['View reports', true],
+  ['Manage users', false],
+] as const;
+---
+
+<AppFrame active="Admin" title="Staff and access" subtitle="Who can use the system, and what each role is allowed to do.">
+  <span slot="actions" class="rounded-lg bg-ink px-3 py-1.5 font-medium text-white">+ Invite staff</span>
+
+  <div class="grid h-full grid-cols-[1.6fr_1fr] gap-3">
+    <div class="rounded-xl border border-line px-4 py-2">
+      <div class="grid grid-cols-[1fr_120px_110px] gap-3 py-2 text-[11px] text-soft">
+        <span>Name</span><span>Role</span><span class="text-right">Last active</span>
+      </div>
+      {users.map(([initials, name, role, seen]) => (
+        <div class="grid grid-cols-[1fr_120px_110px] items-center gap-3 border-t border-line py-3">
+          <span class="flex items-center gap-2.5">
+            <span class="grid size-8 place-items-center rounded-full bg-pill text-[11px] font-semibold">{initials}</span>
+            <span>{name}<span class="block text-[11px] text-soft">{name.split(' ')[0].toLowerCase()}@himaltraders.com.np</span></span>
+          </span>
+          <span><span class="rounded-full border border-line px-2 py-0.5 text-[11px]">{role}</span></span>
+          <span class="text-right text-soft">{seen}</span>
+        </div>
+      ))}
+    </div>
+
+    <div class="rounded-xl border border-line p-4">
+      <p class="font-medium">Role permissions</p>
+      <span class="mt-3 mb-2 flex items-center justify-between rounded-lg border border-line px-3 py-2">Cashier<span class="text-soft">▾</span></span>
+      {permissions.map(([label, on]) => (
+        <div class="flex items-center justify-between border-t border-line py-3">
+          <span>{label}</span>
+          <span class:list={['relative h-[18px] w-8 rounded-full', on ? 'bg-ink' : 'bg-line']}>
+            <span class:list={['absolute top-[3px] size-3 rounded-full', on ? 'right-[3px] bg-lime' : 'left-[3px] bg-white']}></span>
+          </span>
+        </div>
+      ))}
+    </div>
+  </div>
+</AppFrame>

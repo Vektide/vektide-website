@@ -1,0 +1,54 @@
+---
+import AppFrame from './AppFrame.astro';
+
+const summary = [
+  ['Collected this month', 'NPR 21,40,600', 'text-emerald-600', '146 invoices paid'],
+  ['Outstanding', 'NPR 3,12,800', 'text-amber-600', '23 invoices open'],
+  ['Overdue', 'NPR 86,500', 'text-rose-600', '4 invoices past 30 days'],
+];
+const invoices = [
+  ['INV-0412', 'Shrestha Kirana Pasal', '12 Oct', 'NPR 48,250', 'Paid'],
+  ['INV-0411', 'Gurung General Store', '12 Oct', 'NPR 1,12,400', 'Partial'],
+  ['INV-0410', 'Pokhara Suppliers', '11 Oct', 'NPR 36,900', 'Due'],
+  ['INV-0409', 'Lama Mart', '10 Oct', 'NPR 22,150', 'Paid'],
+  ['INV-0408', 'Baneshwor Kirana', '9 Oct', 'NPR 64,700', 'Overdue'],
+  ['INV-0407', 'Thapa & Sons', '9 Oct', 'NPR 18,300', 'Paid'],
+];
+const pill: Record<string, string> = {
+  Paid: 'bg-emerald-50 text-emerald-700',
+  Partial: 'bg-amber-50 text-amber-700',
+  Due: 'bg-pill text-soft',
+  Overdue: 'bg-rose-50 text-rose-700',
+};
+---
+
+<AppFrame active="Billing" title="Billing" subtitle="Invoices, payments and dues, all amounts include 13% VAT.">
+  <span slot="actions" class="rounded-lg bg-ink px-3 py-1.5 font-medium text-white">+ New invoice</span>
+
+  <div class="grid h-full grid-rows-[auto_1fr] gap-3">
+    <div class="grid grid-cols-3 gap-3">
+      {summary.map(([label, value, tone, note]) => (
+        <div class="rounded-xl border border-line p-4">
+          <p class="text-[12px] text-soft">{label}</p>
+          <p class:list={['mt-1 text-[22px] font-semibold tracking-tight tabular-nums', tone]}>{value}</p>
+          <p class="mt-1 text-[11px] text-soft">{note}</p>
+        </div>
+      ))}
+    </div>
+
+    <div class="rounded-xl border border-line px-4 py-2">
+      <div class="grid grid-cols-[110px_1fr_90px_130px_90px] gap-3 py-2 text-[11px] text-soft">
+        <span>Invoice</span><span>Party</span><span>Date</span><span class="text-right">Amount</span><span class="text-right">Status</span>
+      </div>
+      {invoices.map(([no, party, date, amount, status]) => (
+        <div class="grid grid-cols-[110px_1fr_90px_130px_90px] items-center gap-3 border-t border-line py-[11px]">
+          <span class="text-soft tabular-nums">{no}</span>
+          <span>{party}</span>
+          <span class="text-soft">{date}</span>
+          <span class="text-right tabular-nums">{amount}</span>
+          <span class="text-right"><span class:list={['rounded-full px-2 py-0.5 text-[11px] font-medium', pill[status]]}>{status}</span></span>
+        </div>
+      ))}
+    </div>
+  </div>
+</AppFrame>

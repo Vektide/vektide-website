@@ -1,0 +1,69 @@
+---
+import AppFrame from './AppFrame.astro';
+
+const stats = [
+  ['Sales today', 'NPR 1,84,250', '+12% vs last Monday', 'text-emerald-600'],
+  ['Pending dues', 'NPR 62,400', '7 parties to collect from', 'text-amber-600'],
+  ['Orders today', '38', '9 waiting for dispatch', 'text-soft'],
+  ['Low stock', '5 items', 'Reorder suggested', 'text-rose-600'],
+];
+const week = [
+  ['Sun', 62], ['Mon', 78], ['Tue', 54], ['Wed', 88], ['Thu', 71], ['Fri', 96], ['Sat', 40],
+] as const;
+const orders = [
+  ['Shrestha Kirana Pasal', '24 items', 'NPR 48,250', 'Paid'],
+  ['Gurung General Store', '61 items', 'NPR 1,12,400', 'Partial'],
+  ['Pokhara Suppliers', '18 items', 'NPR 36,900', 'Due'],
+  ['Lama Mart', '12 items', 'NPR 22,150', 'Paid'],
+  ['Thapa & Sons', '9 items', 'NPR 18,300', 'Due'],
+];
+const pill: Record<string, string> = {
+  Paid: 'bg-emerald-50 text-emerald-700',
+  Partial: 'bg-amber-50 text-amber-700',
+  Due: 'bg-rose-50 text-rose-700',
+};
+---
+
+<AppFrame active="Dashboard" title="Good morning, Rajesh" subtitle="Here is how Himal Traders is doing today.">
+  <span slot="actions" class="rounded-lg bg-ink px-3 py-1.5 font-medium text-white">+ New sale</span>
+
+  <div class="grid h-full grid-rows-[auto_1fr] gap-3">
+    <div class="grid grid-cols-4 gap-3">
+      {stats.map(([label, value, note, tone]) => (
+        <div class="rounded-xl border border-line p-4">
+          <p class="text-[12px] text-soft">{label}</p>
+          <p class="mt-1 text-[22px] font-semibold tracking-tight tabular-nums">{value}</p>
+          <p class:list={['mt-1 text-[11px]', tone]}>{note}</p>
+        </div>
+      ))}
+    </div>
+
+    <div class="grid min-h-0 grid-cols-[1.5fr_1fr] gap-3">
+      <div class="flex flex-col rounded-xl border border-line p-4">
+        <div class="flex items-center justify-between">
+          <p class="font-medium">Sales this week</p>
+          <span class="rounded-md border border-line px-2 py-0.5 text-[11px] text-soft">NPR 9,86,400 total</span>
+        </div>
+        <div class="mt-4 grid flex-1 grid-cols-7 items-end gap-4">
+          {week.map(([day, h]) => (
+            <div class="flex h-full flex-col justify-end gap-2 text-center">
+              <span class:list={['rounded-t-md', day === 'Mon' ? 'bg-lime' : 'bg-ink']} style={`height:${h}%`}></span>
+              <span class="text-[11px] text-soft">{day}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="flex flex-col rounded-xl border border-line p-4">
+        <p class="mb-2 font-medium">Recent orders</p>
+        {orders.map(([party, items, amount, status]) => (
+          <div class="grid grid-cols-[1fr_auto_auto] items-center gap-3 border-t border-line py-2.5">
+            <span>{party}<span class="block text-[11px] text-soft">{items}</span></span>
+            <span class="tabular-nums">{amount}</span>
+            <span class:list={['rounded-full px-2 py-0.5 text-[11px] font-medium', pill[status]]}>{status}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</AppFrame>

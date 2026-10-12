@@ -1,0 +1,174 @@
+---
+// Hero: badge, headline, subhead, CTAs, then a deck of app mockups. The tab bar
+// (and a 5s auto-rotate) brings a card to the front; the rest stack behind it.
+import Dashboard from './mockups/Dashboard.astro';
+import Analytics from './mockups/Analytics.astro';
+import Billing from './mockups/Billing.astro';
+import Admin from './mockups/Admin.astro';
+
+const cards = [
+  { id: 'dashboard', tab: 'Dashboard', title: 'Dashboard', note: 'Today at Himal Traders', dot: 'bg-lime', screen: Dashboard,
+    icon: '<rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/>' },
+  { id: 'analytics', tab: 'Analytics', title: 'Analytics', note: 'Sales trends this year', dot: 'bg-blue-500', screen: Analytics,
+    icon: '<path d="M2 14h12"/><path d="M4 11V8M8 11V4M12 11V6"/>' },
+  { id: 'billing', tab: 'Billing', title: 'Billing', note: 'Invoices and payments', dot: 'bg-orange-500', screen: Billing,
+    icon: '<path d="M4 2h8v12l-2-1.2L8 14l-2-1.2L4 14z"/><path d="M6 6h4M6 9h4"/>' },
+  { id: 'admin', tab: 'Admin', title: 'Admin', note: 'Staff, roles and access', dot: 'bg-rose-500', screen: Admin,
+    icon: '<path d="M8 2 3 4v4c0 3 2.2 5.2 5 6 2.8-.8 5-3 5-6V4z"/>' },
+];
+
+const arrowRight = `<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+---
+
+<section class="px-4 pt-36 pb-24 text-center sm:px-8 md:pt-48">
+  <a
+    href="/pcms"
+    data-hero-in
+    class="group/badge inline-flex items-center gap-2 rounded-full border border-line bg-white px-3 py-1.5 text-[13px] text-soft shadow-xs transition-colors in-[.js]:opacity-0 hover:text-ink [&_svg]:size-3.5"
+  >
+    <span class="size-1.5 rounded-full bg-lime ring-4 ring-lime/30"></span>
+    Now live: PCMS for polyclinics
+    <span class="transition-transform duration-300 group-hover/badge:translate-x-0.5"><Fragment set:html={arrowRight} /></span>
+  </a>
+
+  <h1 data-hero-in class="mt-6 text-5xl leading-[0.95] font-bold tracking-tighter in-[.js]:opacity-0 sm:text-7xl lg:text-8xl">
+    Your business,<br />off paper.
+  </h1>
+
+  <p data-hero-in class="mx-auto mt-6 max-w-xl text-lg text-soft in-[.js]:opacity-0 sm:text-xl">
+    Software that replaces registers, spreadsheets and guesswork with clear, simple systems. Made in Nepal, for Nepali
+    businesses.
+  </p>
+
+  <div data-hero-in class="mt-9 flex flex-wrap justify-center gap-3 in-[.js]:opacity-0">
+    <a href="/contact" class="rounded-full bg-ink px-6 py-3 text-[15px] font-medium text-white transition-colors duration-300 hover:bg-lime hover:text-ink">
+      Book a demo
+    </a>
+    <a href="#work" class="rounded-full bg-pill px-6 py-3 text-[15px] font-medium transition-colors duration-300 hover:bg-line">
+      See our work
+    </a>
+  </div>
+
+  <!-- Deck. Cards share one grid cell; GSAP lifts the ones behind so their headers peek out. -->
+  <div data-deck class="relative mx-auto mt-16 max-w-[1280px] pt-[72px] in-[.js]:opacity-0 sm:mt-20 sm:pt-[102px]" aria-label="Example screens from a system we build">
+    <div class="grid">
+      {cards.map((c, i) => {
+        const Screen = c.screen;
+        return (
+        <article
+          data-card={c.id}
+          aria-hidden={i === 0 ? undefined : 'true'}
+          class="col-start-1 row-start-1 origin-top overflow-hidden rounded-xl border border-line bg-white text-left shadow-[0_30px_60px_-30px_rgb(0_0_0/0.18)]"
+        >
+          <header class="flex h-[34px] items-center gap-2 border-b border-line bg-[#fafafa] px-4 text-[13px] sm:h-[42px]">
+            <span class:list={['size-2 rotate-45 rounded-[2px]', c.dot]}></span>
+            <span class="font-medium">{c.title}</span>
+            <span class="text-soft">· {c.note}</span>
+          </header>
+          <!-- Screen is drawn at 1280×720 and scaled to fit (--s set by the script) -->
+          <div class="relative aspect-[1280/720] overflow-hidden">
+            <div class="absolute top-0 left-0 h-[720px] w-[1280px] origin-top-left [transform:scale(var(--s,1))]">
+              <Screen />
+            </div>
+          </div>
+        </article>
+        );
+      })}
+    </div>
+
+    <!-- Sticky: rides the bottom of the screen while the deck is in view, then rests under it -->
+    <div role="tablist" aria-label="Example screens" class="sticky bottom-4 z-20 mx-auto mt-8 flex w-fit gap-1 rounded-2xl border border-line bg-white/90 p-1.5 shadow-lg backdrop-blur sm:bottom-8 sm:mt-14">
+      {cards.map((c, i) => (
+        <button
+          type="button"
+          role="tab"
+          data-tab={c.id}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          class="inline-flex cursor-pointer items-center gap-2 rounded-xl px-2.5 py-1.5 text-xs whitespace-nowrap text-soft transition-colors duration-300 hover:text-ink aria-selected:bg-pill aria-selected:text-ink aria-selected:ring-1 aria-selected:ring-line sm:px-3.5 sm:py-2 sm:text-sm"
+        >
+          <svg viewBox="0 0 16 16" aria-hidden="true" class="hidden size-4 fill-none stroke-current stroke-[1.4] sm:block" stroke-linecap="round" stroke-linejoin="round" set:html={c.icon} />
+          {c.tab}
+        </button>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import gsap from 'gsap';
+
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // A tab click mid-intro takes over the cards instead of fighting the intro tweens.
+  gsap.defaults({ overwrite: 'auto' });
+  const deck = document.querySelector<HTMLElement>('[data-deck]')!;
+  const cards = [...deck.querySelectorAll<HTMLElement>('[data-card]')];
+  const tabs = [...deck.querySelectorAll<HTMLButtonElement>('[data-tab]')];
+  const n = cards.length;
+  let active = 0;
+  let auto = !reduce;
+
+  // How far each card behind sits above the one in front (matches the header height).
+  const step = () => (innerWidth < 640 ? 24 : 34);
+  const depth = (i: number) => (i - active + n) % n;
+  const place = (i: number) => {
+    const k = depth(i);
+    return { y: -k * step(), scale: 1 - k * 0.035, zIndex: n - k };
+  };
+
+  // Mockups are drawn at 1280px wide; scale them to the card's real width.
+  new ResizeObserver(() => deck.style.setProperty('--s', String(cards[0].clientWidth / 1280))).observe(deck);
+  // Start with every card tucked behind the Dashboard; the intro fans them out.
+  cards.forEach((c, i) => gsap.set(c, reduce ? place(i) : { y: 0, scale: 1, zIndex: n - depth(i) }));
+  addEventListener('resize', () => cards.forEach((c, i) => gsap.set(c, place(i))));
+
+  function show(next: number) {
+    if (next === active) return;
+    const leaving = cards[active];
+    active = next;
+    tabs.forEach((t, i) => t.setAttribute('aria-selected', String(i === active)));
+    cards.forEach((c, i) => (i === active ? c.removeAttribute('aria-hidden') : c.setAttribute('aria-hidden', 'true')));
+
+    // Everyone except the old front card steps to their new depth.
+    cards.forEach((c, i) => {
+      if (c !== leaving) gsap.to(c, { ...place(i), duration: reduce ? 0 : 0.7, ease: 'power3.out' });
+    });
+    // The old front card dips down, tucks behind the others, then slides up into the back slot. No fade.
+    const back = place(cards.indexOf(leaving));
+    gsap
+      .timeline()
+      .set(leaving, { zIndex: n + 1 })
+      .to(leaving, { y: 28, scale: 0.98, duration: reduce ? 0 : 0.3, ease: 'power2.in' })
+      .set(leaving, { zIndex: back.zIndex })
+      .to(leaving, { y: back.y, scale: back.scale, duration: reduce ? 0 : 0.7, ease: 'power3.out' });
+  }
+
+  // Auto-rotate every 5s; pauses while hovered, stops for good once a tab is clicked.
+  const timer = gsap.delayedCall(5, function tick() {
+    show((active + 1) % n);
+    timer.restart(true);
+  });
+  if (!auto) timer.kill();
+  deck.addEventListener('pointerenter', () => auto && timer.pause());
+  deck.addEventListener('pointerleave', () => auto && timer.restart(true));
+  tabs.forEach((t, i) =>
+    t.addEventListener('click', () => {
+      auto = false;
+      timer.kill();
+      show(i);
+    }),
+  );
+
+  // Entrance: copy rises in, then the deck.
+  const intro = [...document.querySelectorAll<HTMLElement>('[data-hero-in]'), deck];
+  if (reduce) gsap.set(intro, { opacity: 1 });
+  else
+    gsap
+      .timeline({ delay: 0.1 })
+      .fromTo(intro, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.9, stagger: 0.08, ease: 'power3.out' })
+      // Then the cards behind slide up out of the Dashboard, nearest first.
+      .to(
+        cards.filter((_, i) => i !== active),
+        { y: (j: number) => place(j + 1).y, scale: (j: number) => place(j + 1).scale, duration: 0.9, stagger: 0.12, ease: 'power3.out' },
+        '-=0.2',
+      );
+</script>
