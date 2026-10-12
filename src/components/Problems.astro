@@ -1,0 +1,103 @@
+---
+// Problems: a big centered statement that lights up letter by letter as you scroll,
+// then three soft grey cards (with drop shadows) that fan out from a stack into a tilted spread.
+const statement = 'Paper got your business this far, but it’s quietly costing you money, time and clarity.';
+
+const cards = [
+  {
+    title: 'Lost money',
+    body: 'Unpaid bills and missed fees hide in notebooks.',
+    icon: '<path d="M6 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6z"/><path d="M6 3v18M9.5 8h5M9.5 12h3"/><path d="M14 15.5a1.5 1.5 0 1 1 1.5 1.5v.5"/>',
+  },
+  {
+    title: 'Lost time',
+    body: 'Staff spend hours on work a system does in seconds.',
+    icon: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+  },
+  {
+    title: 'No clear picture',
+    body: 'You can’t fix what you can’t see.',
+    icon: '<path d="M3 12s3.2-6 9-6 9 6 9 6-3.2 6-9 6-9-6-9-6z"/><circle cx="12" cy="12" r="2.5"/><path d="M4 20 20 4"/>',
+  },
+];
+---
+
+<section data-problems class="mx-auto max-w-[1280px] overflow-x-clip px-4 py-24 text-center sm:px-8 md:py-40">
+  <!-- Letters are split so they can light up one by one; screen readers get the plain sentence. -->
+  <h2 aria-label={statement} class="mx-auto max-w-4xl text-4xl leading-[1.04] font-bold tracking-tighter text-balance sm:text-6xl">
+    {statement.split(' ').map((word, i, words) => (
+      <>
+        <span aria-hidden="true" class="inline-block whitespace-nowrap">
+          {[...word].map((ch) => <span data-char>{ch}</span>)}
+        </span>
+        {i < words.length - 1 && ' '}
+      </>
+    ))}
+  </h2>
+
+  <div data-p-cards class="mt-16 flex flex-col items-center md:mt-24 md:flex-row md:justify-center">
+    {cards.map((c, i) => (
+      <article
+        data-p-card
+        class:list={[
+          'flex w-full max-w-[330px] flex-col items-center justify-center rounded-[32px] bg-pill px-8 py-12 text-ink shadow-[0_2px_6px_rgb(0_0_0/0.04),0_30px_60px_-24px_rgb(0_0_0/0.28)] ring-1 ring-black/5 md:h-[420px] md:w-[320px]',
+          i > 0 && '-mt-6 md:mt-0 md:-ml-8',
+          i === 1 && 'relative z-10',
+        ]}
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="size-12 fill-none stroke-current stroke-[1.5]" stroke-linecap="round" stroke-linejoin="round" set:html={c.icon} />
+        <h3 class="mt-8 text-4xl leading-[0.95] font-bold tracking-tight md:text-5xl">{c.title}</h3>
+        <p class="mt-5 max-w-[24ch] text-soft">{c.body}</p>
+      </article>
+    ))}
+  </div>
+</section>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const section = document.querySelector<HTMLElement>('[data-problems]')!;
+  const chars = section.querySelectorAll('[data-char]');
+  const cards = section.querySelectorAll<HTMLElement>('[data-p-card]');
+  const deck = section.querySelector('[data-p-cards]');
+
+  // Final resting spread: outer cards tilt out and sit a little lower, like the reference.
+  const spread = { desktop: [-7, 0, 7], mobile: [-3, 2, -2] };
+
+  gsap.matchMedia().add(
+    {
+      desktop: '(min-width: 768px)',
+      mobile: '(max-width: 767px)',
+      reduce: '(prefers-reduced-motion: reduce)',
+    },
+    ({ conditions }) => {
+      const { desktop, reduce } = conditions as Record<string, boolean>;
+      const tilt = desktop ? spread.desktop : spread.mobile;
+      const end = (i: number) => ({ rotate: tilt[i], y: desktop && i !== 1 ? 36 : 0, xPercent: 0, opacity: 1 });
+
+      if (reduce) {
+        cards.forEach((c, i) => gsap.set(c, end(i)));
+        return;
+      }
+
+      // Statement: each letter goes from faint to solid as the heading scrolls up.
+      gsap.fromTo(
+        chars,
+        { opacity: 0.15 },
+        { opacity: 1, stagger: 0.04, ease: 'none', scrollTrigger: { trigger: section.querySelector('h2'), start: 'top 80%', end: 'bottom 40%', scrub: true } },
+      );
+
+      // Cards: start stacked in the middle, then fan out into the spread as you scroll.
+      gsap
+        .timeline({ scrollTrigger: { trigger: deck, start: 'top 90%', end: 'top 35%', scrub: 0.8 } })
+        .fromTo(
+          cards,
+          { xPercent: (i: number) => (desktop ? (1 - i) * 90 : 0), y: 140, rotate: 0, opacity: 0 },
+          { xPercent: 0, y: (i: number) => end(i).y, rotate: (i: number) => tilt[i], opacity: 1, stagger: 0.08, ease: 'power2.out' },
+        );
+    },
+  );
+</script>
