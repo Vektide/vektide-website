@@ -159,11 +159,14 @@ const arrowRight = `<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h1
     </nav>
 
     <!-- Contact us + arrow, sharing one grey capsule like the left pill -->
-    <div data-contact class="relative flex gap-1 rounded-full bg-pill p-1.5">
-      <a href="/contact" class="hidden h-10 place-items-center rounded-full bg-white px-5 text-[15px] shadow-xs transition-colors duration-300 hover:bg-lime sm:h-12 md:grid">
+    <!-- Hovering the capsule sweeps one lime fill left to right: through "Contact us", then on through the arrow. -->
+    <div data-contact class="group/contact relative flex gap-1 rounded-full bg-pill p-1.5">
+      <a href="/contact" class="relative isolate hidden h-10 place-items-center overflow-hidden rounded-full bg-white px-5 text-[15px] shadow-xs sm:h-12 md:grid">
+        <span aria-hidden="true" class="absolute inset-0 -z-1 origin-left scale-x-0 bg-lime transition-transform delay-150 duration-300 ease-out group-hover/contact:scale-x-100 group-hover/contact:delay-0 group-hover/contact:ease-in motion-reduce:transition-none"></span>
         Contact us
       </a>
-      <a href="/contact" aria-label="Contact us" class="grid size-10 place-items-center rounded-full bg-white shadow-xs transition-colors duration-300 hover:bg-lime sm:size-12 [&_svg]:size-5 [&_svg]:transition-transform [&_svg]:duration-300 hover:[&_svg]:translate-x-0.5 motion-reduce:[&_svg]:transition-none">
+      <a href="/contact" aria-label="Contact us" class="relative isolate grid size-10 place-items-center overflow-hidden rounded-full bg-white shadow-xs sm:size-12 [&_svg]:size-5 [&_svg]:transition-transform [&_svg]:duration-300 group-hover/contact:[&_svg]:translate-x-0.5 motion-reduce:[&_svg]:transition-none">
+        <span aria-hidden="true" class="absolute inset-0 -z-1 origin-left scale-x-0 bg-lime transition-transform duration-200 ease-in group-hover/contact:scale-x-100 group-hover/contact:delay-[250ms] group-hover/contact:ease-out motion-reduce:transition-none max-md:group-hover/contact:delay-0"></span>
         <Fragment set:html={arrowRight} />
       </a>
     </div>
