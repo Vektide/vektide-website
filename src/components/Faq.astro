@@ -1,0 +1,130 @@
+---
+// FAQ: centered heading, then an accordion. One answer open at a time; GSAP eases the height.
+const faqs = [
+  [
+    'What kind of businesses do you work with?',
+    'Clinics, importers, wholesalers, retailers and distributors. Any business where the work is real but the tools are still notebooks, spreadsheets or software that never quite fit.',
+  ],
+  [
+    'Do I have to change how my business works?',
+    'No. We sit with your team and study how the work happens today, then build the system around that. The software follows your workflow, not the other way round.',
+  ],
+  [
+    'Do we need our own server or IT staff?',
+    'No. Your system and its own database run on our managed servers. We handle hosting, updates, security and backups, so your team just uses it.',
+  ],
+  [
+    'Is our data safe, and who owns it?',
+    'You own your data. Every business gets its own separate database, kept apart from every other client, with encrypted backups.',
+  ],
+  [
+    'How long does it take to go live?',
+    'It depends on how much the system needs to do. After a free discovery call we give you a clear scope and timeline before any work starts.',
+  ],
+  [
+    'How much does it cost?',
+    'A one-time license, plus a yearly plan for hosting, updates, backups and support, billed in rupees. You get a clear quote up front, with no surprise charges later.',
+  ],
+  [
+    'Does it work with the Nepali calendar and rupees?',
+    'Yes. Nepali dates and NPR are built in from the start, not bolted on afterwards.',
+  ],
+  [
+    'What happens if something breaks?',
+    'You call us directly and talk to the people who built your system. Most issues are fixed remotely, without anyone needing to visit.',
+  ],
+];
+
+// Lets Google show these answers directly in search results.
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+};
+---
+
+<section data-faq class="relative z-10 bg-white px-4 py-24 sm:px-8 md:py-36">
+  <div class="mx-auto max-w-3xl">
+    <div class="text-center">
+      <h2 data-faq-in class="text-4xl leading-[1] font-bold tracking-tighter sm:text-6xl">Questions, answered.</h2>
+      <p data-faq-in class="mx-auto mt-5 max-w-md text-lg text-soft">The things business owners ask us most before getting started.</p>
+    </div>
+
+    <ul class="mt-14 border-b border-line md:mt-16">
+      {faqs.map(([q, a], i) => (
+        <li data-faq-item class="border-t border-line">
+          <h3>
+            <button
+              type="button"
+              data-faq-q
+              aria-expanded="false"
+              aria-controls={`faq-a-${i}`}
+              id={`faq-q-${i}`}
+              class="group/q flex w-full cursor-pointer items-center justify-between gap-6 py-6 text-left text-lg font-medium sm:text-xl"
+            >
+              {q}
+              <span
+                aria-hidden="true"
+                class="relative grid size-9 shrink-0 place-items-center rounded-full bg-pill transition-[background-color,rotate] duration-400 ease-out-expo group-hover/q:bg-line group-aria-expanded/q:rotate-45 group-aria-expanded/q:bg-lime"
+              >
+                <span class="absolute h-[1.5px] w-3.5 rounded bg-ink"></span>
+                <span class="absolute h-3.5 w-[1.5px] rounded bg-ink"></span>
+              </span>
+            </button>
+          </h3>
+          <div id={`faq-a-${i}`} role="region" aria-labelledby={`faq-q-${i}`} data-faq-a hidden class="overflow-hidden">
+            <p class="max-w-2xl pr-14 pb-6 text-soft">{a}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+
+    <p data-faq-more class="mt-10 text-center text-soft">
+      Still have a question?
+      <a href="/contact" class="font-medium text-ink underline decoration-line underline-offset-4 transition-colors hover:decoration-ink">Talk to us</a>
+    </p>
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</section>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const section = document.querySelector<HTMLElement>('[data-faq]')!;
+  const items = [...section.querySelectorAll<HTMLElement>('[data-faq-item]')];
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function toggle(item: HTMLElement, open: boolean) {
+    const btn = item.querySelector<HTMLElement>('[data-faq-q]')!;
+    const panel = item.querySelector<HTMLElement>('[data-faq-a]')!;
+    btn.setAttribute('aria-expanded', String(open));
+    if (open) {
+      panel.hidden = false;
+      gsap.fromTo(panel, { height: 0, opacity: 0 }, { height: 'auto', opacity: 1, duration: reduce ? 0 : 0.5, ease: 'power3.out' });
+    } else {
+      gsap.to(panel, { height: 0, opacity: 0, duration: reduce ? 0 : 0.4, ease: 'power3.inOut', onComplete: () => (panel.hidden = true) });
+    }
+  }
+
+  // One answer open at a time.
+  items.forEach((item) =>
+    item.querySelector('[data-faq-q]')!.addEventListener('click', () => {
+      const opening = item.querySelector('[data-faq-q]')!.getAttribute('aria-expanded') !== 'true';
+      items.forEach((other) => other !== item && other.querySelector('[data-faq-q]')!.getAttribute('aria-expanded') === 'true' && toggle(other, false));
+      toggle(item, opening);
+    }),
+  );
+
+  if (!reduce) {
+    // Heading, then the rows, rise in once.
+    gsap
+      .timeline({ scrollTrigger: { trigger: section, start: 'top 70%', once: true } })
+      .from(section.querySelectorAll('[data-faq-in]'), { opacity: 0, y: 24, duration: 0.9, stagger: 0.08, ease: 'power3.out' })
+      .from(items, { opacity: 0, y: 20, duration: 0.7, stagger: 0.06, ease: 'power3.out' }, 0.2)
+      .from(section.querySelector('[data-faq-more]'), { opacity: 0, duration: 0.6 }, 0.6);
+  }
+</script>
