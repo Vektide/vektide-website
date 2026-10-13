@@ -7,16 +7,17 @@ import Problems from '../components/Problems.astro';
 import Featured from '../components/Featured.astro';
 import Process from '../components/Process.astro';
 import Faq from '../components/Faq.astro';
+import Footer from '../components/Footer.astro';
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="[scrollbar-gutter:stable]">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://api.fontshare.com" />
-    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet" />
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
     <title>Vektide</title>
     <!-- Lets Tailwind's in-[.js] hide intro elements only when GSAP will reveal them -->
     <script is:inline>document.documentElement.classList.add('js');</script>
@@ -30,6 +31,7 @@ import Faq from '../components/Faq.astro';
       <Process />
       <Faq />
     </main>
+    <Footer />
     <script>
       import '../scripts/smooth-scroll';
     </script>

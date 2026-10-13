@@ -1,0 +1,107 @@
+---
+// Footer doubles as the closing CTA: dark panel with rounded top, big headline + buttons,
+// links on the right, a full-width VEKTIDE wordmark that rises in, and a small bottom row.
+const headline = 'Still running on paper?';
+const pages = [['/pcms', 'PCMS'], ['/custom', 'Custom Systems'], ['/about', 'About us'], ['/case-studies', 'Case Studies'], ['/contact', 'Contact']];
+const socials = [['#', 'LinkedIn'], ['#', 'Facebook'], ['#', 'Instagram']]; // TODO: real profile URLs
+const year = new Date().getFullYear();
+const arrowRight = `<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+---
+
+<footer
+  data-footer
+  class="relative z-10 overflow-hidden bg-[radial-gradient(120%_80%_at_0%_0%,rgb(255_255_255/0.07),transparent_55%),linear-gradient(160deg,#1d1d1f_0%,#121213_55%,#0b0b0c_100%)] px-4 pt-24 pb-6 text-white sm:px-8 md:pt-32"
+>
+  <div class="flex flex-col gap-16 md:flex-row md:items-end md:justify-between">
+    <div>
+      <!-- Split into letters so it can light up as it scrolls; screen readers get the plain text. -->
+      <h2 aria-label={headline} class="max-w-3xl text-5xl leading-[0.95] font-bold tracking-[-0.08em] sm:text-7xl lg:text-8xl">
+        {headline.split(' ').map((word, i, words) => (
+          <>
+            <span aria-hidden="true" class="inline-block whitespace-nowrap">
+              {[...word].map((ch) => <span data-ft-char>{ch}</span>)}
+            </span>
+            {i < words.length - 1 && ' '}
+          </>
+        ))}
+      </h2>
+
+      <div data-ft-in class="mt-10 flex flex-wrap gap-3">
+        <a
+          href="/contact"
+          class="group/cta inline-flex items-center gap-2.5 rounded-full bg-lime px-6 py-3.5 text-xs font-medium tracking-widest text-ink uppercase transition-colors duration-300 hover:bg-white [&_svg]:size-4"
+        >
+          Book a demo
+          <span class="transition-transform duration-300 group-hover/cta:translate-x-0.5"><Fragment set:html={arrowRight} /></span>
+        </a>
+        <a
+          href="mailto:contact@vektide.com"
+          class="inline-flex items-center gap-2.5 rounded-full border border-white/25 px-6 py-3.5 text-xs font-medium tracking-widest uppercase transition-colors duration-300 hover:border-white hover:bg-white hover:text-ink"
+        >
+          Drop us an email <span aria-hidden="true">@</span>
+        </a>
+      </div>
+    </div>
+
+    <nav data-ft-in aria-label="Footer" class="flex gap-16 text-lg md:pr-8 md:text-xl">
+      {[pages, socials].map((links) => (
+        <ul class="space-y-1.5">
+          {links.map(([href, label]) => (
+            <li><a href={href} class="whitespace-nowrap text-white/90 transition-colors hover:text-lime">{label}</a></li>
+          ))}
+        </ul>
+      ))}
+    </nav>
+  </div>
+
+  <!-- Decorative wordmark: each letter rises out of a clipped line. -->
+  <p aria-hidden="true" class="mt-20 flex justify-between overflow-hidden text-[22.5vw] leading-[0.8] font-black tracking-tighter md:mt-28">
+    {[...'VEKTIDE'].map((ch) => <span data-ft-letter class="inline-block">{ch}</span>)}
+  </p>
+
+  <div class="mt-8 flex flex-col gap-2 text-sm text-white/50 md:flex-row md:justify-between">
+    <p>© {year} Vektide Technologies Pvt. Ltd.</p>
+    <p>Mahalaxmi-4, Lalitpur, Nepal</p>
+    <p class="flex gap-5">
+      <a href="/privacy" class="transition-colors hover:text-white">Privacy</a>
+      <a href="/terms" class="transition-colors hover:text-white">Terms</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const footer = document.querySelector<HTMLElement>('[data-footer]')!;
+
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    // Headline: each letter goes from faint to solid as it scrolls up the screen.
+    gsap.fromTo(
+      footer.querySelectorAll('[data-ft-char]'),
+      { opacity: 0.15 },
+      { opacity: 1, stagger: 0.05, ease: 'none', scrollTrigger: { trigger: footer.querySelector('h2'), start: 'top 90%', end: 'bottom 55%', scrub: true } },
+    );
+
+    // Buttons and links rise in once.
+    gsap.from(footer.querySelectorAll('[data-ft-in]'), {
+      opacity: 0,
+      y: 20,
+      duration: 0.8,
+      stagger: 0.1,
+      ease: 'power3.out',
+      scrollTrigger: { trigger: footer.querySelector('h2'), start: 'top 70%', once: true },
+    });
+
+    // Wordmark letters rise up out of the clip, one after another.
+    gsap.from(footer.querySelectorAll('[data-ft-letter]'), {
+      yPercent: 100,
+      duration: 1.1,
+      stagger: 0.06,
+      ease: 'expo.out',
+      scrollTrigger: { trigger: footer.querySelector('[data-ft-letter]'), start: 'top 95%', once: true },
+    });
+  }
+</script>

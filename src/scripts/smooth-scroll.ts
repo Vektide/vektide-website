@@ -6,12 +6,16 @@ import Lenis from 'lenis';
 
 gsap.registerPlugin(ScrollTrigger);
 
-if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  const lenis = new Lenis({
-    lerp: 0.085, // lower = heavier, glidier scroll
-    wheelMultiplier: 0.9,
-    anchors: true, // in-page links like "See our work" glide too
-  });
+// Exported so overlays (the nav sheet) can pause page scrolling.
+export const lenis = matchMedia('(prefers-reduced-motion: reduce)').matches
+  ? undefined
+  : new Lenis({
+      lerp: 0.085, // lower = heavier, glidier scroll
+      wheelMultiplier: 0.9,
+      anchors: true, // in-page links like "See our work" glide too
+    });
+
+if (lenis) {
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add((time) => lenis.raf(time * 1000));
   gsap.ticker.lagSmoothing(0);
