@@ -1,26 +1,9 @@
 ---
 // Featured product: a full-screen dark panel. The problems section above freezes in place
 // and this panel scrolls up over it like a curtain, then the page carries on.
-// Left: the clinic owner's words, big. Right: a PCMS screen (HTML replica, invented data).
+// Left: the clinic owner's words, big. Right: a PCMS screenshot (public/screens, invented data).
 // TODO: replace the draft quote and attribution with the owner's real words before launch.
 const quote = 'We used to close the day not knowing what we’d actually earned. Now every rupee is on one screen before the last patient leaves.';
-
-const stats = [
-  ['Collected today', 'NPR 20,559', 'text-emerald-600', '+8% vs yesterday'],
-  ['Pending lab fees', 'NPR 1,100', 'text-amber-600', '1 patient owes'],
-  ['Patients today', '31', 'text-soft', '6 in the queue'],
-  ['Doctors to pay', 'NPR 10,850', 'text-soft', 'Settle at closing'],
-];
-const queue = [
-  ['14', 'Sita Shrestha', 'With doctor', 'bg-lime text-ink'],
-  ['15', 'Ram Bahadur Thapa', 'Waiting', 'bg-pill text-soft'],
-  ['16', 'Anju Gurung', 'Waiting', 'bg-pill text-soft'],
-];
-const lab = [
-  ['LAB-0142', 'CBC, Lipid profile', 'Report ready', 'bg-emerald-50 text-emerald-700'],
-  ['XR-0031', 'Chest PA view', 'In progress', 'bg-amber-50 text-amber-700'],
-  ['USG-0019', 'Abdomen', 'Unpaid', 'bg-rose-50 text-rose-700'],
-];
 const arrowRight = `<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 ---
 
@@ -62,50 +45,15 @@ const arrowRight = `<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h1
     </div>
 
     <!-- Right: product screen -->
-    <div data-f-shot class="overflow-hidden rounded-2xl bg-white text-left text-[13px] text-ink shadow-[0_50px_100px_-30px_rgb(0_0_0/0.9)] ring-1 ring-white/10">
-      <div class="flex h-11 items-center gap-2 border-b border-line bg-[#fafafa] px-4">
-        <span class="grid size-6 place-items-center rounded-md bg-ink text-[10px] font-bold text-lime">P</span>
-        <span class="font-medium">Demo Polyclinic</span>
-        <span class="text-soft">· Clinic overview</span>
-        <span class="ml-auto text-soft">Mon, 12 Oct</span>
-      </div>
-
-      <div class="grid gap-3 p-4">
-        <div class="grid grid-cols-2 gap-3">
-          {stats.map(([label, value, tone, note]) => (
-            <div class="rounded-xl border border-line p-3">
-              <p class="text-[11px] text-soft">{label}</p>
-              <p class="mt-0.5 text-lg font-semibold tracking-tight tabular-nums">{value}</p>
-              <p class:list={['text-[11px]', tone]}>{note}</p>
-            </div>
-          ))}
-        </div>
-
-        <div class="grid gap-3 sm:grid-cols-2">
-          <div class="rounded-xl border border-line p-3">
-            <p class="mb-1 font-medium">Token queue · Dr. Koirala</p>
-            {queue.map(([token, name, status, pill]) => (
-              <p class="flex items-center gap-2 border-t border-line py-2">
-                <span class="w-6 text-soft tabular-nums">{token}</span>
-                <span class="truncate">{name}</span>
-                <span class:list={['ml-auto shrink-0 rounded-full px-2 py-0.5 text-[11px] font-medium', pill]}>{status}</span>
-              </p>
-            ))}
-          </div>
-          <div class="rounded-xl border border-line p-3">
-            <p class="mb-1 font-medium">Laboratory</p>
-            {lab.map(([id, test, status, pill]) => (
-              <p class="flex items-center gap-2 border-t border-line py-2">
-                <span class="min-w-0">
-                  <span class="block truncate">{test}</span>
-                  <span class="block text-[11px] text-soft tabular-nums">{id}</span>
-                </span>
-                <span class:list={['ml-auto shrink-0 rounded-full px-2 py-0.5 text-[11px] font-medium', pill]}>{status}</span>
-              </p>
-            ))}
-          </div>
-        </div>
-      </div>
+    <div data-f-shot class="overflow-hidden rounded-2xl bg-white shadow-[0_50px_100px_-30px_rgb(0_0_0/0.9)] ring-1 ring-white/10">
+      <img
+        src="/screens/featured.png"
+        alt="PCMS clinic overview: today's collections, doctors to pay, amounts owed and a week of revenue"
+        width="1920"
+        height="1520"
+        loading="lazy"
+        class="block h-auto w-full"
+      />
     </div>
   </div>
 </section>
