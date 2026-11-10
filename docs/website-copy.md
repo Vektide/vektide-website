@@ -384,7 +384,7 @@ Form sentence: Hi, I'm [your name] from [your business]. I'd like to see [PCMS f
 
 - Required: name, business, phone. Optional: email, interest (defaults to PCMS), note.
 - Note field: "Anything we should know? (optional)", placeholder "How does your business handle this today?"
-- Button: Request my demo · beside it: Free, and no commitment.
+- Button: Request a demo · beside it: Free, and no commitment.
 - Missing fields: "Add your name, your business name and a phone number so we can call you." (lists only what's missing)
 - Bad phone: "That phone number looks wrong. Use a 10-digit mobile, or a landline with its area code."
 - Send failed: "Couldn't send. Check your connection and try again, or email contact@vektide.com."
