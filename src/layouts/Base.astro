@@ -29,7 +29,7 @@ const organization = {
       name: 'Vektide Technologies Pvt. Ltd.',
       alternateName: 'Vektide',
       url: site.href,
-      logo: new URL('/logo.png', site).href,
+      logo: new URL('/logo/vektide-logo-512.png', site).href,
       email: 'contact@vektide.com',
       slogan: 'Moving forward with precision.',
       address: {
@@ -80,10 +80,14 @@ const organization = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={imageUrl} />
 
-    <link rel="icon" href="/favicon-v2.ico" sizes="48x48" />
-    <link rel="icon" href="/favicon-v2.png" type="image/png" sizes="192x192" />
-    <link rel="icon" href="/favicon-v2.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon-v2.png" />
+    <!-- "-v3" in the names makes browsers and search engines fetch the new logo -->
+    <link rel="icon" href="/favicon-v3.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon-16x16-v3.png" type="image/png" sizes="16x16" />
+    <link rel="icon" href="/favicon-32x32-v3.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/android-chrome-192x192-v3.png" type="image/png" sizes="192x192" />
+    <link rel="icon" href="/favicon-v3.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon-v3.png" />
+    <link rel="manifest" href="/site.webmanifest" />
 
     <!-- The stylesheet comes from api., the font files from cdn.: warm up both -->
     <link rel="preconnect" href="https://api.fontshare.com" />

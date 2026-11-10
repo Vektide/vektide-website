@@ -7,6 +7,7 @@
   --color-line: #e4e4e4;
   --color-pill: #f2f2f2;
   --color-lime: #d4fb4f;
+  --color-brand: #1d3d95; /* logo blue */
   --color-scrim: rgb(236 236 236 / 0.86);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
