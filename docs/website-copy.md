@@ -150,7 +150,7 @@ Heading: Already running.
 
 Body: PCMS is live at Gorkhakali Polyclinic, built alongside the people who use it every day.
 
-Testimonial: "[Quote from clinic owner/manager]" — [Name], [Role], Gorkhakali Polyclinic
+Testimonial: (src/data/testimonial.ts) — Swornim Shrestha, Manager, Gorkhakali Polyclinic
 
 ### Getting started
 
@@ -401,6 +401,26 @@ No-JS thank-you page (/demo/sent, noindex): "Request sent." / "We'll call you wi
 
 ---
 
+## Case studies (/case-studies)
+
+Facts come from the PCMS repo (the requirements doc, CONTEXT.md and the Gorkhakali go-live record). Gorkhakali went live on 5 November 2026, so there are no results figures yet; add real ones only once the clinic agrees. No patient names, money figures, server addresses or tool names on the page. Data: `src/data/case-studies.ts` (also feeds the navbar card).
+
+Index: "Case studies" / "What changed for the businesses running our software, told with their permission." One card per case study, then "More as other clients go live."
+
+### Gorkhakali Polyclinic (/case-studies/gorkhakali-polyclinic)
+
+Headline: How Gorkhakali Polyclinic moved reception, lab and billing off paper. Hero art: three lab completion chits marked Paid / Unpaid in blue ink (names and amounts blurred). Facts: Client Gorkhakali Polyclinic Pvt. Ltd. · Live since 5 November 2026 · PCMS, with 7 modules · Laboratory, X-ray, Procedures, USG.
+
+- A busy clinic, run on registers. Three short paragraphs: the clinic, the registers and chits, and "They weren't after a hospital system, and they didn't want patient files."
+- One visit, start to finish. Seven steps, On paper / With PCMS: Arrival, Follow-up or new, Token and slip, The doctor (Unchanged: doctors still write by hand and never log in), Lab, X-ray and the rest, Paying, End of the day. Then the reception dashboard, captioned as demo data.
+- Rules we learned at the counter: Seven days, same doctor · No patient files · Plaster is priced at the desk · Money taken is never edited · Doctors are paid on the day.
+- From first commit to go-live: July 2026 · August (reception PC plan) · September (managed server) · 30 September (trial) · 4–5 November (live, setup carried over) · 6 November (first update, about a minute).
+- Kept safe after launch: own system and database · nightly encrypted backups in a second location · restore tested before go-live · alert if a backup is missed · server reachable only through a security proxy.
+- Quote: Swornim Shrestha, Manager (approved).
+- Footer: See PCMS in your clinic.
+
+---
+
 ## Global elements
 
 ### Navigation
@@ -425,4 +445,6 @@ Bottom line: © 2026 Vektide Technologies Pvt. Ltd. · Lalitpur, Nepal
 | About | About Vektide Technologies | A Lalitpur software company taking the manual work out of Nepali businesses, starting with healthcare. |
 | Privacy | Privacy policy \| Vektide | What vektide.com collects, how Vektide handles data in the systems it runs for clients, and who to ask about it. |
 | Terms | Terms of service \| Vektide | The terms for using vektide.com, and a plain summary of how licenses, hosting, fees and data work when you become a Vektide client. |
+| Case studies | Case studies \| Vektide | What changed for the businesses running Vektide's software, told with their permission. |
+| Gorkhakali case study | How Gorkhakali Polyclinic went paperless with PCMS \| Vektide | How an outpatient clinic moved reception, lab and billing from paper registers to PCMS, and what stayed the same. |
 | Contact | Contact Vektide | Book a demo or a free discovery call. We reply within one working day. |

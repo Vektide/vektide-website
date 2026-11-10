@@ -1,0 +1,178 @@
+---
+// Case study: Gorkhakali Polyclinic. Copy: docs/website-copy.md, "Case studies".
+// Every fact comes from the PCMS repo (requirements doc, CONTEXT.md, go-live record);
+// there are no results figures yet because the clinic went live on 5 November 2026.
+// The one moment is the chit stack in the hero; everything else is a quiet read.
+import Base from '../../layouts/Base.astro';
+import Navbar from '../../components/Navbar.astro';
+import ChitStack from '../../components/case-study/ChitStack.astro';
+import VisitSteps from '../../components/case-study/VisitSteps.astro';
+import Footer from '../../components/Footer.astro';
+import { caseStudies } from '../../data/case-studies';
+import { testimonial } from '../../data/testimonial';
+
+const study = caseStudies.find((c) => c.slug === 'gorkhakali-polyclinic')!;
+const title = 'How Gorkhakali Polyclinic went paperless with PCMS | Vektide';
+const description = 'How an outpatient clinic moved reception, lab and billing from paper registers to PCMS, and what stayed the same.';
+
+const facts: [string, string][] = [
+  ['Client', 'Gorkhakali Polyclinic Pvt. Ltd.'],
+  ['Live since', '5 November 2026'],
+  ['What we built', 'PCMS, with 7 modules'],
+  ['Rooms', 'Laboratory, X-ray, Procedures, USG'],
+];
+
+const rules: [string, string][] = [
+  ['Seven days, same doctor', 'A follow-up is free only with the doctor the patient already saw, and only within seven days. PCMS counts the days, so reception doesn’t have to.'],
+  ['No patient files', 'The clinic keeps visits, not medical histories. Reception finds a patient by phone number, name and age.'],
+  ['Plaster is priced at the desk', 'A small plaster on a forearm doesn’t cost what one on a shin does. So reception types the price, and their name goes next to it.'],
+  ['Money taken is never edited', 'A refund is its own entry: money handed back, who handed it over and why. The payment it corrects stays exactly as it was.'],
+  ['Doctors are paid on the day', 'Each doctor is paid for the new patients they saw that day. Follow-ups earn them nothing, the same as before.'],
+];
+
+const timeline: [string, string][] = [
+  ['July 2026', 'We wrote down how the clinic worked, desk by desk, and started building.'],
+  ['August', 'The first plan was to run PCMS on the reception computer.'],
+  ['September', 'We moved it to a managed server instead, so nothing runs on the clinic’s own PCs.'],
+  ['30 September', 'The trial started. Staff used it at the counter every day, and what they ran into decided what we fixed next.'],
+  ['4–5 November', 'Live on its own server. The 13 doctors, 113 services and staff accounts came over from the trial without retyping. The trial’s patient and money records stayed behind.'],
+  ['6 November', 'First update. It took about a minute.'],
+];
+
+const safety = [
+  'Its own system and its own database',
+  'Encrypted backups every night, kept in a second location',
+  'A full restore tested before go-live',
+  'An alert if a night’s backup doesn’t happen',
+  'The server reachable only through a security proxy',
+];
+
+const h2 = 'text-4xl leading-[0.95] font-bold tracking-tighter sm:text-6xl';
+
+const article = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: study.title,
+  description,
+  datePublished: study.published,
+  url: new URL(`/case-studies/${study.slug}`, Astro.site).href,
+  about: { '@type': 'SoftwareApplication', name: 'PCMS — Polyclinic Management System', url: new URL('/pcms', Astro.site).href },
+  publisher: { '@id': new URL('/#organization', Astro.site).href },
+};
+---
+
+<Base title={title} description={description}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(article)} />
+  <Navbar />
+  <main>
+    <!-- Hero -->
+    <section class="mx-auto max-w-[1280px] overflow-x-clip px-4 pt-36 pb-24 sm:px-8 md:pt-48 md:pb-36">
+      <div class="grid items-center gap-12 md:grid-cols-[1.5fr_1fr] md:gap-10">
+        <div>
+          <a data-cs-in href="/case-studies" class="text-[15px] text-soft underline decoration-line underline-offset-4 transition-colors in-[.js]:opacity-0 hover:text-ink hover:decoration-ink">Case studies</a>
+          <h1 data-cs-in class="mt-6 text-5xl leading-[0.95] font-bold tracking-tighter text-balance in-[.js]:opacity-0 sm:text-7xl">
+            {study.title}.
+          </h1>
+        </div>
+        <ChitStack />
+      </div>
+
+      <dl data-cs-in class="mt-14 grid gap-x-10 border-t border-line in-[.js]:opacity-0 sm:grid-cols-2 md:mt-20 lg:grid-cols-4">
+        {facts.map(([term, value]) => (
+          <div class="border-b border-line py-4 sm:border-b-0 sm:pt-5">
+            <dt class="text-[15px] text-soft">{term}</dt>
+            <dd class="mt-1 text-lg font-medium">{value}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <!-- The clinic before -->
+    <section class="mx-auto grid max-w-[1280px] gap-10 px-4 pb-24 sm:px-8 md:grid-cols-[1fr_1.4fr] md:gap-20 md:pb-36">
+      <h2 class={`${h2} md:sticky md:top-32 md:self-start`}>A busy clinic,<br />run on registers.</h2>
+      <div class="max-w-xl space-y-5 text-lg leading-relaxed text-soft sm:text-xl">
+        <p>
+          Gorkhakali is an outpatient clinic. Visiting doctors see patients in general medicine, paediatrics, orthopaedics, skin, ENT
+          and gynaecology, and the clinic runs its own lab, X-ray, ECG, ultrasound and minor surgery.
+        </p>
+        <p>
+          Every doctor had a register at reception. Every test was written down twice, once at the desk and again in the lab. When a
+          patient was done in the lab, they carried a handwritten chit back to reception. Someone wrote Paid or Unpaid on it and put it
+          on the pile, and at the end of the day the owner went through the pile to see what had come in.
+        </p>
+        <p>
+          <span class="text-ink">They weren’t after a hospital system, and they didn’t want patient files.</span> They wanted their day to run
+          the way it already did, minus the paper.
+        </p>
+      </div>
+    </section>
+
+    <VisitSteps />
+
+    <!-- Rules -->
+    <section class="mx-auto max-w-[1280px] px-4 pb-24 sm:px-8 md:pb-36">
+      <h2 class={h2}>Rules we learned<br />at the counter</h2>
+      <ul class="mt-12 grid gap-x-20 md:mt-16 md:grid-cols-2">
+        {rules.map(([name, body]) => (
+          <li class="border-t border-line pt-6 pb-10 md:pb-14">
+            <h3 class="text-2xl font-bold tracking-tight sm:text-[28px]">{name}</h3>
+            <p class="mt-3 max-w-md text-soft">{body}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <!-- Timeline -->
+    <section class="mx-auto grid max-w-[1280px] gap-10 px-4 pb-24 sm:px-8 md:grid-cols-[1fr_1.4fr] md:gap-20 md:pb-36">
+      <h2 class={`${h2} md:sticky md:top-32 md:self-start`}>From first commit<br />to go-live</h2>
+      <ol>
+        {timeline.map(([when, what]) => (
+          <li class="grid gap-2 border-t border-line py-6 sm:grid-cols-[150px_1fr] sm:gap-8">
+            <p class="font-medium tabular-nums">{when}</p>
+            <p class="max-w-lg text-soft">{what}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <!-- Kept safe -->
+    <section class="mx-auto grid max-w-[1280px] gap-10 px-4 pb-24 sm:px-8 md:grid-cols-[1fr_1.4fr] md:gap-20 md:pb-36">
+      <div>
+        <h2 class={h2}>Kept safe<br />after launch</h2>
+        <p class="mt-6 max-w-xs text-soft">We didn’t hand over a login and leave. We run the server, and the clinic calls us directly when something looks wrong.</p>
+      </div>
+      <ul class="space-y-5 self-start rounded-[32px] bg-pill p-8 sm:p-10">
+        {safety.map((item) => (
+          <li class="grid grid-cols-[auto_1fr] gap-4">
+            <span aria-hidden="true" class="mt-0.5 grid size-6 place-items-center rounded-full bg-lime">
+              <svg viewBox="0 0 12 12" class="size-3 fill-none stroke-ink stroke-[1.8]" stroke-linecap="round" stroke-linejoin="round"><path d="m2.5 6.2 2.3 2.3 4.7-5" /></svg>
+            </span>
+            <span class="text-lg">{item}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <!-- In their words -->
+    <section class="relative z-10 bg-[radial-gradient(120%_80%_at_0%_0%,rgb(255_255_255/0.07),transparent_55%),linear-gradient(160deg,#1d1d1f_0%,#121213_55%,#0b0b0c_100%)] text-white shadow-[0_-30px_60px_-20px_rgb(0_0_0/0.25)]">
+      <figure class="mx-auto max-w-[1280px] px-4 py-24 sm:px-8 md:py-36">
+        <p class="text-white/60">
+          <span class="mr-2 inline-block size-1.5 -translate-y-0.5 rounded-full bg-lime ring-4 ring-lime/20" aria-hidden="true"></span>
+          Live since 5 November 2026
+        </p>
+        <blockquote class="mt-8 max-w-4xl text-3xl leading-[1.12] font-bold tracking-tight text-balance sm:text-5xl">“{testimonial.quote}”</blockquote>
+        <figcaption class="mt-8 text-white/60">{testimonial.name}, {testimonial.role}, {testimonial.clinic}</figcaption>
+      </figure>
+    </section>
+  </main>
+  <Footer headline="See PCMS in your clinic." />
+</Base>
+
+<script>
+  import gsap from 'gsap';
+
+  // The heading, back link and facts rise in once; the chits then drop onto the pile.
+  const intro = document.querySelectorAll<HTMLElement>('[data-cs-in]');
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) gsap.set(intro, { opacity: 1 });
+  else gsap.fromTo(intro, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.9, stagger: 0.08, ease: 'power3.out', delay: 0.1 });
+</script>

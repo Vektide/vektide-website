@@ -1,0 +1,49 @@
+---
+// Case studies index. One so far; the card is the navbar's case-study card, larger.
+import Base from '../../layouts/Base.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import { caseStudies, href } from '../../data/case-studies';
+
+const arrowRight = `<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+---
+
+<Base title="Case studies | Vektide" description="What changed for the businesses running Vektide's software, told with their permission.">
+  <Navbar />
+  <main class="mx-auto max-w-[1280px] px-4 pt-36 pb-24 sm:px-8 md:pt-48 md:pb-36">
+    <h1 class="text-5xl leading-[0.95] font-bold tracking-tighter sm:text-7xl lg:text-8xl">Case studies</h1>
+    <p class="mt-6 max-w-lg text-lg text-soft sm:text-xl">What changed for the businesses running our software, told with their permission.</p>
+
+    <ul class="mt-16 border-t border-line pt-10 md:mt-24">
+      {caseStudies.map((c) => (
+        <li>
+          <a href={href(c)} class="group/card grid gap-6 sm:grid-cols-[260px_minmax(0,1fr)] sm:gap-10">
+            <span class="relative grid aspect-square w-full max-w-[260px] place-items-center overflow-hidden bg-brand">
+              <img
+                src="/logo/vektide-mark-white-256.png"
+                srcset="/logo/vektide-mark-white-128.png 128w, /logo/vektide-mark-white-256.png 256w"
+                sizes="135px"
+                alt=""
+                width="256"
+                height="256"
+                class="size-[52%] transition-transform duration-600 ease-out-expo group-hover/card:scale-106 group-hover/card:-rotate-4 motion-reduce:transition-none"
+              />
+              <span class="absolute top-3 right-3 grid size-11 place-items-center rounded-full bg-white transition-transform duration-350 ease-out-expo group-hover/card:-rotate-45 motion-reduce:transition-none [&_svg]:size-5">
+                <Fragment set:html={arrowRight} />
+              </span>
+            </span>
+            <span class="flex flex-col gap-3 sm:py-2">
+              <span class="text-[15px] text-soft">{c.tags}</span>
+              <span class="max-w-xl text-3xl leading-[1.05] font-bold tracking-tight sm:text-4xl">{c.title}</span>
+              <span class="max-w-lg text-soft">{c.summary}</span>
+              <span class="mt-auto text-sm text-soft">{c.date}</span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <p class="mt-16 border-t border-line pt-8 text-soft">More as other clients go live.</p>
+  </main>
+  <Footer />
+</Base>

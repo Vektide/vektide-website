@@ -1,0 +1,58 @@
+---
+// Three lab completion chits, the paper this project replaced: a patient carried one from
+// the lab back to reception, where someone wrote Paid or Unpaid on it in pen. Decorative.
+// Names and amounts are blurred bars, so no patient or price is invented.
+// On load they drop onto the pile one after another (the PCMS token-slip drop).
+const chits = [
+  { no: '0398', tests: ['X-ray chest PA'], mark: 'Paid', rot: 7, pos: 'top-2 right-0 sm:right-4' },
+  { no: '0402', tests: ['Urine R/E', 'Sugar (F)'], mark: 'Paid', rot: -9, pos: 'top-10 left-0 sm:left-2' },
+  { no: '0411', tests: ['CBC', 'ESR', 'Lipid profile'], mark: 'Unpaid', rot: -2, pos: 'top-20 left-1/2 -translate-x-1/2' },
+];
+const bar = 'inline-block h-2.5 rounded-full bg-ink/15 blur-[1.5px]';
+---
+
+<div aria-hidden="true" class="relative mx-auto h-[300px] w-full max-w-[400px] select-none sm:h-[340px]">
+  {chits.map((c) => (
+    <div class:list={['absolute', c.pos]}>
+      <div
+        data-chit
+        data-rot={c.rot}
+        style={`transform: rotate(${c.rot}deg)`}
+        class="w-[200px] rounded-md bg-white px-4 pt-3.5 pb-4 text-left shadow-[0_2px_4px_rgb(0_0_0/0.06),0_24px_40px_-16px_rgb(0_0_0/0.35)] ring-1 ring-black/5 in-[.js]:opacity-0 sm:w-[220px]"
+      >
+        <div class="flex items-start justify-between border-b border-dashed border-line pb-2">
+          <div>
+            <p class="text-[11px] font-bold tracking-tight">Gorkhakali Polyclinic</p>
+            <p class="text-[10px] text-soft">Laboratory</p>
+          </div>
+          <p class="text-[10px] font-bold text-red-600 tabular-nums">No. {c.no}</p>
+        </div>
+        <p class="mt-2.5 flex items-center gap-2 text-[10px] text-soft">Name <span class:list={[bar, 'w-24']}></span></p>
+        <ul class="mt-2 space-y-0.5 text-[13px] font-medium text-brand italic">
+          {c.tests.map((t) => <li>{t}</li>)}
+        </ul>
+        <div class="mt-3 flex items-end justify-between">
+          <p class="flex items-center gap-2 text-[10px] text-soft">Rs <span class:list={[bar, 'w-12']}></span></p>
+          <p class:list={['text-2xl leading-none font-bold text-brand italic', c.mark === 'Unpaid' ? '-rotate-12' : '-rotate-6']}>
+            {c.mark === 'Unpaid' ? <span class="border-b-2 border-brand/70">{c.mark}</span> : c.mark}
+          </p>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
+
+<script>
+  import gsap from 'gsap';
+
+  const chits = [...document.querySelectorAll<HTMLElement>('[data-chit]')];
+  const rot = (el: HTMLElement) => Number(el.dataset.rot);
+
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) gsap.set(chits, { opacity: 1 });
+  else
+    gsap.fromTo(
+      chits,
+      { opacity: 0, y: -48, rotate: (_: number, el: HTMLElement) => rot(el) - 10 },
+      { opacity: 1, y: 0, rotate: (_: number, el: HTMLElement) => rot(el), duration: 0.9, stagger: 0.18, ease: 'back.out(1.4)', delay: 0.45 },
+    );
+</script>

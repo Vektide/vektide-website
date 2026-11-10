@@ -1,0 +1,102 @@
+---
+// One visit, start to finish: each desk a patient passes, on paper and with PCMS. The doctor's
+// step is the deliberate break: it didn't change, so it spans both columns in a grey panel.
+// Numbered because it is a sequence. Below it, reception's PCMS screen (demo data).
+import { Image } from 'astro:assets';
+import reception from '../../assets/screens/desk-reception.png';
+
+type Step = { name: string; paper: string; pcms: string } | { name: string; unchanged: string };
+
+const steps: Step[] = [
+  {
+    name: 'Arrival',
+    paper: 'Name, age, gender and phone number written into that doctor’s register.',
+    pcms: 'Typed once. Earlier visits come up from the phone number.',
+  },
+  {
+    name: 'Follow-up or new',
+    paper: 'Free if it’s the same doctor within seven days. Someone read the old prescription, or turned back through the register to find it.',
+    pcms: 'PCMS looks back seven days and marks the follow-up, with no fee. If the patient has a prescription the system can’t see, reception can still mark it, and their name goes on it.',
+  },
+  {
+    name: 'Token and slip',
+    paper: 'Tokens counted by hand. Patient details written onto blank prescription paper.',
+    pcms: 'A token numbered per doctor, per day, printed on the slip with the patient’s details.',
+  },
+  {
+    name: 'The doctor',
+    unchanged: 'Doctors still examine patients and write prescriptions by hand. They never log in.',
+  },
+  {
+    name: 'Lab, X-ray and the rest',
+    paper: 'Written again, into the lab register or the X-ray register. When the work was done, a handwritten chit went back to reception with the patient.',
+    pcms: 'Reception sends the work to the right room, and each room sees its own queue. Nothing gets written twice.',
+  },
+  {
+    name: 'Paying',
+    paper: 'Paid or Unpaid, in pen, on the chit. Then onto the pile.',
+    pcms: 'An unpaid bill stays on screen until it’s settled. Refunds and discounts carry the name of whoever gave them, and why.',
+  },
+  {
+    name: 'End of the day',
+    paper: 'The owner sorted the pile of chits, then counted each doctor’s new patients to work out what to pay them.',
+    pcms: 'The day’s takings, what’s still owed and each doctor’s pay, on one screen.',
+  },
+];
+
+const label = 'mb-1.5 text-[13px] text-soft md:hidden';
+---
+
+<section class="mx-auto max-w-[1280px] px-4 pb-24 sm:px-8 md:pb-36">
+  <div class="grid gap-6 md:grid-cols-[1fr_1fr] md:items-end md:gap-16">
+    <h2 class="text-4xl leading-[0.95] font-bold tracking-tighter sm:text-6xl">One visit, start to finish.</h2>
+    <p class="max-w-md text-lg text-soft">We followed one patient through the clinic, desk by desk, and changed only what needed changing.</p>
+  </div>
+
+  <div class="mt-14 md:mt-20">
+    <div aria-hidden="true" class="hidden grid-cols-[minmax(0,0.8fr)_1fr_1fr] gap-10 pb-4 text-[15px] text-soft md:grid">
+      <span></span><span>On paper</span><span>With PCMS</span>
+    </div>
+    <ol>
+      {steps.map((s, i) => (
+        <li class="grid gap-x-10 gap-y-4 border-t border-line py-8 md:grid-cols-[minmax(0,0.8fr)_1fr_1fr]">
+          <h3 class="flex items-baseline gap-4 text-xl font-bold tracking-tight sm:text-2xl">
+            <span class="text-sm font-medium text-soft tabular-nums">0{i + 1}</span>
+            {s.name}
+          </h3>
+          {'unchanged' in s ? (
+            <div class="rounded-2xl bg-pill p-6 md:col-span-2">
+              <p class="text-xl font-bold tracking-tight">Unchanged.</p>
+              <p class="mt-1 max-w-xl text-soft">{s.unchanged}</p>
+            </div>
+          ) : (
+            <>
+              <div><p class={label}>On paper</p><p class="max-w-md text-soft">{s.paper}</p></div>
+              <div><p class={label}>With PCMS</p><p class="max-w-md">{s.pcms}</p></div>
+            </>
+          )}
+        </li>
+      ))}
+    </ol>
+  </div>
+
+  <figure class="mt-16 rounded-[32px] bg-pill p-3 sm:p-5 lg:p-8">
+    <div class="overflow-hidden rounded-xl border border-line bg-white shadow-[0_30px_60px_-30px_rgb(0_0_0/0.25)]">
+      <div class="flex h-[34px] items-center gap-2 border-b border-line bg-[#fafafa] px-4 text-[13px] whitespace-nowrap sm:h-[42px]">
+        <span class="size-2 rotate-45 rounded-[2px] bg-lime"></span>
+        <span class="font-medium">Reception</span>
+        <span class="truncate text-soft">· Today’s queue and fees to collect</span>
+      </div>
+      <Image
+        src={reception}
+        alt="PCMS reception dashboard: patients registered today, fees still to collect, the consultation queue by doctor and clinic notices"
+        widths={[640, 960, 1280, 1920]}
+        sizes="(min-width: 1280px) 1152px, calc(100vw - 64px)"
+        quality={85}
+        loading="lazy"
+        class="block aspect-[16/9] w-full"
+      />
+    </div>
+    <figcaption class="mt-4 px-1 text-[15px] text-soft">Reception’s dashboard, shown here with demo data. Gorkhakali’s own records stay private.</figcaption>
+  </figure>
+</section>

@@ -1,5 +1,6 @@
 ---
 import { email, socials as profiles } from '../data/contact';
+import { featured, href } from '../data/case-studies';
 // Pill navbar. Every item opens a sheet that drops from the top; the page behind
 // it dims. Each sheet has a big "Explore ..." heading, then a list or a card.
 type Menu = {
@@ -42,12 +43,7 @@ const menus: Menu[] = [
     label: 'Case Studies',
     heading: ['/case-studies', 'Explore Case Studies'],
     section: 'Featured',
-    card: {
-      href: '/case-studies/gorkhakali-polyclinic',
-      tags: 'Healthcare, PCMS',
-      title: 'How Gorkhakali Polyclinic moved reception, lab and billing off paper',
-      date: '[Month Year]',
-    },
+    card: { href: href(featured), tags: featured.tags, title: featured.title, date: featured.date },
   },
 ];
 
