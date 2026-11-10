@@ -5,7 +5,7 @@ import Base from '../layouts/Base.astro';
 import Navbar from '../components/Navbar.astro';
 import DemoForm from '../components/DemoForm.astro';
 import Footer from '../components/Footer.astro';
-import { address, email, hours, phones } from '../data/contact';
+import { address, email, hours } from '../data/contact';
 
 const link = 'font-medium text-ink underline decoration-line underline-offset-4 transition-colors hover:decoration-ink';
 const steps = [
@@ -49,13 +49,8 @@ const steps = [
       </ol>
 
       <p class="mt-6 border-t border-line pt-6 text-soft">
-        Rather call or write?{' '}
-        {phones.map((p) => (
-          <>
-            <a href={p.tel} class={`${link} tabular-nums`}>{p.display}</a>,{' '}
-          </>
-        ))}
-        or <a href={`mailto:${email}`} class={link}>{email}</a>
+        Rather write?{' '}
+        <a href={`mailto:${email}`} class={link}>{email}</a>
         <br />{hours.text}, Nepal time. {address}
       </p>
     </div>

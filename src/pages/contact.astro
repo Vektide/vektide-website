@@ -7,7 +7,7 @@ import Navbar from '../components/Navbar.astro';
 import OfficeStatus from '../components/OfficeStatus.astro';
 import ContactForm from '../components/ContactForm.astro';
 import Footer from '../components/Footer.astro';
-import { address, email, hours, mapsUrl, phones } from '../data/contact';
+import { address, email, hours, mapsUrl } from '../data/contact';
 
 const pill =
   'inline-flex h-8 items-center rounded-full bg-pill px-3.5 text-sm text-ink transition-colors duration-300 hover:bg-lime focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink';
@@ -16,7 +16,7 @@ const label = 'text-[15px] text-soft';
 
 <Base
   title="Contact Vektide"
-  description="Call, WhatsApp or write to Vektide in Lalitpur. Tell us what your business does and we reply within one working day."
+  description="Write to Vektide in Lalitpur. Tell us what your business does and we reply within one working day."
 >
   <Navbar />
   <main class="mx-auto grid max-w-[1280px] items-start gap-x-20 gap-y-14 px-4 pt-36 pb-24 sm:px-8 md:grid-cols-[1fr_1.4fr] md:pt-48 md:pb-36">
@@ -37,23 +37,6 @@ const label = 'text-[15px] text-soft';
     </div>
 
     <div data-contact-in class="in-[.js]:opacity-0 md:col-start-1 md:row-start-2">
-      <section class="border-t border-line py-6">
-        <h2 class={label}>Call, WhatsApp or Viber</h2>
-        <ul class="mt-3 space-y-3">
-          {phones.map((p) => (
-            <li class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-              <a href={p.tel} class="text-2xl font-bold tracking-tight tabular-nums transition-colors hover:text-soft">{p.display}</a>
-              <span class="flex gap-1.5">
-                <a href={p.tel} aria-label={`Call ${p.display}`} class={pill}>Call</a>
-                <a href={p.whatsapp} target="_blank" rel="noopener" aria-label={`WhatsApp ${p.display}`} class={pill}>WhatsApp</a>
-                <a href={p.viber} aria-label={`Viber ${p.display}`} class={pill}>Viber</a>
-              </span>
-            </li>
-          ))}
-        </ul>
-        <p class="mt-3 text-sm text-soft">You'll reach one of the founders.</p>
-      </section>
-
       <section class="border-t border-line py-6">
         <h2 class={label}>Email</h2>
         <div class="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">

@@ -234,40 +234,63 @@ Button: Book a discovery call
 
 Headline: Moving forward with precision.
 
-Subhead: Vektide Technologies is a Kathmandu software company on a simple mission: take the manual work out of Nepali businesses.
+Subhead: Vektide Technologies is a software company in Lalitpur with a simple mission: take the manual work out of Nepali businesses.
+
+### The name (scroll moment)
+
+"Vector" and "tide" sit side by side. As you scroll, "tor" folds away, the "c" rolls into a "k" and the halves close into "Vektide".
+
+Captions: Vector: direction and precision. · Tide: steady forward movement.
 
 ### Our story
 
-Body: Vektide started inside a polyclinic. We watched reception staff juggle paper slips, lab fees go unpaid and owners close the day without clear numbers. So we built a system to fix it — sitting with the staff, learning every step, and shaping the software around their real work.
+Heading: Started inside a polyclinic.
 
-That system became PCMS. The approach became Vektide: understand the workflow first, then build software that fits it.
+Body: Vektide started inside a polyclinic. We watched reception staff juggle paper slips, lab fees go unpaid and owners close the day without clear numbers.
+
+So we built a system to fix it, sitting with the staff, learning every step and shaping the software around their real work. That system became PCMS. The approach became Vektide: understand the workflow first, then build software that fits it.
+
+Card: PCMS — The polyclinic system that started it all, now running at Gorkhakali Polyclinic. — Explore PCMS
 
 ### What we believe
 
-- Workflow before code. The best software follows how people already work.
-- Simple beats clever. If staff need a manual, we built it wrong.
-- We stay after launch. Hosting, support and updates are part of the job.
-- Built here, for here. Nepali businesses deserve tools made for their reality.
+- Workflow before code. We sit with your team and learn the work before we write a line of code. The best software follows how people already work.
+- Simple beats clever. If your staff need a manual, we built it wrong. Every screen should be obvious to the person using it.
+- We stay after launch. Hosting, updates, backups and support are part of the job, not an extra. When something comes up, you call the people who built it.
+- Built here, for here. Nepali dates, rupees and the way businesses here really run are built in from the start, not bolted on later.
 
-### The name
+### The founders
 
-Body: Vektide blends vector — direction and precision — with tide — steady forward movement. It's what we want for every business we work with.
+Intro: Two founders, and no middlemen. You'll talk to us directly, from the first call to support.
 
-### Team
+Names and roles live in `src/data/company.ts`:
 
-Saurav Shrestha — Co-founder. Full-stack developer. [One line on focus.]
+Saurav Shrestha — Co-founder, full-stack developer
 
-Rigen Manandhar — Co-founder. Developer. [One line on focus.]
+Rigen Manandhar — Co-founder, full-stack developer
 
 ### Company details
 
-Vektide Technologies Pvt. Ltd. · Registered in Nepal · [PAN number] · Mahalaxmi-4, Lalitpur
+Company: Vektide Technologies Pvt. Ltd. · Registered in: Nepal · Hours: Sunday to Friday, 9 AM to 5 PM, Nepal time · Office: Mahalaxmi-4, Lalitpur, Nepal (Open in Maps)
 
-### CTA
+### Closing (footer)
 
 Heading: Let's build something that lasts.
 
-Button: Talk to us
+Button: Book a demo
+
+---
+
+## Privacy policy (/privacy) and Terms of service (/terms)
+
+The full text is Markdown in `src/content/legal/privacy.md` and `src/content/legal/terms.md`. Each file's frontmatter holds the heading, lead line, updated date, version and "The short version" points. The layout is `src/components/legal/LegalPage.astro`.
+
+- Privacy has three parts: This website (forms, no cookies or analytics, the providers that handle data), Systems we run for clients (condensed from the PCMS Data Privacy and Security Policy) and For everyone (rights, changes, contact).
+- Terms has three parts: Using this website, Working with us (a plain summary of the license and hosting agreement, which always comes second to a client's signed agreement) and General (Nepali law, arbitration in Kathmandu).
+- The website host is named once, in the privacy policy's "Who else handles it" table (currently Vercel). Update that row if the host changes.
+- Placeholders to fill: enquiry retention [2 years], quote validity [30] days. Have a Nepali lawyer review both before launch.
+
+Both forms carry a line under the submit button: "We use your details only to reply. Privacy policy"
 
 ---
 
@@ -289,7 +312,7 @@ First question: What's this about? · A demo · A new project · Help with my sy
 
 - A demo: the fields give way to "Demos have their own quick form." / "Tell us who you are and we'll call to set a time. It takes 30 seconds." / Button: Book a demo (to /demo)
 - Message placeholder by topic: new project "What does your business do, and what's still on paper?" · help "Which system is it, and what's going wrong?" · something else "What would you like to ask?" · before a pick "Tell us a little about what you need."
-- Help with my system adds: "For anything urgent, call 984-3060594."
+- Help with my system adds: "For anything urgent, email contact@vektide.com with "Urgent" in the subject."
 
 | Field | Type | Placeholder |
 |---|---|---|
@@ -303,13 +326,14 @@ Submit button: Send message · beside it: We reply within one working day.
 
 - Missing: "Add your name, a phone number and a message so we can reply." (lists only what's missing; with no topic: "Pick what your message is about, then add …")
 - Bad phone: "That phone number looks wrong. Use a 10-digit mobile, or a landline with its area code."
-- Send failed: "Couldn't send. Check your connection and try again, or call 984-3060594."
+- Send failed: "Couldn't send. Check your connection and try again, or email contact@vektide.com."
 - Success: "Message sent." / "We'll reply within one working day, on [phone] or at [email]." plus "We're in now, so it may be sooner." during office hours.
-- No-JS thank-you page (/contact/sent, noindex): "Message sent." / "We'll reply within one working day. For anything urgent, call 984-3060594."
+- No-JS thank-you page (/contact/sent, noindex): "Message sent." / "We'll reply within one working day. For anything urgent, email contact@vektide.com."
 
 ### Direct contact
 
-- Call, WhatsApp or Viber: 984-3060594 · 982-4155217 ("You'll reach one of the founders.")
+Email only. Phone numbers are not on the website; we share them with clients once a conversation is under way.
+
 - Email: contact@vektide.com (with a Copy button)
 - Office: Mahalaxmi-4, Lalitpur, Nepal (Open in Maps)
 - Hours: Sunday to Friday, 9 AM to 5 PM. Nepal time. Closed Saturdays.
@@ -339,7 +363,7 @@ What happens next:
 2. We show you the system — Thirty minutes, in person or online. We walk through it with your work in mind, and you ask anything.
 3. You get a clear quote — Scope, timeline and price in writing before any work starts. No obligation.
 
-Direct: Rather call or write? 984-3060594, 982-4155217, or contact@vektide.com. Sunday to Friday, 9 AM to 5 PM, Nepal time. Mahalaxmi-4, Lalitpur, Nepal
+Direct: Rather write? contact@vektide.com. Sunday to Friday, 9 AM to 5 PM, Nepal time. Mahalaxmi-4, Lalitpur, Nepal
 
 No-JS thank-you page (/demo/sent, noindex): "Request sent." / "We'll call you within one working day to set a time for your demo."
 
@@ -366,5 +390,7 @@ Bottom line: © 2026 Vektide Technologies Pvt. Ltd. · Lalitpur, Nepal
 | Home | Vektide — Software for Nepali Businesses | Vektide builds and manages software that replaces manual workflows for clinics, importers and retailers in Nepal. |
 | PCMS | PCMS — Polyclinic Management System \| Vektide | Reception, lab and billing in one system. Track every consultation and lab fee. Your clinic's own private system and database, managed by Vektide. |
 | Custom Systems | Custom Business Software in Nepal \| Vektide | Inventory, billing, dashboards and mobile apps built around your workflow — hosted and maintained for you. |
-| About | About Vektide Technologies | A Kathmandu software company digitizing manual business workflows, starting with healthcare. |
+| About | About Vektide Technologies | A Lalitpur software company taking the manual work out of Nepali businesses, starting with healthcare. |
+| Privacy | Privacy policy \| Vektide | What vektide.com collects, how Vektide handles data in the systems it runs for clients, and who to ask about it. |
+| Terms | Terms of service \| Vektide | The terms for using vektide.com, and a plain summary of how licenses, hosting, fees and data work when you become a Vektide client. |
 | Contact | Contact Vektide | Book a demo or a free discovery call. We reply within one working day. |

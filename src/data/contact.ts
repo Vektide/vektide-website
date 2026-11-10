@@ -1,18 +1,8 @@
 // One place for how to reach Vektide: the contact page, the demo page, the office-hours
 // strip and the structured data in Base.astro all read from here.
+// Email only on the website: phone numbers are shared with clients once we're talking.
 
 export const email = 'contact@vektide.com';
-
-// The founders' mobiles. Each one also takes WhatsApp and Viber.
-export const phones = [
-  { display: '984-3060594', e164: '+9779843060594' },
-  { display: '982-4155217', e164: '+9779824155217' },
-].map((p) => ({
-  ...p,
-  tel: `tel:${p.e164}`,
-  whatsapp: `https://wa.me/${p.e164.slice(1)}`,
-  viber: `viber://chat?number=${encodeURIComponent(p.e164)}`,
-}));
 
 // TODO: Facebook page URL once it exists.
 export const socials = [

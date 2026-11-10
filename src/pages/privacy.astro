@@ -1,0 +1,12 @@
+---
+// The text lives in src/content/legal/privacy.md; the layout is shared with the other legal page.
+import { getEntry, render } from 'astro:content';
+import LegalPage from '../components/legal/LegalPage.astro';
+
+const entry = (await getEntry('legal', 'privacy'))!;
+const { Content, headings } = await render(entry);
+---
+
+<LegalPage data={entry.data} headings={headings}>
+  <Content />
+</LegalPage>

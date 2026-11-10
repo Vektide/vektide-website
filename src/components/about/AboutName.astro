@@ -1,0 +1,61 @@
+---
+// The one big moment on the About page: "Vector" and "tide" sit side by side, then, as you
+// scroll, "tor" fades and folds away, the "c" rolls over into a "k" and the two halves close
+// into "Vektide". Pinned and scrubbed, so it plays both ways. Reduced motion shows the end.
+---
+
+<section data-name class="relative z-10 grid min-h-[85vh] place-items-center overflow-x-clip bg-white px-4 py-24 sm:px-8">
+  <h2 class="sr-only">Vektide: vector, for direction and precision, and tide, for steady forward movement.</h2>
+  <div aria-hidden="true" class="text-center">
+    <p class="flex items-start justify-center text-[length:clamp(3rem,15vw,12rem)] leading-[1.1] font-bold tracking-[-0.06em] whitespace-nowrap">
+      <span>Ve</span>
+      <span data-swap class="relative inline-block overflow-hidden">
+        <span data-c class="inline-block">c</span>
+        <span data-k class="absolute top-full left-0 inline-block">k</span>
+      </span>
+      <span data-tor class="inline-block overflow-hidden">tor</span>
+      <span data-gap class="inline-block w-[0.24em]"></span>
+      <span>tide</span>
+    </p>
+    <div class="mx-auto mt-8 flex max-w-2xl flex-col gap-1 text-lg text-soft sm:mt-10 sm:flex-row sm:justify-center sm:gap-10">
+      <p><span class="font-medium text-ink">Vector:</span> direction and precision.</p>
+      <p><span class="font-medium text-ink">Tide:</span> steady forward movement.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const section = document.querySelector<HTMLElement>('[data-name]')!;
+  const swap = section.querySelector<HTMLElement>('[data-swap]')!;
+  const c = section.querySelector<HTMLElement>('[data-c]')!;
+  const k = section.querySelector<HTMLElement>('[data-k]')!;
+  const tor = section.querySelector<HTMLElement>('[data-tor]')!;
+  const gap = section.querySelector<HTMLElement>('[data-gap]')!;
+
+  const end = { swap: { width: () => k.offsetWidth }, roll: { yPercent: -100 }, tor: { width: 0, opacity: 0 }, gap: { width: 0 } };
+
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    gsap.set(swap, end.swap);
+    gsap.set([c, k], end.roll);
+    gsap.set(tor, end.tor);
+    gsap.set(gap, end.gap);
+  } else {
+    // Fix the starting widths so they can tween down from real numbers.
+    gsap.set(swap, { width: () => c.offsetWidth });
+    gsap
+      .timeline({
+        scrollTrigger: { trigger: section, start: 'center center', end: '+=80%', pin: true, scrub: 0.6, invalidateOnRefresh: true },
+        defaults: { ease: 'power2.inOut' },
+      })
+      .to(tor, { color: 'var(--color-line)', duration: 0.3 })
+      .to(tor, { width: 0, opacity: 0, duration: 0.5 }, 0.3)
+      .to([c, k], { ...end.roll, duration: 0.4 }, 0.35)
+      .to(swap, { ...end.swap, duration: 0.4 }, 0.35)
+      .to(gap, { ...end.gap, duration: 0.45 }, 0.45);
+  }
+</script>

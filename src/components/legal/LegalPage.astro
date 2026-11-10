@@ -1,0 +1,312 @@
+---
+// Shared frame for the privacy policy and terms: heading, "The short version" panel, then the
+// full text beside a sticky table of contents that follows your place. The text itself is
+// Markdown in src/content/legal/: `##` headings are parts, `### 1. …` headings are sections.
+// Reading pages don't animate while you read: only the heading block rises in, once.
+import type { MarkdownHeading } from 'astro';
+import type { CollectionEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Navbar from '../Navbar.astro';
+import Footer from '../Footer.astro';
+import { email } from '../../data/contact';
+
+interface Props {
+  data: CollectionEntry<'legal'>['data'];
+  headings: MarkdownHeading[];
+}
+
+const { data, headings } = Astro.props;
+
+// Parts with their numbered sections, for the table of contents.
+type Item = { slug: string; num: string; title: string };
+const parts: { slug: string; title: string; items: Item[] }[] = [];
+for (const h of headings) {
+  if (h.depth === 2) parts.push({ slug: h.slug, title: h.text, items: [] });
+  else if (h.depth === 3 && parts.length) {
+    const [, num = '', title = h.text] = h.text.match(/^(\d+)\.\s*(.*)$/) ?? [];
+    parts.at(-1)!.items.push({ slug: h.slug, num, title });
+  }
+}
+
+const updated = data.updated.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+const check = `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 8.5 2.5 2.5L12 5.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const link = 'rounded-full px-3 py-1.5 text-[15px] leading-snug text-soft transition-colors duration-300 hover:text-ink aria-[current=true]:bg-lime aria-[current=true]:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink';
+---
+
+<Base title={data.metaTitle} description={data.description}>
+  <Navbar />
+  <main class="mx-auto max-w-[1280px] px-4 pt-36 pb-24 sm:px-8 md:pt-48 md:pb-36">
+    <header>
+      <h1 data-legal-in class="text-5xl leading-[0.95] font-bold tracking-tighter in-[.js]:opacity-0 sm:text-7xl">{data.title}</h1>
+      <p data-legal-in class="mt-6 max-w-xl text-lg text-soft in-[.js]:opacity-0">{data.lead}</p>
+      <p data-legal-in class="mt-6 flex flex-wrap gap-x-6 gap-y-1 text-[15px] text-soft in-[.js]:opacity-0">
+        <span>Updated <time datetime={data.updated.toISOString().slice(0, 10)}>{updated}</time></span>
+        <span>Version {data.version}</span>
+      </p>
+    </header>
+
+    <section data-legal-in aria-labelledby="short-version" class="mt-12 rounded-[32px] bg-pill px-6 py-8 in-[.js]:opacity-0 sm:p-10 md:mt-16 md:p-12">
+      <h2 id="short-version" class="text-2xl font-bold tracking-tight sm:text-3xl">The short version</h2>
+      <ul class="mt-7 grid gap-x-12 gap-y-5 md:grid-cols-2">
+        {data.summary.map((point) => (
+          <li class="flex gap-3.5 text-lg leading-snug">
+            <span class="mt-px grid size-7 shrink-0 place-items-center rounded-full bg-white [&_svg]:size-4"><Fragment set:html={check} /></span>
+            {point}
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <div class="mt-14 grid gap-x-20 md:mt-24 md:grid-cols-[240px_minmax(0,1fr)] lg:grid-cols-[280px_minmax(0,1fr)]">
+      <!-- Desktop: sticky contents that highlights the section you're reading -->
+      <nav data-toc data-lenis-prevent aria-label="On this page" class="max-md:hidden md:sticky md:top-32 md:max-h-[calc(100dvh-10rem)] md:self-start md:overflow-y-auto md:pb-4 md:[scrollbar-width:none]">
+        <p class="px-3 text-[15px] text-soft">On this page</p>
+        <ol class="mt-2">
+          {parts.map((part) => (
+            <li class="mt-5">
+              <a href={`#${part.slug}`} class="block px-3 py-1 font-bold tracking-tight transition-colors hover:text-soft">{part.title}</a>
+              <ol class="mt-1">
+                {part.items.map((item) => (
+                  <li>
+                    <a href={`#${item.slug}`} data-toc-link={item.slug} class={`flex gap-2.5 ${link}`}>
+                      <span class="w-5 shrink-0 tabular-nums">{item.num}</span>{item.title}
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </li>
+          ))}
+        </ol>
+      </nav>
+
+      <div class="min-w-0">
+        <!-- Phones: the same contents, folded away above the text -->
+        <details data-toc-mobile class="group/toc border-t border-line md:hidden">
+          <summary class="flex cursor-pointer list-none items-center justify-between py-4 text-lg font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink [&::-webkit-details-marker]:hidden">
+            On this page
+            <span aria-hidden="true" class="relative grid size-9 place-items-center rounded-full bg-pill transition-[background-color,rotate] duration-400 ease-out-expo group-open/toc:rotate-45 group-open/toc:bg-lime">
+              <span class="absolute h-[1.5px] w-3.5 rounded bg-ink"></span>
+              <span class="absolute h-3.5 w-[1.5px] rounded bg-ink"></span>
+            </span>
+          </summary>
+          <ol class="pb-5">
+            {parts.map((part) => (
+              <li class="mt-3 first:mt-0">
+                <a href={`#${part.slug}`} class="block px-3 py-1 font-bold tracking-tight">{part.title}</a>
+                <ol>
+                  {part.items.map((item) => (
+                    <li>
+                      <a href={`#${item.slug}`} data-toc-link={item.slug} class={`flex gap-2.5 ${link}`}>
+                        <span class="w-5 shrink-0 tabular-nums">{item.num}</span>{item.title}
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </li>
+            ))}
+          </ol>
+        </details>
+
+        <article data-legal-body class="legal-prose">
+          <slot />
+        </article>
+
+        <aside class="mt-16 flex flex-col gap-6 rounded-[32px] bg-pill px-6 py-8 sm:p-10 md:mt-20 md:flex-row md:items-end md:justify-between">
+          <div>
+            <h2 class="text-2xl font-bold tracking-tight sm:text-3xl">Questions?</h2>
+            <p class="mt-2 max-w-sm text-soft">Ask us anything about this page. You'll hear back from one of the founders.</p>
+          </div>
+          <div class="flex flex-col gap-1 md:items-end">
+            <a href={`mailto:${email}`} class="text-xl font-bold tracking-tight break-all transition-colors hover:text-soft">{email}</a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  /* Long-form text. The site has no typography plugin, so the Markdown is styled here,
+     using the same tokens as everything else. */
+  .legal-prose {
+    max-width: 68ch;
+    font-size: 17px;
+    line-height: 1.7;
+    color: rgb(17 17 17 / 0.85);
+  }
+  .legal-prose :global(h2),
+  .legal-prose :global(h3) {
+    scroll-margin-top: 8rem;
+    color: var(--color-ink);
+    font-weight: 700;
+    text-wrap: balance;
+  }
+  /* Parts: big, with a rule above */
+  .legal-prose :global(h2) {
+    margin-top: 5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-line);
+    font-size: 2.25rem;
+    line-height: 1;
+    letter-spacing: -0.05em;
+  }
+  .legal-prose :global(h2:first-child) {
+    margin-top: 0;
+  }
+  @media (min-width: 640px) {
+    .legal-prose :global(h2) {
+      font-size: 3rem;
+    }
+  }
+  .legal-prose :global(h3) {
+    margin-top: 3rem;
+    font-size: 1.5rem;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+  }
+  .legal-prose :global(h2 + h3) {
+    margin-top: 2.25rem;
+  }
+  .legal-prose :global(h2 + p) {
+    margin-top: 1.5rem;
+    color: var(--color-soft);
+  }
+  .legal-prose :global(p),
+  .legal-prose :global(ul),
+  .legal-prose :global(ol) {
+    margin-top: 1rem;
+  }
+  .legal-prose :global(h3 + p),
+  .legal-prose :global(h3 + ul),
+  .legal-prose :global(h3 + ol) {
+    margin-top: 0.75rem;
+  }
+  .legal-prose :global(strong) {
+    color: var(--color-ink);
+    font-weight: 700;
+  }
+  .legal-prose :global(ul > li),
+  .legal-prose :global(ol > li) {
+    position: relative;
+    padding-left: 1.5rem;
+  }
+  .legal-prose :global(li + li) {
+    margin-top: 0.5rem;
+  }
+  .legal-prose :global(ul > li)::before {
+    content: '';
+    position: absolute;
+    left: 0.25rem;
+    top: 0.8em;
+    width: 0.5rem;
+    height: 1.5px;
+    background: var(--color-ink);
+  }
+  .legal-prose :global(ol) {
+    counter-reset: step;
+  }
+  .legal-prose :global(ol > li) {
+    counter-increment: step;
+  }
+  .legal-prose :global(ol > li)::before {
+    content: counter(step) '.';
+    position: absolute;
+    left: 0;
+    color: var(--color-soft);
+    font-variant-numeric: tabular-nums;
+  }
+  .legal-prose :global(a) {
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-decoration-color: var(--color-line);
+    text-underline-offset: 4px;
+    transition: text-decoration-color 0.3s;
+  }
+  .legal-prose :global(a:hover) {
+    text-decoration-color: var(--color-ink);
+  }
+  .legal-prose :global(a:focus-visible) {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+  /* Tables scroll sideways inside themselves on phones, never the page */
+  .legal-prose :global(table) {
+    display: block;
+    overflow-x: auto;
+    margin-top: 1.5rem;
+    border-collapse: collapse;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  .legal-prose :global(th),
+  .legal-prose :global(td) {
+    min-width: 9rem;
+    padding: 0.85rem 1.5rem 0.85rem 0;
+    border-top: 1px solid var(--color-line);
+    text-align: left;
+    vertical-align: top;
+  }
+  .legal-prose :global(th) {
+    border-top: 0;
+    padding-top: 0;
+    color: var(--color-soft);
+    font-weight: 400;
+  }
+  .legal-prose :global(td:first-child) {
+    color: var(--color-ink);
+    font-weight: 500;
+  }
+  .legal-prose :global(tr:last-child td) {
+    border-bottom: 1px solid var(--color-line);
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+  import { lenis } from '../../scripts/smooth-scroll';
+
+  // The heading block rises in once; nothing in the text animates.
+  const intro = document.querySelectorAll<HTMLElement>('[data-legal-in]');
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) gsap.set(intro, { opacity: 1 });
+  else gsap.fromTo(intro, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.9, stagger: 0.08, ease: 'power3.out', delay: 0.1 });
+
+  // Follow your place: the last section heading above the navbar line is the current one.
+  const sections = [...document.querySelectorAll<HTMLElement>('[data-legal-body] h3[id]')];
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]')];
+  const toc = document.querySelector<HTMLElement>('[data-toc]')!;
+  let current = '';
+
+  function update() {
+    const line = 160;
+    let id = sections[0]?.id ?? '';
+    for (const s of sections) {
+      if (s.getBoundingClientRect().top - line <= 0) id = s.id;
+      else break;
+    }
+    if (id === current) return;
+    current = id;
+    for (const a of links) {
+      const on = a.dataset.tocLink === id;
+      a.toggleAttribute('aria-current', on);
+      if (on) a.setAttribute('aria-current', 'true');
+      // Keep the highlighted link visible when the desktop contents is taller than the screen.
+      if (on && toc.contains(a) && toc.scrollHeight > toc.clientHeight) {
+        const top = a.offsetTop - toc.offsetTop;
+        if (top < toc.scrollTop || top > toc.scrollTop + toc.clientHeight - 48) toc.scrollTo({ top: top - toc.clientHeight / 3 });
+      }
+    }
+  }
+
+  // Lenis drives the scroll when it's on; plain scroll events cover reduced motion.
+  if (lenis) lenis.on('scroll', update);
+  else addEventListener('scroll', update, { passive: true });
+  update();
+
+  // Phones: fold the contents away once a section is picked.
+  const mobile = document.querySelector<HTMLDetailsElement>('[data-toc-mobile]')!;
+  mobile.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('a')) mobile.open = false;
+  });
+</script>
