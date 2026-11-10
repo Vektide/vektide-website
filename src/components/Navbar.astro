@@ -141,7 +141,7 @@ const arrowRight = `<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h1
           data-open={m.id}
           aria-expanded="false"
           aria-controls="nav-sheet"
-          class="group/item max-md:hidden inline-flex h-10 cursor-pointer items-center rounded-full px-2.5 text-sm whitespace-nowrap text-soft transition-[background-color,color,box-shadow] duration-300 hover:bg-white hover:text-ink hover:shadow-xs aria-expanded:bg-brand aria-expanded:text-white aria-expanded:shadow-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink sm:h-12 md:px-4 md:text-[15px]"
+          class="group/item max-md:hidden inline-flex h-10 cursor-pointer items-center rounded-full px-2.5 text-sm whitespace-nowrap text-soft transition-[background-color,color,box-shadow] duration-300 hover:bg-white hover:text-ink hover:shadow-xs aria-expanded:bg-brand aria-expanded:text-white aria-expanded:shadow-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand sm:h-12 md:px-4 md:text-[15px]"
         >
           {m.label}
           <!-- Chevron grows from zero width, so the button (and its neighbours) widen smoothly -->
@@ -155,7 +155,7 @@ const arrowRight = `<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h1
         </button>
       ))}
       <!-- Phones: one Menu button opens every group, stacked -->
-      <button type="button" data-open="menu" aria-expanded="false" aria-controls="nav-sheet" class="group/item inline-flex h-10 cursor-pointer items-center gap-2 rounded-full px-4 text-sm text-ink transition-colors duration-300 aria-expanded:bg-brand aria-expanded:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink sm:h-12 md:hidden">
+      <button type="button" data-open="menu" aria-expanded="false" aria-controls="nav-sheet" class="group/item inline-flex h-10 cursor-pointer items-center gap-2 rounded-full px-4 text-sm text-ink transition-colors duration-300 aria-expanded:bg-brand aria-expanded:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand sm:h-12 md:hidden">
         Menu
         <svg viewBox="0 0 12 12" aria-hidden="true" class="size-3 transition-transform duration-350 ease-out-expo group-aria-expanded/item:rotate-180 motion-reduce:transition-none">
           <path d="m3 4.5 3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
