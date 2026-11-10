@@ -14,12 +14,12 @@ const arrowRight = `<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h1
 <section
   id="work"
   data-featured
-  class="relative z-10 flex min-h-svh items-center bg-[radial-gradient(120%_80%_at_0%_0%,rgb(255_255_255/0.07),transparent_55%),linear-gradient(160deg,#1d1d1f_0%,#121213_55%,#0b0b0c_100%)] text-white shadow-[0_-30px_60px_-20px_rgb(0_0_0/0.25)]"
+  class="relative z-10 flex min-h-svh items-center bg-panel text-white shadow-[0_-30px_60px_-20px_rgb(8_15_38/0.25)]"
 >
   <div class="mx-auto grid w-full max-w-[1280px] items-center gap-12 px-4 py-24 sm:px-8 md:grid-cols-[1fr_1.15fr] md:gap-16 md:py-32">
     <!-- Left: testimonial -->
     <div>
-      <p data-f-in class="text-sm text-white/50">Flagship product · PCMS</p>
+      <p data-f-in class="text-sm text-brand-300">Flagship product · PCMS</p>
       <!-- Split into letters so it can light up as it scrolls; screen readers get the plain quote. -->
       <blockquote aria-label={quote} class="mt-6 text-3xl leading-[1.12] font-bold tracking-tight text-balance sm:text-4xl lg:text-[44px]">
         {`“${quote}”`.split(' ').map((word, i, words) => (
@@ -40,7 +40,7 @@ const arrowRight = `<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h1
         </p>
         <a
           href="/pcms"
-          class="group/cta mt-6 inline-flex items-center gap-2 rounded-full bg-lime px-6 py-3 text-[15px] font-medium text-ink transition-colors duration-300 hover:bg-white [&_svg]:size-4"
+          class="group/cta mt-6 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-[15px] font-medium text-brand transition-colors duration-300 hover:bg-brand-50 [&_svg]:size-4"
         >
           Explore PCMS
           <span class="transition-transform duration-300 group-hover/cta:translate-x-0.5"><Fragment set:html={arrowRight} /></span>
@@ -49,7 +49,7 @@ const arrowRight = `<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h1
     </div>
 
     <!-- Right: product screen -->
-    <div data-f-shot class="overflow-hidden rounded-2xl bg-white shadow-[0_50px_100px_-30px_rgb(0_0_0/0.9)] ring-1 ring-white/10">
+    <div data-f-shot class="overflow-hidden rounded-2xl bg-white shadow-[0_50px_100px_-30px_rgb(3_7_20/0.9)] ring-1 ring-white/10">
       <Image
         src={featured}
         alt="PCMS clinic overview: today's collections, doctors to pay, amounts owed and a week of revenue"
