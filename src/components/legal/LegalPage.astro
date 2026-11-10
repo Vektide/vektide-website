@@ -30,7 +30,7 @@ for (const h of headings) {
 
 const updated = data.updated.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 const check = `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 8.5 2.5 2.5L12 5.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-const link = 'rounded-full px-3 py-1.5 text-[15px] leading-snug text-soft transition-colors duration-300 hover:text-ink aria-[current=true]:bg-lime aria-[current=true]:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink';
+const link = 'rounded-full px-3 py-1.5 text-[15px] leading-snug text-soft transition-colors duration-300 hover:text-ink aria-[current=true]:bg-brand-50 aria-[current=true]:text-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink';
 ---
 
 <Base title={data.metaTitle} description={data.description}>
@@ -84,9 +84,9 @@ const link = 'rounded-full px-3 py-1.5 text-[15px] leading-snug text-soft transi
         <details data-toc-mobile class="group/toc border-t border-line md:hidden">
           <summary class="flex cursor-pointer list-none items-center justify-between py-4 text-lg font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink [&::-webkit-details-marker]:hidden">
             On this page
-            <span aria-hidden="true" class="relative grid size-9 place-items-center rounded-full bg-pill transition-[background-color,rotate] duration-400 ease-out-expo group-open/toc:rotate-45 group-open/toc:bg-lime">
-              <span class="absolute h-[1.5px] w-3.5 rounded bg-ink"></span>
-              <span class="absolute h-3.5 w-[1.5px] rounded bg-ink"></span>
+            <span aria-hidden="true" class="relative grid size-9 place-items-center rounded-full bg-pill transition-[background-color,rotate] duration-400 ease-out-expo group-open/toc:rotate-45 group-open/toc:bg-brand">
+              <span class="absolute h-[1.5px] w-3.5 rounded bg-ink transition-colors duration-400 group-open/toc:bg-white"></span>
+              <span class="absolute h-3.5 w-[1.5px] rounded bg-ink transition-colors duration-400 group-open/toc:bg-white"></span>
             </span>
           </summary>
           <ol class="pb-5">

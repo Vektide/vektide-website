@@ -6,7 +6,7 @@ import { hours } from '../data/contact';
 
 <p data-office class="inline-flex max-w-full items-center gap-3 rounded-[22px] bg-pill py-2.5 pr-5 pl-4 text-[15px] leading-snug text-soft">
   <span aria-hidden="true" class="relative grid size-2 shrink-0 place-items-center">
-    <span data-office-pulse class="absolute size-2 rounded-full bg-lime opacity-0"></span>
+    <span data-office-pulse class="absolute size-2 rounded-full bg-emerald-500 opacity-0"></span>
     <span data-office-dot class="size-2 rounded-full bg-soft/40 ring-4 ring-ink/5 transition-colors duration-500"></span>
   </span>
   <span>
@@ -26,7 +26,7 @@ import { hours } from '../data/contact';
   const pulse = strip.querySelector<HTMLElement>('[data-office-pulse]')!;
   const now = pageClock();
 
-  const OPEN = ['bg-lime', 'ring-lime/30'];
+  const OPEN = ['bg-emerald-500', 'ring-emerald-500/30'];
   const CLOSED = ['bg-soft/40', 'ring-ink/5'];
 
   function render() {

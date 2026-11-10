@@ -71,7 +71,7 @@ const imageProps = { widths: [640, 960, 1280, 1920], quality: 85, loading: 'lazy
               <!-- Phones: this desk's screen, inline -->
               <figure class:list={[frame, 'mt-8 md:hidden']}>
                 <figcaption class={bar}>
-                  <span class="size-2 rotate-45 rounded-[2px] bg-lime"></span>
+                  <span class="size-2 rotate-45 rounded-[2px] bg-brand"></span>
                   <span class="font-medium">{d.window[0]}</span>
                   <span class="truncate text-soft">· {d.window[1]}</span>
                 </figcaption>
@@ -91,7 +91,7 @@ const imageProps = { widths: [640, 960, 1280, 1920], quality: 85, loading: 'lazy
         <div class="sticky top-[max(7rem,calc(50vh-17rem))] rounded-[32px] bg-pill p-5 lg:p-8">
           <div class={frame}>
             <div class={bar}>
-              <span class="size-2 rotate-45 rounded-[2px] bg-lime"></span>
+              <span class="size-2 rotate-45 rounded-[2px] bg-brand"></span>
               <span data-stage-title class="font-medium">{desks[0].window[0]}</span>
               <span data-stage-note class="truncate text-soft">· {desks[0].window[1]}</span>
             </div>

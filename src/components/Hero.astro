@@ -10,10 +10,10 @@ import admin from '../assets/screens/admin.png';
 
 const shots = { dashboard, analytics, billing, admin };
 const cards = [
-  { id: 'dashboard', tab: 'Dashboard', title: 'Dashboard', note: 'Today at Himalayan Polyclinic', dot: 'bg-lime',
+  { id: 'dashboard', tab: 'Dashboard', title: 'Dashboard', note: 'Today at Himalayan Polyclinic', dot: 'bg-brand',
     alt: 'PCMS dashboard showing the clinic\'s revenue for the week, notices and unpaid lab work',
     icon: '<rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/>' },
-  { id: 'analytics', tab: 'Analytics', title: 'Analytics', note: 'Revenue, payouts and expenses', dot: 'bg-blue-500',
+  { id: 'analytics', tab: 'Analytics', title: 'Analytics', note: 'Revenue, payouts and expenses', dot: 'bg-sky-500',
     alt: 'PCMS analytics page with thirty days of revenue and a doctor payout table',
     icon: '<path d="M2 14h12"/><path d="M4 11V8M8 11V4M12 11V6"/>' },
   { id: 'billing', tab: 'Billing', title: 'Billing', note: 'Payments and what is still owed', dot: 'bg-orange-500',
@@ -37,10 +37,10 @@ const cards = [
   </p>
 
   <div data-hero-in class="mt-9 flex flex-wrap justify-center gap-3 in-[.js]:opacity-0">
-    <a href="/demo" class="rounded-full bg-ink px-6 py-3 text-[15px] font-medium text-white transition-colors duration-300 hover:bg-lime hover:text-ink">
+    <a href="/demo" class="rounded-full bg-brand px-6 py-3 text-[15px] font-medium text-white transition-colors duration-300 hover:bg-brand-700">
       Book a demo
     </a>
-    <a href="#work" class="rounded-full bg-pill px-6 py-3 text-[15px] font-medium transition-colors duration-300 hover:bg-line">
+    <a href="#work" class="rounded-full bg-pill px-6 py-3 text-[15px] font-medium transition-colors duration-300 hover:bg-brand-50 hover:text-brand">
       See our work
     </a>
   </div>
@@ -82,7 +82,7 @@ const cards = [
           role="tab"
           data-tab={c.id}
           aria-selected={i === 0 ? 'true' : 'false'}
-          class="inline-flex cursor-pointer items-center gap-2 rounded-xl px-2.5 py-1.5 text-xs whitespace-nowrap text-soft transition-colors duration-300 hover:text-ink aria-selected:bg-pill aria-selected:text-ink aria-selected:ring-1 aria-selected:ring-line sm:px-3.5 sm:py-2 sm:text-sm"
+          class="inline-flex cursor-pointer items-center gap-2 rounded-xl px-2.5 py-1.5 text-xs whitespace-nowrap text-soft transition-colors duration-300 hover:text-ink aria-selected:bg-brand-50 aria-selected:text-brand aria-selected:ring-1 aria-selected:ring-brand-200 sm:px-3.5 sm:py-2 sm:text-sm"
         >
           <svg viewBox="0 0 16 16" aria-hidden="true" class="hidden size-4 fill-none stroke-current stroke-[1.4] sm:block" stroke-linecap="round" stroke-linejoin="round" set:html={c.icon} />
           {c.tab}

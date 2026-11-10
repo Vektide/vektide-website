@@ -9,16 +9,16 @@ import { email } from '../../data/contact';
 <Base title="Message sent | Vektide" description="Your message reached Vektide." noindex>
   <Navbar />
   <main class="flex min-h-svh flex-col items-center justify-center px-4 pt-36 pb-24 text-center sm:px-8">
-    <span class="grid size-14 place-items-center rounded-full bg-lime">
+    <span class="grid size-14 place-items-center rounded-full bg-brand text-white">
       <svg viewBox="0 0 20 20" aria-hidden="true" class="size-6"><path d="m5 10.5 3.2 3L15 6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
     </span>
     <h1 class="mt-8 text-5xl leading-[0.95] font-bold tracking-tighter sm:text-7xl">Message sent.</h1>
     <p class="mx-auto mt-6 max-w-md text-lg text-soft">We'll reply within one working day. For anything urgent, email {email}.</p>
     <div class="mt-9 flex flex-wrap justify-center gap-3">
-      <a href="/" class="rounded-full bg-ink px-6 py-3 text-[15px] font-medium text-white transition-colors duration-300 hover:bg-lime hover:text-ink">
+      <a href="/" class="rounded-full bg-brand px-6 py-3 text-[15px] font-medium text-white transition-colors duration-300 hover:bg-brand-700">
         Back to home
       </a>
-      <a href={`mailto:${email}`} class="rounded-full bg-pill px-6 py-3 text-[15px] font-medium transition-colors duration-300 hover:bg-line">
+      <a href={`mailto:${email}`} class="rounded-full bg-pill px-6 py-3 text-[15px] font-medium transition-colors duration-300 hover:bg-brand-50 hover:text-brand">
         Email us
       </a>
     </div>
