@@ -2,6 +2,8 @@
 // Problems: a big centered statement that lights up letter by letter as you scroll,
 // then three soft grey cards (with drop shadows) that fan out from a stack into a tilted spread.
 const statement = 'Paper got your business this far, but it’s quietly costing you money, time and clarity.';
+// The closing words light up in brand blue: what paper is costing you.
+const accentFrom = statement.split(' ').indexOf('money,');
 
 const cards = [
   {
@@ -27,7 +29,7 @@ const cards = [
   <h2 aria-label={statement} class="mx-auto max-w-4xl text-4xl leading-[1.04] font-bold tracking-tighter text-balance sm:text-6xl">
     {statement.split(' ').map((word, i, words) => (
       <>
-        <span aria-hidden="true" class="inline-block whitespace-nowrap">
+        <span aria-hidden="true" class:list={['inline-block whitespace-nowrap', i >= accentFrom && 'text-brand']}>
           {[...word].map((ch) => <span data-char>{ch}</span>)}
         </span>
         {i < words.length - 1 && ' '}
@@ -40,14 +42,15 @@ const cards = [
       <article
         data-p-card
         class:list={[
-          'flex w-full max-w-[330px] flex-col items-center justify-center rounded-[32px] bg-pill px-8 py-12 text-ink shadow-[0_2px_6px_rgb(0_0_0/0.04),0_30px_60px_-24px_rgb(0_0_0/0.28)] ring-1 ring-black/5 md:h-[420px] md:w-[320px]',
+          'flex w-full max-w-[330px] flex-col items-center justify-center rounded-[32px] px-8 py-12 shadow-[0_2px_6px_rgb(8_15_38/0.04),0_30px_60px_-24px_rgb(8_15_38/0.28)] ring-1 md:h-[420px] md:w-[320px]',
           i > 0 && '-mt-6 md:mt-0 md:-ml-8',
-          i === 1 && 'relative z-10',
+          // The raised middle card is the blue focal point; the outer two stay cool grey.
+          i === 1 ? 'relative z-10 bg-brand text-white ring-white/10' : 'bg-pill text-ink ring-black/5',
         ]}
       >
-        <svg viewBox="0 0 24 24" aria-hidden="true" class="size-12 fill-none stroke-current stroke-[1.5]" stroke-linecap="round" stroke-linejoin="round" set:html={c.icon} />
+        <svg viewBox="0 0 24 24" aria-hidden="true" class:list={['size-12 fill-none stroke-current stroke-[1.5]', i !== 1 && 'text-brand']} stroke-linecap="round" stroke-linejoin="round" set:html={c.icon} />
         <h3 class="mt-8 text-4xl leading-[0.95] font-bold tracking-tight md:text-5xl">{c.title}</h3>
-        <p class="mt-5 max-w-[24ch] text-soft">{c.body}</p>
+        <p class:list={['mt-5 max-w-[24ch]', i === 1 ? 'text-brand-100' : 'text-soft']}>{c.body}</p>
       </article>
     ))}
   </div>
