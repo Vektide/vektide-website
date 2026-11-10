@@ -1,8 +1,11 @@
 ---
 // Featured product: a full-screen dark panel. The problems section above freezes in place
 // and this panel scrolls up over it like a curtain, then the page carries on.
-// Left: the clinic owner's words, big. Right: a PCMS screenshot (public/screens, invented data).
+// Left: the clinic owner's words, big. Right: a PCMS screenshot (src/assets/screens, invented data).
 // TODO: replace the draft quote and attribution with the owner's real words before launch.
+import { Image } from 'astro:assets';
+import featured from '../assets/screens/featured.png';
+
 const quote = 'We used to close the day not knowing what we’d actually earned. Now every rupee is on one screen before the last patient leaves.';
 const arrowRight = `<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 ---
@@ -46,11 +49,12 @@ const arrowRight = `<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h1
 
     <!-- Right: product screen -->
     <div data-f-shot class="overflow-hidden rounded-2xl bg-white shadow-[0_50px_100px_-30px_rgb(0_0_0/0.9)] ring-1 ring-white/10">
-      <img
-        src="/screens/featured.png"
+      <Image
+        src={featured}
         alt="PCMS clinic overview: today's collections, doctors to pay, amounts owed and a week of revenue"
-        width="1920"
-        height="1520"
+        widths={[640, 960, 1280, 1920]}
+        sizes="(min-width: 1280px) 620px, (min-width: 768px) 52vw, calc(100vw - 32px)"
+        quality={85}
         loading="lazy"
         class="block h-auto w-full"
       />

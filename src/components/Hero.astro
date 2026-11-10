@@ -1,7 +1,14 @@
 ---
-// Hero: badge, headline, subhead, CTAs, then a deck of PCMS screenshots (public/screens,
+// Hero: badge, headline, subhead, CTAs, then a deck of PCMS screenshots (src/assets/screens,
 // invented data). The tab bar (and a 5s auto-rotate) brings a card to the front; the rest
 // stack behind it.
+import { Image } from 'astro:assets';
+import dashboard from '../assets/screens/dashboard.png';
+import analytics from '../assets/screens/analytics.png';
+import billing from '../assets/screens/billing.png';
+import admin from '../assets/screens/admin.png';
+
+const shots = { dashboard, analytics, billing, admin };
 const cards = [
   { id: 'dashboard', tab: 'Dashboard', title: 'Dashboard', note: 'Today at Himalayan Polyclinic', dot: 'bg-lime',
     alt: 'PCMS dashboard showing the clinic\'s revenue for the week, notices and unpaid lab work',
@@ -63,7 +70,17 @@ const arrowRight = `<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h1
             <span class="font-medium">{c.title}</span>
             <span class="text-soft">· {c.note}</span>
           </header>
-          <img src={`/screens/${c.id}.png`} alt={c.alt} width="2880" height="1620" class="block aspect-[16/9] w-full" />
+          <!-- Resized WebP per screen width; only the front card loads with top priority. -->
+          <Image
+            src={shots[c.id as keyof typeof shots]}
+            alt={c.alt}
+            widths={[640, 960, 1280, 1920, 2560]}
+            sizes="(min-width: 1344px) 1280px, (min-width: 640px) calc(100vw - 64px), calc(100vw - 32px)"
+            quality={85}
+            loading={i === 0 ? 'eager' : 'lazy'}
+            fetchpriority={i === 0 ? 'high' : 'auto'}
+            class="block aspect-[16/9] w-full"
+          />
         </article>
       ))}
     </div>

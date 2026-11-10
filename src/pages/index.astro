@@ -1,6 +1,5 @@
 ---
-import '../styles/global.css';
-import 'lenis/dist/lenis.css';
+import Base from '../layouts/Base.astro';
 import Navbar from '../components/Navbar.astro';
 import Hero from '../components/Hero.astro';
 import Problems from '../components/Problems.astro';
@@ -10,33 +9,17 @@ import Faq from '../components/Faq.astro';
 import Footer from '../components/Footer.astro';
 ---
 
-<!doctype html>
-<html lang="en" class="[scrollbar-gutter:stable]">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" href="/favicon-v2.ico" sizes="48x48" />
-    <link rel="icon" href="/favicon-v2.png" type="image/png" sizes="192x192" />
-    <link rel="icon" href="/favicon-v2.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon-v2.png" />
-    <link rel="preconnect" href="https://api.fontshare.com" />
-    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
-    <title>Vektide</title>
-    <!-- Lets Tailwind's in-[.js] hide intro elements only when GSAP will reveal them -->
-    <script is:inline>document.documentElement.classList.add('js');</script>
-  </head>
-  <body class="bg-white font-sans text-ink antialiased">
-    <Navbar />
-    <main class="min-h-screen">
-      <Hero />
-      <Problems />
-      <Featured />
-      <Process />
-      <Faq />
-    </main>
-    <Footer />
-    <script>
-      import '../scripts/smooth-scroll';
-    </script>
-  </body>
-</html>
+<Base
+  title="Vektide — Software for Nepali Businesses"
+  description="Vektide builds and manages software that replaces manual workflows for clinics, importers and retailers in Nepal."
+>
+  <Navbar />
+  <main class="min-h-screen">
+    <Hero />
+    <Problems />
+    <Featured />
+    <Process />
+    <Faq />
+  </main>
+  <Footer />
+</Base>

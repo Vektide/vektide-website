@@ -1,0 +1,103 @@
+---
+// Shared page shell: every page gets the same <head> (SEO, social cards, favicons, fonts,
+// structured data) so new pages only pass a title and description.
+import '../styles/global.css';
+import 'lenis/dist/lenis.css';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Social share image, relative to the site root. */
+  image?: string;
+  /** Keep the page out of search results (404, thank-you pages). */
+  noindex?: boolean;
+}
+
+const { title, description, image = '/og-image.jpg', noindex = false } = Astro.props;
+const site = Astro.site!;
+const canonical = new URL(Astro.url.pathname, site).href;
+const imageUrl = new URL(image, site).href;
+
+// Who we are, for Google's knowledge panel and local results.
+// TODO: add `telephone` and real social profile URLs to `sameAs` once they exist.
+const organization = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': new URL('/#organization', site).href,
+      name: 'Vektide Technologies Pvt. Ltd.',
+      alternateName: 'Vektide',
+      url: site.href,
+      logo: new URL('/logo.png', site).href,
+      email: 'contact@vektide.com',
+      slogan: 'Moving forward with precision.',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'Mahalaxmi-4',
+        addressLocality: 'Lalitpur',
+        addressCountry: 'NP',
+      },
+      areaServed: { '@type': 'Country', name: 'Nepal' },
+    },
+    {
+      '@type': 'WebSite',
+      '@id': new URL('/#website', site).href,
+      name: 'Vektide',
+      url: site.href,
+      inLanguage: 'en',
+      publisher: { '@id': new URL('/#organization', site).href },
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang="en" class="[scrollbar-gutter:stable]">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="theme-color" content="#111111" />
+
+    <!-- Social previews (Facebook, LinkedIn, WhatsApp, X) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Vektide" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="The PCMS dashboard by Vektide" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+
+    <link rel="icon" href="/favicon-v2.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon-v2.png" type="image/png" sizes="192x192" />
+    <link rel="icon" href="/favicon-v2.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon-v2.png" />
+
+    <!-- The stylesheet comes from api., the font files from cdn.: warm up both -->
+    <link rel="preconnect" href="https://api.fontshare.com" />
+    <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin />
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(organization)} />
+    <!-- Lets Tailwind's in-[.js] hide intro elements only when GSAP will reveal them -->
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+  <body class="bg-white font-sans text-ink antialiased">
+    <slot />
+    <script>
+      import '../scripts/smooth-scroll';
+    </script>
+  </body>
+</html>

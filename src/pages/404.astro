@@ -1,0 +1,24 @@
+---
+// Not found: same shell as the homepage, kept out of search results.
+import Base from '../layouts/Base.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Base title="Page not found | Vektide" description="This page doesn't exist or has moved." noindex>
+  <Navbar />
+  <main class="flex min-h-svh flex-col items-center justify-center px-4 pt-36 pb-24 text-center sm:px-8">
+    <p class="text-sm font-medium tracking-widest text-soft uppercase">Error 404</p>
+    <h1 class="mt-5 text-5xl leading-[0.95] font-bold tracking-tighter sm:text-7xl">This page is off the map.</h1>
+    <p class="mx-auto mt-6 max-w-md text-lg text-soft">It may have moved, or it hasn't been built yet. Head home or write to us and we'll point you the right way.</p>
+    <div class="mt-9 flex flex-wrap justify-center gap-3">
+      <a href="/" class="rounded-full bg-ink px-6 py-3 text-[15px] font-medium text-white transition-colors duration-300 hover:bg-lime hover:text-ink">
+        Back to home
+      </a>
+      <a href="mailto:contact@vektide.com" class="rounded-full bg-pill px-6 py-3 text-[15px] font-medium transition-colors duration-300 hover:bg-line">
+        contact@vektide.com
+      </a>
+    </div>
+  </main>
+  <Footer />
+</Base>
