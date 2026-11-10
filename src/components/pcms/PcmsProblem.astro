@@ -1,0 +1,39 @@
+---
+// The problem: heading on the left, and on the right the clinic's reality in one sentence
+// that lights up letter by letter as it scrolls (the same treatment as the home page).
+const statement =
+  'Consultation slips, lab registers and cash books don’t talk to each other. Lab fees go unpaid, queues get messy, and at the end of the day nobody knows the real numbers.';
+---
+
+<section data-pp class="mx-auto grid max-w-[1280px] gap-10 px-4 py-24 sm:px-8 md:grid-cols-[1fr_1.6fr] md:gap-20 md:py-36">
+  <h2 class="text-5xl leading-[0.95] font-bold tracking-tighter sm:text-6xl">Where clinics lose money.</h2>
+
+  <!-- Letters are split so they can light up one by one; screen readers get the plain sentence. -->
+  <p aria-label={statement} class="text-3xl leading-[1.12] font-bold tracking-tight text-balance sm:text-4xl lg:text-[44px]">
+    {statement.split(' ').map((word, i, words) => (
+      <>
+        <span aria-hidden="true" class="inline-block whitespace-nowrap">
+          {[...word].map((ch) => <span data-pp-char>{ch}</span>)}
+        </span>
+        {i < words.length - 1 && ' '}
+      </>
+    ))}
+  </p>
+</section>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const section = document.querySelector<HTMLElement>('[data-pp]')!;
+
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    gsap.fromTo(
+      section.querySelectorAll('[data-pp-char]'),
+      { opacity: 0.15 },
+      { opacity: 1, stagger: 0.04, ease: 'none', scrollTrigger: { trigger: section.querySelector('p'), start: 'top 80%', end: 'bottom 45%', scrub: true } },
+    );
+  }
+</script>

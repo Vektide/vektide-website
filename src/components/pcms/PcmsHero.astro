@@ -1,0 +1,79 @@
+---
+// PCMS hero: headline, subhead, CTAs, then one wide PCMS window (src/assets/screens,
+// invented data). A paper token slip is tucked over its corner: the paper the system replaces.
+import { Image } from 'astro:assets';
+import analytics from '../../assets/screens/pcms-hero.png';
+---
+
+<section class="overflow-x-clip px-4 pt-36 pb-24 text-center sm:px-8 md:pt-48 md:pb-32">
+  <h1 data-ph-in class="mx-auto max-w-5xl text-5xl leading-[0.95] font-bold tracking-tighter text-balance in-[.js]:opacity-0 sm:text-7xl lg:text-8xl">
+    Run your polyclinic without the paperwork.
+  </h1>
+
+  <p data-ph-in class="mx-auto mt-6 max-w-xl text-lg text-soft in-[.js]:opacity-0 sm:text-xl">
+    One system for reception, laboratory and admin, so every patient visit, test and rupee is accounted for.
+  </p>
+
+  <div data-ph-in class="mt-9 flex flex-wrap justify-center gap-3 in-[.js]:opacity-0">
+    <a href="/demo" class="rounded-full bg-ink px-6 py-3 text-[15px] font-medium text-white transition-colors duration-300 hover:bg-lime hover:text-ink">
+      Book a demo
+    </a>
+    <a href="#how-it-works" class="rounded-full bg-pill px-6 py-3 text-[15px] font-medium transition-colors duration-300 hover:bg-line">
+      See how it works
+    </a>
+  </div>
+
+  <div data-ph-shot class="relative mx-auto mt-16 max-w-[1180px] in-[.js]:opacity-0 sm:mt-20">
+    <article class="overflow-hidden rounded-xl border border-line bg-white text-left shadow-[0_30px_60px_-30px_rgb(0_0_0/0.18)]">
+      <header class="flex h-[34px] items-center gap-2 border-b border-line bg-[#fafafa] px-4 text-[13px] sm:h-[42px]">
+        <span class="size-2 rotate-45 rounded-[2px] bg-lime"></span>
+        <span class="font-medium">Analytics</span>
+        <span class="text-soft">· The last 30 days at Himalayan Polyclinic</span>
+      </header>
+      <Image
+        src={analytics}
+        alt="PCMS analytics: thirty days of revenue, money paid out, what the clinic kept and each doctor’s payout"
+        widths={[640, 960, 1280, 1920, 2360]}
+        sizes="(min-width: 1244px) 1180px, (min-width: 640px) calc(100vw - 64px), calc(100vw - 32px)"
+        quality={85}
+        loading="eager"
+        fetchpriority="high"
+        class="block aspect-[16/9] w-full"
+      />
+    </article>
+
+    <!-- Token slip: decoration only, the screenshot carries the information. -->
+    <div
+      data-ph-slip
+      aria-hidden="true"
+      style="transform: rotate(-6deg)"
+      class="absolute -bottom-10 -left-2 hidden w-[184px] rounded-md bg-white px-5 pt-4 pb-5 text-left shadow-[0_2px_4px_rgb(0_0_0/0.06),0_24px_40px_-16px_rgb(0_0_0/0.35)] ring-1 ring-black/5 in-[.js]:opacity-0 sm:block md:-left-8 lg:w-[208px]"
+    >
+      <p class="text-[11px] font-medium text-soft">Himalayan Polyclinic</p>
+      <p class="mt-3 text-[13px] text-soft">OPD token</p>
+      <p class="text-6xl leading-none font-black tracking-tighter tabular-nums">#3</p>
+      <p class="mt-3 text-[13px] leading-snug font-medium">Dr. Ram Bahadur Thapa</p>
+      <p class="text-[12px] text-soft">General Physician</p>
+      <div class="mt-4 flex items-baseline justify-between border-t border-dashed border-line pt-3 text-[13px]">
+        <span class="text-soft">Fee</span>
+        <span class="font-medium tabular-nums">NPR 500</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import gsap from 'gsap';
+
+  const intro = document.querySelectorAll<HTMLElement>('[data-ph-in]');
+  const shot = document.querySelector<HTMLElement>('[data-ph-shot]')!;
+  const slip = document.querySelector<HTMLElement>('[data-ph-slip]')!;
+
+  // One moment: copy rises in, then the window, then the slip drops onto its corner.
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) gsap.set([...intro, shot, slip], { opacity: 1 });
+  else
+    gsap
+      .timeline({ delay: 0.1 })
+      .fromTo([...intro, shot], { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.9, stagger: 0.08, ease: 'power3.out' })
+      .fromTo(slip, { opacity: 0, y: -48, rotate: -16 }, { opacity: 1, y: 0, rotate: -6, duration: 0.9, ease: 'back.out(1.4)' }, '-=0.35');
+</script>

@@ -110,6 +110,8 @@ const organization = {
     <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
 
     <script type="application/ld+json" set:html={JSON.stringify(organization)} />
+    <!-- Page-specific extras, e.g. a product's structured data -->
+    <slot name="head" />
     <!-- Lets Tailwind's in-[.js] hide intro elements only when GSAP will reveal them -->
     <script is:inline>document.documentElement.classList.add('js');</script>
   </head>

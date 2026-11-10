@@ -1,6 +1,13 @@
 ---
 // FAQ: centered heading, then an accordion. One answer open at a time; GSAP eases the height.
-const faqs = [
+// Props let product pages bring their own questions; the defaults are the home page's.
+interface Props {
+  heading?: string;
+  intro?: string;
+  faqs?: [question: string, answer: string][];
+}
+
+const defaultFaqs: [string, string][] = [
   [
     'What kind of businesses do you work with?',
     'Clinics, importers, wholesalers, retailers and distributors. Any business where the work is real but the tools are still notebooks, spreadsheets or software that never quite fit.',
@@ -35,6 +42,12 @@ const faqs = [
   ],
 ];
 
+const {
+  heading = 'Questions, answered.',
+  intro = 'The things business owners ask us most before getting started.',
+  faqs = defaultFaqs,
+} = Astro.props;
+
 // Lets Google show these answers directly in search results.
 const schema = {
   '@context': 'https://schema.org',
@@ -46,8 +59,8 @@ const schema = {
 <section data-faq class="relative z-10 bg-white px-4 py-24 sm:px-8 md:py-36">
   <div class="mx-auto max-w-3xl">
     <div class="text-center">
-      <h2 data-faq-in class="text-4xl leading-[1] font-bold tracking-tighter sm:text-6xl">Questions, answered.</h2>
-      <p data-faq-in class="mx-auto mt-5 max-w-md text-lg text-soft">The things business owners ask us most before getting started.</p>
+      <h2 data-faq-in class="text-4xl leading-[1] font-bold tracking-tighter sm:text-6xl">{heading}</h2>
+      <p data-faq-in class="mx-auto mt-5 max-w-md text-lg text-soft">{intro}</p>
     </div>
 
     <ul class="mt-14 border-b border-line md:mt-16">

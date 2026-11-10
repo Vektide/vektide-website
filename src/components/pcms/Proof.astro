@@ -1,0 +1,24 @@
+---
+// Proof: the dark panel from the home page, with the clinic that already runs PCMS and the
+// owner's words (still a draft; see src/data/testimonial.ts). Static: the home page animates this quote.
+import { testimonial } from '../../data/testimonial';
+---
+
+<section class="relative z-10 bg-[radial-gradient(120%_80%_at_0%_0%,rgb(255_255_255/0.07),transparent_55%),linear-gradient(160deg,#1d1d1f_0%,#121213_55%,#0b0b0c_100%)] text-white shadow-[0_-30px_60px_-20px_rgb(0_0_0/0.25)]">
+  <div class="mx-auto grid max-w-[1280px] gap-12 px-4 py-24 sm:px-8 md:grid-cols-[1fr_1.6fr] md:gap-20 md:py-36">
+    <div>
+      <h2 class="text-5xl leading-[0.95] font-bold tracking-tighter sm:text-6xl">Already running.</h2>
+      <p class="mt-6 max-w-sm text-lg text-white/60">
+        <span class="mr-2 inline-block size-1.5 -translate-y-0.5 rounded-full bg-lime ring-4 ring-lime/20" aria-hidden="true"></span>
+        PCMS is live at {testimonial.clinic}, built alongside the people who use it every day.
+      </p>
+    </div>
+
+    <figure>
+      <blockquote class="text-3xl leading-[1.12] font-bold tracking-tight text-balance sm:text-4xl lg:text-[44px]">
+        “{testimonial.quote}”
+      </blockquote>
+      <figcaption class="mt-6 text-white/60">{testimonial.name}, {testimonial.role}, {testimonial.clinic}</figcaption>
+    </figure>
+  </div>
+</section>

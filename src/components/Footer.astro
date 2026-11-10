@@ -5,9 +5,10 @@ import { socials as profiles } from '../data/contact';
 interface Props {
   /** Where "Book a demo" goes. The demo page points it at its own form. */
   ctaHref?: string;
+  /** The big closing line. Product pages swap in their own. */
+  headline?: string;
 }
-const { ctaHref = '/demo' } = Astro.props;
-const headline = 'Still running on paper?';
+const { ctaHref = '/demo', headline = 'Still running on paper?' } = Astro.props;
 const pages = [['/pcms', 'PCMS'], ['/custom', 'Custom Systems'], ['/about', 'About us'], ['/case-studies', 'Case Studies'], ['/contact', 'Contact']];
 const socials = profiles.map((s) => [s.href, s.name]);
 const year = new Date().getFullYear();

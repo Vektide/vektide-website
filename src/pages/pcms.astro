@@ -1,0 +1,83 @@
+---
+// PCMS product page. Copy: docs/website-copy.md, "PCMS — Polyclinic Management System".
+// The one big scroll moment is Desks; everything else stays quiet around it.
+import Base from '../layouts/Base.astro';
+import Navbar from '../components/Navbar.astro';
+import PcmsHero from '../components/pcms/PcmsHero.astro';
+import PcmsProblem from '../components/pcms/PcmsProblem.astro';
+import Desks from '../components/pcms/Desks.astro';
+import Features from '../components/pcms/Features.astro';
+import Modules from '../components/pcms/Modules.astro';
+import Proof from '../components/pcms/Proof.astro';
+import Process from '../components/Process.astro';
+import Faq from '../components/Faq.astro';
+import Footer from '../components/Footer.astro';
+import { hours } from '../data/contact';
+
+const title = 'PCMS — Polyclinic Management System | Vektide';
+const description =
+  "Reception, lab and billing in one system. Track every consultation and lab fee. Your clinic's own private system and database, managed by Vektide.";
+
+const steps: [string, string][] = [
+  ['Demo', 'We show you PCMS with your clinic’s workflow in mind.'],
+  ['Setup', 'We set up your clinic’s private system and configure doctors, tests, fees and staff accounts.'],
+  ['Training', 'Your team learns it in a day.'],
+  ['Go live', 'We stay on call while you switch over.'],
+];
+
+const faqs: [string, string][] = [
+  ['Do we need our own server?', 'No. We host PCMS for you. Your clinic gets its own private system and database, and we set it up and maintain it.'],
+  [
+    'Is our data safe?',
+    'Yes. Your clinic’s data is kept in its own database, separate from every other clinic, with encrypted backups stored off-site. PCMS has no tracking and sends your patient and financial records nowhere. Your data belongs to you.',
+  ],
+  ['Can it match how our clinic works?', 'Yes. We adjust fees, tests, roles and workflows during setup.'],
+  [
+    'What if our internet goes down?',
+    'PCMS runs online, so it needs a connection. We help you set up a backup connection, like a 4G router, and a simple paper fallback. Anything written on paper is entered once you’re back online.',
+  ],
+  [
+    'What if something breaks?',
+    `You call us directly, and we fix most issues remotely, without a site visit. We’re available ${hours.text}, Nepal time.`,
+  ],
+];
+
+// Describes PCMS itself for search engines; Vektide's own details come from Base.
+const product = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'PCMS — Polyclinic Management System',
+  alternateName: 'PCMS',
+  description,
+  url: new URL('/pcms', Astro.site).href,
+  applicationCategory: 'BusinessApplication',
+  applicationSubCategory: 'Clinic management',
+  operatingSystem: 'Web',
+  areaServed: { '@type': 'Country', name: 'Nepal' },
+  provider: { '@id': new URL('/#organization', Astro.site).href },
+};
+---
+
+<Base title={title} description={description}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(product)} />
+  <Navbar />
+  <main class="min-h-screen">
+    <PcmsHero />
+    <PcmsProblem />
+    <Desks />
+    <Features />
+    <Modules />
+    <Proof />
+    <Process title="Getting<br />started" intro="From first demo to a clinic running on PCMS, with the same team at every step." steps={steps} link={{ href: '/demo', text: 'Get a quote' }}>
+      <div data-pr-in class="mt-10 max-w-xs border-t border-line pt-6">
+        <h3 class="font-bold">What it costs</h3>
+        <p class="mt-2 text-soft">
+          A one-time license for the core system and the modules you choose, plus a yearly plan for hosting, updates,
+          backups and support. Billed in rupees.
+        </p>
+      </div>
+    </Process>
+    <Faq heading="Questions, answered." intro="What clinic owners ask us most before switching to PCMS." faqs={faqs} />
+  </main>
+  <Footer headline="See PCMS in your clinic." />
+</Base>

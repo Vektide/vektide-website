@@ -1,7 +1,16 @@
 ---
 // How we work: title column on the left (sticky on desktop), four numbered steps on the right.
 // Each step draws its top rule and corner mark as it scrolls in.
-const steps = [
+// Props let other pages (PCMS) reuse the layout; the defaults are the home page's content.
+interface Props {
+  /** Heading; may contain <br /> for the line break. */
+  title?: string;
+  intro?: string;
+  steps?: [title: string, body: string][];
+  link?: { href: string; text: string };
+}
+
+const defaultSteps: [string, string][] = [
   [
     "Understand",
     "We sit with your team and map the work as it happens today: the registers, the counter, the end-of-day tally.",
@@ -19,6 +28,12 @@ const steps = [
     "We keep it running, updated and backed up. When something comes up, you talk to the people who built it.",
   ],
 ];
+const {
+  title = 'How we<br />work',
+  intro = 'Four steps, one team. The people who map your workflow are the ones who build, launch and support it.',
+  steps = defaultSteps,
+  link = { href: '/contact', text: 'Get in touch' },
+} = Astro.props;
 const arrow = `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 3v6h8M9 6l3 3-3 3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 ---
 
@@ -31,22 +46,21 @@ const arrow = `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 3v6h8M9 6
         data-pr-in
         class="text-5xl leading-[0.95] font-bold tracking-tighter sm:text-6xl"
       >
-        How we<br />work
+        <Fragment set:html={title} />
       </h2>
 
-      <p data-pr-in class="mt-6 max-w-xs text-soft">
-        Four steps, one team. The people who map your workflow are the ones who
-        build, launch and support it.
-      </p>
+      <p data-pr-in class="mt-6 max-w-xs text-soft">{intro}</p>
+      <!-- Optional extra between the intro and the link (the PCMS page puts its pricing note here) -->
+      <slot />
       <a
         data-pr-in
-        href="/contact"
+        href={link.href}
         class="group/link mt-8 inline-flex items-center gap-2 text-[15px] font-medium [&_svg]:size-4 [&_svg]:transition-transform [&_svg]:duration-300 hover:[&_svg]:translate-x-0.5"
       >
         <Fragment set:html={arrow} />
         <span
           class="border-b border-transparent transition-colors group-hover/link:border-ink"
-          >Get in touch</span
+          >{link.text}</span
         >
       </a>
     </div>

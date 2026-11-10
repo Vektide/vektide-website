@@ -1,0 +1,180 @@
+---
+// Built for every desk: the page's one big scroll moment. Desktop: the desks scroll on the
+// left while a PCMS window sticks on the right and swaps to that desk's screen. A rail with
+// one tick per desk fills as you go. Phones: each desk shows its own screen inline.
+// Screens are each role's own dashboard in PCMS, captured from a demo clinic
+// (src/assets/screens/desk-*.png, invented data), shown whole at 16:9.
+import { Image } from 'astro:assets';
+import reception from '../../assets/screens/desk-reception.png';
+import lab from '../../assets/screens/desk-lab.png';
+import admin from '../../assets/screens/desk-admin.png';
+
+const desks = [
+  {
+    name: 'Reception',
+    body: 'Register visits, issue tokens, manage the queue and collect consultation fees in seconds.',
+    screen: reception,
+    window: ['Reception', 'Today’s queue and fees to collect'],
+    alt: 'PCMS reception dashboard: patients registered today, fees still to collect, the consultation queue by doctor and clinic notices',
+  },
+  {
+    name: 'Laboratory',
+    addOn: true,
+    body: 'Record tests, track results and see exactly which lab payments are still pending.',
+    screen: lab,
+    window: ['Laboratory', 'Today across the lab and X-ray rooms'],
+    alt: 'PCMS laboratory dashboard: tests waiting and done today, the waiting queue for lab and X-ray, unpaid work and reports ready to deliver',
+  },
+  {
+    name: 'Administrator',
+    body: 'Daily income, pending dues and clinic activity on one dashboard. Full control over users and settings.',
+    screen: admin,
+    window: ['Clinic overview', 'Today’s money, end to end'],
+    alt: 'PCMS admin overview: collected today, doctors to pay, money still owed and a week of revenue',
+  },
+];
+
+const frame = 'overflow-hidden rounded-xl border border-line bg-white text-left shadow-[0_30px_60px_-30px_rgb(0_0_0/0.25)]';
+const bar = 'flex h-[34px] items-center gap-2 border-b border-line bg-[#fafafa] px-4 text-[13px] whitespace-nowrap sm:h-[42px]';
+const imageProps = { widths: [640, 960, 1280, 1920], quality: 85, loading: 'lazy' as const };
+---
+
+<section id="how-it-works" data-desks class="relative z-10 scroll-mt-24 bg-white">
+  <div class="mx-auto max-w-[1280px] px-4 py-24 sm:px-8 md:py-36">
+    <h2 class="max-w-xl text-5xl leading-[0.95] font-bold tracking-tighter sm:text-6xl">Built for every desk.</h2>
+
+    <div class="mt-8 grid gap-12 md:mt-4 md:grid-cols-[1fr_1.7fr] md:gap-16">
+      <!-- Left: the desks, on a rail -->
+      <div>
+        <ol data-desk-list class="relative md:pl-10">
+          <span aria-hidden="true" class="absolute inset-y-0 left-0 hidden w-px bg-line md:block"></span>
+          <span data-desk-fill aria-hidden="true" class="absolute inset-y-0 left-0 hidden w-px origin-top scale-y-0 bg-ink md:block"></span>
+
+          {desks.map((d, i) => (
+            <li data-desk class="py-10 md:flex md:min-h-[78vh] md:flex-col md:justify-center md:py-0">
+              {d.addOn && <p class="mb-4 w-fit rounded-full bg-pill px-3 py-1 text-[13px] text-soft">Add-on</p>}
+              <h3
+                data-desk-title
+                data-active={i === 0 ? '' : undefined}
+                class="relative text-3xl font-bold tracking-tight transition-colors duration-500 sm:text-4xl md:in-[.js]:text-ink/25 md:in-[.js]:data-active:text-ink"
+              >
+                <span
+                  data-desk-tick
+                  aria-hidden="true"
+                  class="absolute top-1/2 -left-10 hidden size-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-line ring-4 ring-white transition-colors duration-500 data-active:bg-ink md:block"
+                  data-active={i === 0 ? '' : undefined}
+                ></span>
+                {d.name}
+              </h3>
+              <p class="mt-4 max-w-md text-lg text-soft">{d.body}</p>
+
+              <!-- Phones: this desk's screen, inline -->
+              <figure class:list={[frame, 'mt-8 md:hidden']}>
+                <figcaption class={bar}>
+                  <span class="size-2 rotate-45 rounded-[2px] bg-lime"></span>
+                  <span class="font-medium">{d.window[0]}</span>
+                  <span class="truncate text-soft">· {d.window[1]}</span>
+                </figcaption>
+                <Image src={d.screen} alt={d.alt} sizes="calc(100vw - 32px)" {...imageProps} class="block aspect-[16/9] w-full" />
+              </figure>
+            </li>
+          ))}
+        </ol>
+
+        <p class="mt-6 max-w-md text-2xl leading-snug font-bold tracking-tight md:mt-0 md:pl-10">
+          Doctors don’t need to log in. <span class="text-soft">They see patients; the system handles the rest.</span>
+        </p>
+      </div>
+
+      <!-- Right: the sticky stage (desktop only) -->
+      <div class="hidden md:block">
+        <div class="sticky top-[max(7rem,calc(50vh-17rem))] rounded-[32px] bg-pill p-5 lg:p-8">
+          <div class={frame}>
+            <div class={bar}>
+              <span class="size-2 rotate-45 rounded-[2px] bg-lime"></span>
+              <span data-stage-title class="font-medium">{desks[0].window[0]}</span>
+              <span data-stage-note class="truncate text-soft">· {desks[0].window[1]}</span>
+            </div>
+            <div class="relative aspect-[16/9] overflow-hidden">
+              {desks.map((d, i) => (
+                <Image
+                  data-stage-shot
+                  src={d.screen}
+                  alt={d.alt}
+                  aria-hidden={i === 0 ? undefined : 'true'}
+                  sizes="(min-width: 1280px) 860px, 70vw"
+                  {...imageProps}
+                  class:list={['absolute inset-0 size-full', i > 0 && 'opacity-0']}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const section = document.querySelector<HTMLElement>('[data-desks]')!;
+  const desks = [...section.querySelectorAll<HTMLElement>('[data-desk]')];
+  const titles = [...section.querySelectorAll<HTMLElement>('[data-desk-title]')];
+  const ticks = [...section.querySelectorAll<HTMLElement>('[data-desk-tick]')];
+  const shots = [...section.querySelectorAll<HTMLElement>('[data-stage-shot]')];
+  const stageTitle = section.querySelector<HTMLElement>('[data-stage-title]')!;
+  const stageNote = section.querySelector<HTMLElement>('[data-stage-note]')!;
+  const windows = desks.map((d) => {
+    const fig = d.querySelector('figcaption')!.querySelectorAll('span');
+    return [fig[1].textContent!, fig[2].textContent!];
+  });
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let active = 0;
+
+  const flag = (el: HTMLElement, on: boolean) => (on ? el.setAttribute('data-active', '') : el.removeAttribute('data-active'));
+
+  function show(next: number) {
+    if (next === active) return;
+    const leaving = shots[active];
+    const forward = next > active;
+    active = next;
+
+    titles.forEach((t, i) => flag(t, i === next));
+    ticks.forEach((t, i) => flag(t, i <= next));
+    shots.forEach((s, i) => (i === next ? s.removeAttribute('aria-hidden') : s.setAttribute('aria-hidden', 'true')));
+    stageTitle.textContent = windows[next][0];
+    stageNote.textContent = windows[next][1];
+
+    // New screen rises in on top; the old one dips away beneath it (reversed when scrolling back).
+    const d = reduce ? 0 : 1;
+    gsap.set(shots[next], { zIndex: 2 });
+    gsap.set(leaving, { zIndex: 1 });
+    gsap.fromTo(shots[next], { opacity: 0, y: forward ? 24 : -24 }, { opacity: 1, y: 0, duration: 0.6 * d, ease: 'power3.out', overwrite: true });
+    gsap.to(leaving, { opacity: 0, y: forward ? -12 : 12, duration: 0.45 * d, ease: 'power2.in', overwrite: true });
+  }
+
+  gsap.matchMedia().add('(min-width: 768px)', () => {
+    // Each desk takes over the stage when it reaches the middle of the screen. Enter callbacks
+    // (not isActive) so a fast jump past a desk still lands on the right screen.
+    desks.forEach((desk, i) =>
+      ScrollTrigger.create({
+        trigger: desk,
+        start: 'top center',
+        end: 'bottom center',
+        onEnter: () => show(i),
+        onEnterBack: () => show(i),
+      }),
+    );
+
+    // The rail fills from the first desk to the last.
+    gsap.fromTo(
+      section.querySelector('[data-desk-fill]'),
+      { scaleY: 0 },
+      { scaleY: 1, ease: 'none', scrollTrigger: { trigger: section.querySelector('[data-desk-list]'), start: 'top center', end: 'bottom center', scrub: true } },
+    );
+  });
+</script>

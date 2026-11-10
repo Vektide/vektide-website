@@ -2,11 +2,12 @@
 // Featured product: a full-screen dark panel. The problems section above freezes in place
 // and this panel scrolls up over it like a curtain, then the page carries on.
 // Left: the clinic owner's words, big. Right: a PCMS screenshot (src/assets/screens, invented data).
-// TODO: replace the draft quote and attribution with the owner's real words before launch.
+// The quote lives in src/data/testimonial.ts (still a draft; see the TODO there).
 import { Image } from 'astro:assets';
 import featured from '../assets/screens/featured.png';
+import { testimonial } from '../data/testimonial';
 
-const quote = 'We used to close the day not knowing what we’d actually earned. Now every rupee is on one screen before the last patient leaves.';
+const { quote } = testimonial;
 const arrowRight = `<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 ---
 
@@ -30,7 +31,7 @@ const arrowRight = `<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h1
           </>
         ))}
       </blockquote>
-      <p data-f-in class="mt-6 text-white/60">[Name], [Role], Gorkhakali Polyclinic</p>
+      <p data-f-in class="mt-6 text-white/60">{testimonial.name}, {testimonial.role}, {testimonial.clinic}</p>
 
       <div data-f-in class="mt-12 border-t border-white/10 pt-8">
         <p class="text-xl font-semibold">PCMS, the polyclinic, digitized.</p>
