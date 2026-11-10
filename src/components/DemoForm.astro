@@ -1,0 +1,235 @@
+---
+// Demo request, written as a sentence the visitor fills in. Each blank is a real labelled field;
+// on success the blanks turn into plain text, so the sentence reads back as a receipt.
+// Posts to Web3Forms (emails contact@vektide.com). Without JS the form still posts and
+// Web3Forms redirects to /demo/sent; with JS it sends in place.
+const key = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
+const redirect = new URL('/demo/sent', Astro.site).href;
+const interests = ['PCMS for my clinic', 'a custom system', 'something else'];
+
+const arrowRight = `<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+// One blank in the sentence: the field, plus an underline that draws in on load and
+// turns ink on focus, rose when invalid.
+const blank = 'relative inline-block max-w-full align-baseline';
+const field =
+  'peer max-w-full bg-transparent pb-0.5 leading-[1.2] font-bold text-ink outline-none field-sizing-content placeholder:font-medium placeholder:text-soft/55';
+const rule =
+  'pointer-events-none absolute inset-x-0 bottom-0 h-0.5 origin-left rounded-full bg-ink/15 transition-[background-color,height] duration-300 in-[.js]:opacity-0 peer-focus:h-[3px] peer-focus:bg-ink peer-aria-invalid:bg-rose-500';
+---
+
+<div id="book" class="scroll-mt-28 rounded-2xl bg-pill p-6 sm:p-10 lg:p-12">
+  <form data-demo-form action="https://api.web3forms.com/submit" method="POST" data-key={key}>
+    <input type="hidden" name="access_key" value={key} />
+    <input type="hidden" name="subject" value="Demo request from vektide.com" />
+    <input type="hidden" name="from_name" value="vektide.com" />
+    <input type="hidden" name="redirect" value={redirect} />
+    <!-- Bots fill every box; people never see this one. -->
+    <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" />
+
+    <p data-sentence class="text-2xl leading-[1.7] font-medium tracking-tight text-soft sm:text-[32px] sm:leading-[1.65]">
+      <!-- Astro trims whitespace next to tags, so the spaces around each blank are explicit.
+           Each blank shares a nowrap span with the punctuation after it, so a comma or
+           full stop never starts a line on its own. -->
+      Hi, I'm{' '}
+      <label class={blank}>
+        <span class="sr-only">Your name</span>
+        <input name="name" type="text" required autocomplete="name" spellcheck="false" placeholder="your name" size="9" class={field} />
+        <span data-rule class={rule}></span>
+      </label>{' '}
+      from{' '}
+      <span class="whitespace-nowrap"><label class={blank}>
+        <span class="sr-only">Business name</span>
+        <input name="business" type="text" required autocomplete="organization" spellcheck="false" placeholder="your business" size="12" class={field} />
+        <span data-rule class={rule}></span>
+      </label>.</span>{' '}
+      I'd like to see{' '}
+      <span class="whitespace-nowrap"><label class={blank}>
+        <span class="sr-only">I'm interested in</span>
+        <select name="interest" class={`${field} cursor-pointer appearance-none pr-6`}>
+          {interests.map((i) => <option value={i}>{i}</option>)}
+        </select>
+        <svg viewBox="0 0 12 12" aria-hidden="true" class="pointer-events-none absolute right-0 bottom-[0.55em] size-3.5 text-ink">
+          <path d="m3 4.5 3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span data-rule class={rule}></span>
+      </label>.</span>{' '}
+      Call me on{' '}
+      <span class="whitespace-nowrap"><label class={blank}>
+        <span class="sr-only">Phone number</span>
+        <input
+          name="phone"
+          type="tel"
+          required
+          inputmode="tel"
+          autocomplete="tel"
+          placeholder="98XXXXXXXX"
+          pattern="[0-9+\-\s]{7,20}"
+          size="10"
+          class={`${field} tabular-nums`}
+        />
+        <span data-rule class={rule}></span>
+      </label><span data-email-comma>,</span></span><span data-email-clause>
+        {' '}or email{' '}
+        <span class="whitespace-nowrap"><label class={blank}>
+          <span class="sr-only">Email (optional)</span>
+          <input name="email" type="email" autocomplete="email" placeholder="you@business.com" size="15" class={field} />
+          <span data-rule class={rule}></span>
+        </label>.</span></span>
+    </p>
+
+    <p data-error aria-live="polite" class="mt-5 min-h-6 text-[15px] text-rose-600"></p>
+
+    <div data-extra>
+      <label class="mt-6 block">
+        <span class="text-[15px] text-soft">Anything we should know? (optional)</span>
+        <textarea
+          name="message"
+          rows="3"
+          placeholder="How does your business handle this today?"
+          class="mt-3 block w-full resize-none rounded-xl bg-white px-4 py-3 text-base outline-none placeholder:text-soft/60 focus-visible:ring-2 focus-visible:ring-ink"
+        ></textarea>
+      </label>
+
+      <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
+        <button
+          type="submit"
+          data-submit
+          class="group/cta inline-flex cursor-pointer items-center gap-3 rounded-full bg-ink py-2 pr-2 pl-6 text-[15px] font-medium text-white transition-colors duration-300 hover:bg-lime hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink disabled:cursor-wait disabled:opacity-70"
+        >
+          <span data-label>Request my demo</span>
+          <span class="grid size-9 place-items-center rounded-full bg-white text-ink transition-transform duration-300 ease-out-expo group-hover/cta:translate-x-0.5 motion-reduce:transition-none [&_svg]:size-4">
+            <Fragment set:html={arrowRight} />
+          </span>
+        </button>
+        <p class="text-sm text-soft">Free, and no commitment.</p>
+      </div>
+    </div>
+
+    <div data-success hidden class="mt-4 flex items-start gap-4">
+      <span class="grid size-11 shrink-0 place-items-center rounded-full bg-lime">
+        <svg viewBox="0 0 20 20" aria-hidden="true" class="size-5"><path d="m5 10.5 3.2 3L15 6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+      </span>
+      <div>
+        <p class="text-xl font-bold tracking-tight">Request sent.</p>
+        <p class="mt-1 text-soft">We'll call you on <span data-phone-echo class="text-ink tabular-nums"></span> within one working day to set a time.</p>
+      </div>
+    </div>
+  </form>
+</div>
+
+<script>
+  import gsap from 'gsap';
+
+  const form = document.querySelector<HTMLFormElement>('[data-demo-form]')!;
+  const error = form.querySelector<HTMLElement>('[data-error]')!;
+  const submit = form.querySelector<HTMLButtonElement>('[data-submit]')!;
+  const label = submit.querySelector<HTMLElement>('[data-label]')!;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const field = (name: string) => form.elements.namedItem(name) as HTMLInputElement;
+
+  // JS takes over validation so the messages can speak in the page's voice.
+  form.noValidate = true;
+
+  const digits = (s: string) => s.replace(/\D/g, '').length;
+
+  function check() {
+    const missing: [string, string][] = [];
+    if (!field('name').value.trim()) missing.push(['name', 'your name']);
+    if (!field('business').value.trim()) missing.push(['business', 'your business name']);
+    if (!field('phone').value.trim()) missing.push(['phone', 'a phone number']);
+    const phone = field('phone').value.trim();
+    const badPhone = !!phone && (digits(phone) < 7 || digits(phone) > 15);
+    const badEmail = !field('email').checkValidity();
+
+    const invalid = new Set(missing.map(([n]) => n));
+    if (badPhone) invalid.add('phone');
+    if (badEmail) invalid.add('email');
+    ['name', 'business', 'phone', 'email'].forEach((n) => field(n).setAttribute('aria-invalid', String(invalid.has(n))));
+
+    let message = '';
+    if (missing.length) {
+      const list = missing.map(([, t]) => t);
+      const joined = list.length > 1 ? `${list.slice(0, -1).join(', ')} and ${list.at(-1)}` : list[0];
+      message = `Add ${joined} so we can call you.`;
+    } else if (badPhone) message = 'That phone number looks wrong. Use a 10-digit mobile, or a landline with its area code.';
+    else if (badEmail) message = 'Check the email address, or leave it blank.';
+
+    error.textContent = message;
+    if (message) field([...invalid][0]).focus();
+    return !message;
+  }
+
+  // Once someone fixes a blank, drop its red underline straight away.
+  form.addEventListener('input', (e) => {
+    const t = e.target as HTMLElement;
+    if (t.getAttribute('aria-invalid') === 'true') t.setAttribute('aria-invalid', 'false');
+  });
+
+  async function send() {
+    const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
+    if (data.botcheck) return; // a bot: pretend it worked
+    delete data.redirect;
+    data.subject = `Demo request: ${data.business}`;
+
+    if (!form.dataset.key) {
+      // No access key: in dev, act out a success so the page can be tested without sending.
+      if (import.meta.env.DEV) {
+        console.warn('[demo] PUBLIC_WEB3FORMS_KEY is not set, so nothing was sent. Simulating success.');
+        await new Promise((r) => setTimeout(r, 800));
+        return;
+      }
+      throw new Error('Missing PUBLIC_WEB3FORMS_KEY');
+    }
+
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(data),
+    });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok || !json.success) throw new Error(json.message || `HTTP ${res.status}`);
+  }
+
+  // The sentence becomes a receipt: every blank turns into what was typed.
+  function showReceipt(phone: string) {
+    const sentence = form.querySelector<HTMLElement>('[data-sentence]')!;
+    // No email given: the sentence ends after the phone number.
+    if (!field('email').value.trim()) {
+      sentence.querySelector('[data-email-comma]')!.textContent = '.';
+      sentence.querySelector('[data-email-clause]')!.remove();
+    }
+    sentence.querySelectorAll('label').forEach((l) => {
+      const input = l.querySelector<HTMLInputElement | HTMLSelectElement>('input, select')!;
+      const text = document.createElement('strong');
+      text.className = 'font-bold text-ink';
+      text.textContent = input.value.trim();
+      l.replaceWith(text);
+    });
+    form.querySelector<HTMLElement>('[data-phone-echo]')!.textContent = phone;
+    form.querySelector('[data-extra]')!.remove();
+    error.remove();
+    const success = form.querySelector<HTMLElement>('[data-success]')!;
+    success.hidden = false;
+    success.setAttribute('tabindex', '-1');
+    success.focus({ preventScroll: true });
+    if (!reduce) gsap.from(success, { opacity: 0, y: 16, duration: 0.6, ease: 'power3.out' });
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (submit.disabled || !check()) return;
+    submit.disabled = true;
+    label.textContent = 'Sending…';
+    try {
+      const phone = field('phone').value.trim();
+      await send();
+      showReceipt(phone);
+    } catch (err) {
+      console.error('[demo] send failed', err);
+      error.textContent = "Couldn't send. Check your connection and try again, or email contact@vektide.com.";
+      submit.disabled = false;
+      label.textContent = 'Request my demo';
+    }
+  });
+</script>

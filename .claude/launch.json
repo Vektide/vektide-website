@@ -1,6 +1,7 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "web", "runtimeExecutable": "pnpm", "runtimeArgs": ["dev"], "port": 4321 }
+    { "name": "web", "runtimeExecutable": "pnpm", "runtimeArgs": ["dev"], "port": 4321 },
+    { "name": "web-alongside", "runtimeExecutable": "pnpm", "runtimeArgs": ["dev", "--ignore-lock", "--port", "4330"], "port": 4330 }
   ]
 }

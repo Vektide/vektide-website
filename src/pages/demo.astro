@@ -1,0 +1,78 @@
+---
+// Book a demo: pitch and next steps on the left, the sentence form on the right.
+// Phones stack it as headline → form → next steps → contact.
+import Base from '../layouts/Base.astro';
+import Navbar from '../components/Navbar.astro';
+import DemoForm from '../components/DemoForm.astro';
+import Footer from '../components/Footer.astro';
+
+const steps = [
+  ['We call you', 'Within one working day, to learn a little about your business and pick a time.'],
+  ['We show you the system', 'Thirty minutes, in person or online. We walk through it with your work in mind, and you ask anything.'],
+  ['You get a clear quote', 'Scope, timeline and price in writing before any work starts. No obligation.'],
+];
+// TODO: add phone / WhatsApp / Viber and office hours once they're confirmed.
+---
+
+<Base
+  title="Book a demo | Vektide"
+  description="Book a free 30-minute demo of Vektide's software. We call you within one working day to set a time."
+>
+  <Navbar />
+  <main class="mx-auto grid max-w-[1280px] items-start gap-x-20 gap-y-14 px-4 pt-36 pb-24 sm:px-8 md:grid-cols-[1fr_1.4fr] md:pt-48 md:pb-36">
+    <div class="md:col-start-1 md:row-start-1">
+      <h1 data-demo-in class="text-5xl leading-[0.95] font-bold tracking-tighter in-[.js]:opacity-0 sm:text-7xl md:text-6xl lg:text-7xl">
+        See your business,<br />off paper.
+      </h1>
+      <p data-demo-in class="mt-6 max-w-md text-lg text-soft in-[.js]:opacity-0">
+        A free 30-minute demo. We show you a working system shaped around how your business runs today.
+      </p>
+    </div>
+
+    <div data-demo-in class="in-[.js]:opacity-0 md:col-start-2 md:row-span-2 md:row-start-1">
+      <DemoForm />
+    </div>
+
+    <div data-demo-in class="in-[.js]:opacity-0 md:col-start-1 md:row-start-2">
+      <h2 class="text-[15px] text-soft">What happens next</h2>
+      <ol class="mt-4">
+        {steps.map(([title, body], i) => (
+          <li class="grid grid-cols-[auto_1fr] gap-5 border-t border-line py-6">
+            <span class="grid size-11 place-items-center rounded-lg bg-pill text-sm font-medium tabular-nums">0{i + 1}</span>
+            <div>
+              <h3 class="text-xl font-bold tracking-tight">{title}</h3>
+              <p class="mt-1.5 max-w-sm text-soft">{body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <p class="mt-6 border-t border-line pt-6 text-soft">
+        Rather write?
+        <a href="mailto:contact@vektide.com" class="font-medium text-ink underline decoration-line underline-offset-4 transition-colors hover:decoration-ink">contact@vektide.com</a>
+        <br />Mahalaxmi-4, Lalitpur, Nepal
+      </p>
+    </div>
+  </main>
+  <Footer ctaHref="#book" />
+</Base>
+
+<script>
+  import gsap from 'gsap';
+
+  // One moment: the copy and form rise in, then the form's blanks draw their underlines.
+  const intro = document.querySelectorAll<HTMLElement>('[data-demo-in]');
+  const rules = document.querySelectorAll<HTMLElement>('[data-rule]');
+
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) gsap.set([...intro, ...rules], { opacity: 1 });
+  else
+    gsap
+      .timeline({ delay: 0.1 })
+      .fromTo(intro, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.9, stagger: 0.08, ease: 'power3.out' })
+      .fromTo(
+        rules,
+        { opacity: 1, scaleX: 0 },
+        { scaleX: 1, duration: 0.7, stagger: 0.09, ease: 'power3.inOut', clearProps: 'transform' },
+        0.45,
+      );
+</script>

@@ -301,6 +301,35 @@ Success message: Thanks — we've got it. Someone from Vektide will call you wit
 
 ---
 
+## Demo (/demo)
+
+Where every "Book a demo" button goes. The form is a sentence the visitor fills in.
+
+Headline: See your business, off paper.
+
+Subhead: A free 30-minute demo. We show you a working system shaped around how your business runs today.
+
+Form sentence: Hi, I'm [your name] from [your business]. I'd like to see [PCMS for my clinic / a custom system / something else]. Call me on [98XXXXXXXX], or email [you@business.com].
+
+- Required: name, business, phone. Optional: email, interest (defaults to PCMS), note.
+- Note field: "Anything we should know? (optional)", placeholder "How does your business handle this today?"
+- Button: Request my demo · beside it: Free, and no commitment.
+- Missing fields: "Add your name, your business name and a phone number so we can call you." (lists only what's missing)
+- Bad phone: "That phone number looks wrong. Use a 10-digit mobile, or a landline with its area code."
+- Send failed: "Couldn't send. Check your connection and try again, or email contact@vektide.com."
+- Success: the sentence reads back with their answers, then "Request sent. We'll call you on [phone] within one working day to set a time."
+
+What happens next:
+1. We call you — Within one working day, to learn a little about your business and pick a time.
+2. We show you the system — Thirty minutes, in person or online. We walk through it with your work in mind, and you ask anything.
+3. You get a clear quote — Scope, timeline and price in writing before any work starts. No obligation.
+
+Direct: Rather write? contact@vektide.com · Mahalaxmi-4, Lalitpur, Nepal. [Add phone and hours once confirmed.]
+
+No-JS thank-you page (/demo/sent, noindex): "Request sent." / "We'll call you within one working day to set a time for your demo."
+
+---
+
 ## Global elements
 
 ### Navigation

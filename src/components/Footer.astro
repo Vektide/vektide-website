@@ -1,6 +1,11 @@
 ---
 // Footer doubles as the closing CTA: dark panel with rounded top, big headline + buttons,
 // links on the right, a full-width VEKTIDE wordmark that rises in, and a small bottom row.
+interface Props {
+  /** Where "Book a demo" goes. The demo page points it at its own form. */
+  ctaHref?: string;
+}
+const { ctaHref = '/demo' } = Astro.props;
 const headline = 'Still running on paper?';
 const pages = [['/pcms', 'PCMS'], ['/custom', 'Custom Systems'], ['/about', 'About us'], ['/case-studies', 'Case Studies'], ['/contact', 'Contact']];
 const socials = [['#', 'LinkedIn'], ['#', 'Facebook'], ['#', 'Instagram']]; // TODO: real profile URLs
@@ -28,7 +33,7 @@ const arrowRight = `<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h1
 
       <div data-ft-in class="mt-10 flex flex-wrap gap-3">
         <a
-          href="/contact"
+          href={ctaHref}
           class="group/cta inline-flex items-center gap-2.5 rounded-full bg-lime px-6 py-3.5 text-xs font-medium tracking-widest text-ink uppercase transition-colors duration-300 hover:bg-white [&_svg]:size-4"
         >
           Book a demo
