@@ -1,0 +1,126 @@
+---
+// Contact: headline and live office status on the left, the form on the right, and every
+// direct way to reach us under the headline. Phones stack it headline → form → direct contact,
+// the same frame as /demo.
+import Base from '../layouts/Base.astro';
+import Navbar from '../components/Navbar.astro';
+import OfficeStatus from '../components/OfficeStatus.astro';
+import ContactForm from '../components/ContactForm.astro';
+import Footer from '../components/Footer.astro';
+import { address, email, hours, mapsUrl, phones } from '../data/contact';
+
+const pill =
+  'inline-flex h-8 items-center rounded-full bg-pill px-3.5 text-sm text-ink transition-colors duration-300 hover:bg-lime focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink';
+const label = 'text-[15px] text-soft';
+---
+
+<Base
+  title="Contact Vektide"
+  description="Call, WhatsApp or write to Vektide in Lalitpur. Tell us what your business does and we reply within one working day."
+>
+  <Navbar />
+  <main class="mx-auto grid max-w-[1280px] items-start gap-x-20 gap-y-14 px-4 pt-36 pb-24 sm:px-8 md:grid-cols-[1fr_1.4fr] md:pt-48 md:pb-36">
+    <div class="md:col-start-1 md:row-start-1">
+      <h1 data-contact-in class="text-5xl leading-[0.95] font-bold tracking-tighter in-[.js]:opacity-0 sm:text-7xl md:text-6xl lg:text-7xl">
+        Let's talk about<br />your business.
+      </h1>
+      <p data-contact-in class="mt-6 max-w-md text-lg text-soft in-[.js]:opacity-0">
+        Tell us what you do and what's slowing you down. We reply within one working day.
+      </p>
+      <div data-contact-in class="mt-8 in-[.js]:opacity-0">
+        <OfficeStatus />
+      </div>
+    </div>
+
+    <div data-contact-in class="in-[.js]:opacity-0 md:col-start-2 md:row-span-2 md:row-start-1">
+      <ContactForm />
+    </div>
+
+    <div data-contact-in class="in-[.js]:opacity-0 md:col-start-1 md:row-start-2">
+      <section class="border-t border-line py-6">
+        <h2 class={label}>Call, WhatsApp or Viber</h2>
+        <ul class="mt-3 space-y-3">
+          {phones.map((p) => (
+            <li class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+              <a href={p.tel} class="text-2xl font-bold tracking-tight tabular-nums transition-colors hover:text-soft">{p.display}</a>
+              <span class="flex gap-1.5">
+                <a href={p.tel} aria-label={`Call ${p.display}`} class={pill}>Call</a>
+                <a href={p.whatsapp} target="_blank" rel="noopener" aria-label={`WhatsApp ${p.display}`} class={pill}>WhatsApp</a>
+                <a href={p.viber} aria-label={`Viber ${p.display}`} class={pill}>Viber</a>
+              </span>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-3 text-sm text-soft">You'll reach one of the founders.</p>
+      </section>
+
+      <section class="border-t border-line py-6">
+        <h2 class={label}>Email</h2>
+        <div class="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+          <a href={`mailto:${email}`} class="min-w-0 text-2xl font-bold tracking-tight break-all transition-colors hover:text-soft">{email}</a>
+          <button type="button" data-copy={email} class={`${pill} cursor-pointer`}>
+            <span data-copy-label>Copy</span>
+          </button>
+        </div>
+        <span data-copy-status aria-live="polite" class="sr-only"></span>
+      </section>
+
+      <section class="border-t border-line py-6">
+        <h2 class={label}>Office</h2>
+        <div class="mt-2 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+          <p class="text-lg font-medium">{address}</p>
+          <a href={mapsUrl} target="_blank" rel="noopener" class="text-[15px] text-soft underline decoration-line underline-offset-4 transition-colors hover:text-ink hover:decoration-ink">Open in Maps</a>
+        </div>
+      </section>
+
+      <section class="border-t border-line pt-6">
+        <h2 class={label}>Hours</h2>
+        <p class="mt-2 text-lg font-medium">{hours.text}</p>
+        <p class="mt-1 text-[15px] text-soft">Nepal time. Closed Saturdays.</p>
+      </section>
+    </div>
+  </main>
+  <Footer />
+</Base>
+
+<script>
+  import gsap from 'gsap';
+
+  // Copy the email address: mailto links do nothing on many desktops without a mail app.
+  const copy = document.querySelector<HTMLButtonElement>('[data-copy]')!;
+  const copyLabel = copy.querySelector<HTMLElement>('[data-copy-label]')!;
+  const copyStatus = document.querySelector<HTMLElement>('[data-copy-status]')!;
+  let reset: number | undefined;
+  copy.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(copy.dataset.copy!);
+      copyLabel.textContent = 'Copied';
+      copyStatus.textContent = 'Email address copied.';
+    } catch {
+      // No clipboard access: select the address so a normal copy works.
+      getSelection()?.selectAllChildren(copy.previousElementSibling!);
+      copyLabel.textContent = 'Selected';
+    }
+    clearTimeout(reset);
+    reset = window.setTimeout(() => {
+      copyLabel.textContent = 'Copy';
+      copyStatus.textContent = '';
+    }, 2000);
+  });
+
+  // One moment: the copy, status and form rise in, then the form's fields draw their underlines.
+  const intro = document.querySelectorAll<HTMLElement>('[data-contact-in]');
+  const rules = document.querySelectorAll<HTMLElement>('[data-rule]');
+
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) gsap.set([...intro, ...rules], { opacity: 1 });
+  else
+    gsap
+      .timeline({ delay: 0.1 })
+      .fromTo(intro, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.9, stagger: 0.08, ease: 'power3.out' })
+      .fromTo(
+        rules,
+        { opacity: 1, scaleX: 0 },
+        { scaleX: 1, duration: 0.7, stagger: 0.09, ease: 'power3.inOut', clearProps: 'transform' },
+        0.45,
+      );
+</script>

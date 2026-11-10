@@ -1,4 +1,5 @@
 ---
+import { email, socials as profiles } from '../data/contact';
 // Pill navbar. Every item opens a sheet that drops from the top; the page behind
 // it dims. Each sheet has a big "Explore ..." heading, then a list or a card.
 type Menu = {
@@ -50,13 +51,7 @@ const menus: Menu[] = [
   },
 ];
 
-// TODO: real profile URLs.
-const socials = [
-  ['#', 'LinkedIn'],
-  ['#', 'Facebook'],
-  ['#', 'Instagram'],
-  ['mailto:contact@vektide.com', 'contact@vektide.com'],
-];
+const socials = [...profiles.map((s) => [s.href, s.name]), [`mailto:${email}`, email]];
 
 const arrow = `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 const arrowRight = `<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;

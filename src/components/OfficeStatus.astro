@@ -1,0 +1,56 @@
+---
+// Live office strip: the time in Lalitpur and whether we're in. A static build can't know the
+// time, so the HTML carries the plain hours and the script swaps in the live sentence.
+import { hours } from '../data/contact';
+---
+
+<p data-office class="inline-flex max-w-full items-center gap-3 rounded-[22px] bg-pill py-2.5 pr-5 pl-4 text-[15px] leading-snug text-soft">
+  <span aria-hidden="true" class="relative grid size-2 shrink-0 place-items-center">
+    <span data-office-pulse class="absolute size-2 rounded-full bg-lime opacity-0"></span>
+    <span data-office-dot class="size-2 rounded-full bg-soft/40 ring-4 ring-ink/5 transition-colors duration-500"></span>
+  </span>
+  <span>
+    <span data-office-lead class="font-medium text-ink tabular-nums"></span>
+    <span data-office-note>{hours.text}, Nepal time.</span>
+  </span>
+</p>
+
+<script>
+  import gsap from 'gsap';
+  import { officeStatus, pageClock } from '../data/contact';
+
+  const strip = document.querySelector<HTMLElement>('[data-office]')!;
+  const lead = strip.querySelector<HTMLElement>('[data-office-lead]')!;
+  const note = strip.querySelector<HTMLElement>('[data-office-note]')!;
+  const dot = strip.querySelector<HTMLElement>('[data-office-dot]')!;
+  const pulse = strip.querySelector<HTMLElement>('[data-office-pulse]')!;
+  const now = pageClock();
+
+  const OPEN = ['bg-lime', 'ring-lime/30'];
+  const CLOSED = ['bg-soft/40', 'ring-ink/5'];
+
+  function render() {
+    const s = officeStatus(now());
+    lead.textContent = `${s.lead} `;
+    note.textContent = s.note;
+    dot.classList.remove(...(s.open ? CLOSED : OPEN));
+    dot.classList.add(...(s.open ? OPEN : CLOSED));
+    return s;
+  }
+
+  // Tick on each minute boundary so the clock never lags the real one.
+  function schedule() {
+    setTimeout(() => {
+      render();
+      schedule();
+    }, 60_000 - (now().getTime() % 60_000) + 50);
+  }
+
+  const first = render();
+  schedule();
+
+  // Once, after the page settles: a ring ripples out of the dot when we're in.
+  if (first.open && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    gsap.fromTo(pulse, { opacity: 0.7, scale: 1 }, { opacity: 0, scale: 4, duration: 1.4, delay: 1.1, ease: 'power2.out' });
+  }
+</script>

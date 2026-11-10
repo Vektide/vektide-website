@@ -1,4 +1,5 @@
 ---
+import { socials as profiles } from '../data/contact';
 // Footer doubles as the closing CTA: dark panel with rounded top, big headline + buttons,
 // links on the right, a full-width VEKTIDE wordmark that rises in, and a small bottom row.
 interface Props {
@@ -8,7 +9,7 @@ interface Props {
 const { ctaHref = '/demo' } = Astro.props;
 const headline = 'Still running on paper?';
 const pages = [['/pcms', 'PCMS'], ['/custom', 'Custom Systems'], ['/about', 'About us'], ['/case-studies', 'Case Studies'], ['/contact', 'Contact']];
-const socials = [['#', 'LinkedIn'], ['#', 'Facebook'], ['#', 'Instagram']]; // TODO: real profile URLs
+const socials = profiles.map((s) => [s.href, s.name]);
 const year = new Date().getFullYear();
 const arrowRight = `<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 ---

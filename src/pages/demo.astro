@@ -5,13 +5,14 @@ import Base from '../layouts/Base.astro';
 import Navbar from '../components/Navbar.astro';
 import DemoForm from '../components/DemoForm.astro';
 import Footer from '../components/Footer.astro';
+import { address, email, hours, phones } from '../data/contact';
 
+const link = 'font-medium text-ink underline decoration-line underline-offset-4 transition-colors hover:decoration-ink';
 const steps = [
   ['We call you', 'Within one working day, to learn a little about your business and pick a time.'],
   ['We show you the system', 'Thirty minutes, in person or online. We walk through it with your work in mind, and you ask anything.'],
   ['You get a clear quote', 'Scope, timeline and price in writing before any work starts. No obligation.'],
 ];
-// TODO: add phone / WhatsApp / Viber and office hours once they're confirmed.
 ---
 
 <Base
@@ -48,9 +49,14 @@ const steps = [
       </ol>
 
       <p class="mt-6 border-t border-line pt-6 text-soft">
-        Rather write?
-        <a href="mailto:contact@vektide.com" class="font-medium text-ink underline decoration-line underline-offset-4 transition-colors hover:decoration-ink">contact@vektide.com</a>
-        <br />Mahalaxmi-4, Lalitpur, Nepal
+        Rather call or write?{' '}
+        {phones.map((p) => (
+          <>
+            <a href={p.tel} class={`${link} tabular-nums`}>{p.display}</a>,{' '}
+          </>
+        ))}
+        or <a href={`mailto:${email}`} class={link}>{email}</a>
+        <br />{hours.text}, Nepal time. {address}
       </p>
     </div>
   </main>

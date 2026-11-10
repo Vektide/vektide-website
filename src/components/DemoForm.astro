@@ -19,7 +19,7 @@ const rule =
 ---
 
 <div id="book" class="scroll-mt-28 rounded-2xl bg-pill p-6 sm:p-10 lg:p-12">
-  <form data-demo-form action="https://api.web3forms.com/submit" method="POST" data-key={key}>
+  <form data-demo-form action="https://api.web3forms.com/submit" method="POST">
     <input type="hidden" name="access_key" value={key} />
     <input type="hidden" name="subject" value="Demo request from vektide.com" />
     <input type="hidden" name="from_name" value="vektide.com" />
@@ -120,6 +120,7 @@ const rule =
 
 <script>
   import gsap from 'gsap';
+  import { submitWeb3Forms } from '../scripts/web3forms';
 
   const form = document.querySelector<HTMLFormElement>('[data-demo-form]')!;
   const error = form.querySelector<HTMLElement>('[data-error]')!;
@@ -171,24 +172,7 @@ const rule =
     if (data.botcheck) return; // a bot: pretend it worked
     delete data.redirect;
     data.subject = `Demo request: ${data.business}`;
-
-    if (!form.dataset.key) {
-      // No access key: in dev, act out a success so the page can be tested without sending.
-      if (import.meta.env.DEV) {
-        console.warn('[demo] PUBLIC_WEB3FORMS_KEY is not set, so nothing was sent. Simulating success.');
-        await new Promise((r) => setTimeout(r, 800));
-        return;
-      }
-      throw new Error('Missing PUBLIC_WEB3FORMS_KEY');
-    }
-
-    const res = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify(data),
-    });
-    const json = await res.json().catch(() => ({}));
-    if (!res.ok || !json.success) throw new Error(json.message || `HTTP ${res.status}`);
+    await submitWeb3Forms(data, 'demo');
   }
 
   // The sentence becomes a receipt: every blank turns into what was typed.

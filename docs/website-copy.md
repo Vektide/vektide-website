@@ -271,33 +271,48 @@ Button: Talk to us
 
 ---
 
-## Contact
+## Contact (/contact)
 
 Headline: Let's talk about your business.
 
 Subhead: Tell us what you do and what's slowing you down. We reply within one working day.
 
-### Form fields
+Live office status (time in Lalitpur, updates each minute; without JS it shows the hours):
+- Open: "It's 3:42 PM in Lalitpur. We're in, so expect a reply today."
+- Before 9 on a workday: "It's 7:10 AM in Lalitpur. We open at 9 AM."
+- After 5, Saturday or a holiday: "It's 9:15 PM in Lalitpur. We're back tomorrow at 9 AM." (or the weekday, e.g. "Sunday", when it's more than a day away)
+- Holidays go in `closedDates` in `src/data/contact.ts`.
+
+### Form
+
+First question: What's this about? · A demo · A new project · Help with my system · Something else (required, no default)
+
+- A demo: the fields give way to "Demos have their own quick form." / "Tell us who you are and we'll call to set a time. It takes 30 seconds." / Button: Book a demo (to /demo)
+- Message placeholder by topic: new project "What does your business do, and what's still on paper?" · help "Which system is it, and what's going wrong?" · something else "What would you like to ask?" · before a pick "Tell us a little about what you need."
+- Help with my system adds: "For anything urgent, call 984-3060594."
 
 | Field | Type | Placeholder |
 |---|---|---|
-| Full name | Text, required | Your name |
-| Business name | Text, required | Your business |
+| Your name | Text, required | Your name |
+| Business | Text, required | Your business |
 | Phone | Text, required | 98XXXXXXXX |
-| Email | Email | you@business.com |
-| I'm interested in | Dropdown | Choose one (default, empty) · PCMS demo · Custom system · Something else |
-| Tell us about your work | Textarea | How does your business handle this today? |
+| Email (optional) | Email | you@business.com |
+| Your message | Textarea, required | (by topic, above) |
 
-Submit button: Send message
+Submit button: Send message · beside it: We reply within one working day.
 
-Success message: Thanks — we've got it. Someone from Vektide will call you within one working day.
+- Missing: "Add your name, a phone number and a message so we can reply." (lists only what's missing; with no topic: "Pick what your message is about, then add …")
+- Bad phone: "That phone number looks wrong. Use a 10-digit mobile, or a landline with its area code."
+- Send failed: "Couldn't send. Check your connection and try again, or call 984-3060594."
+- Success: "Message sent." / "We'll reply within one working day, on [phone] or at [email]." plus "We're in now, so it may be sooner." during office hours.
+- No-JS thank-you page (/contact/sent, noindex): "Message sent." / "We'll reply within one working day. For anything urgent, call 984-3060594."
 
 ### Direct contact
 
-- Email: contact@vektide.com
-- Phone / WhatsApp / Viber: [number]
-- Office: Mahalaxmi-4, Lalitpur, Nepal
-- Hours: [Sun–Fri, 10 AM – 6 PM]
+- Call, WhatsApp or Viber: 984-3060594 · 982-4155217 ("You'll reach one of the founders.")
+- Email: contact@vektide.com (with a Copy button)
+- Office: Mahalaxmi-4, Lalitpur, Nepal (Open in Maps)
+- Hours: Sunday to Friday, 9 AM to 5 PM. Nepal time. Closed Saturdays.
 
 ---
 
@@ -324,7 +339,7 @@ What happens next:
 2. We show you the system — Thirty minutes, in person or online. We walk through it with your work in mind, and you ask anything.
 3. You get a clear quote — Scope, timeline and price in writing before any work starts. No obligation.
 
-Direct: Rather write? contact@vektide.com · Mahalaxmi-4, Lalitpur, Nepal. [Add phone and hours once confirmed.]
+Direct: Rather call or write? 984-3060594, 982-4155217, or contact@vektide.com. Sunday to Friday, 9 AM to 5 PM, Nepal time. Mahalaxmi-4, Lalitpur, Nepal
 
 No-JS thank-you page (/demo/sent, noindex): "Request sent." / "We'll call you within one working day to set a time for your demo."
 

@@ -3,6 +3,7 @@
 // structured data) so new pages only pass a title and description.
 import '../styles/global.css';
 import 'lenis/dist/lenis.css';
+import { email, hours, phones, socials } from '../data/contact';
 
 interface Props {
   title: string;
@@ -19,7 +20,6 @@ const canonical = new URL(Astro.url.pathname, site).href;
 const imageUrl = new URL(image, site).href;
 
 // Who we are, for Google's knowledge panel and local results.
-// TODO: add `telephone` and real social profile URLs to `sameAs` once they exist.
 const organization = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -30,7 +30,22 @@ const organization = {
       alternateName: 'Vektide',
       url: site.href,
       logo: new URL('/logo/vektide-logo-512.png', site).href,
-      email: 'contact@vektide.com',
+      email,
+      telephone: phones[0].e164,
+      contactPoint: phones.map((p) => ({
+        '@type': 'ContactPoint',
+        telephone: p.e164,
+        email,
+        contactType: 'customer service',
+        areaServed: 'NP',
+        hoursAvailable: {
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: hours.days.map((d) => ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][d]),
+          opens: `${String(hours.open).padStart(2, '0')}:00`,
+          closes: `${String(hours.close).padStart(2, '0')}:00`,
+        },
+      })),
+      sameAs: socials.filter((s) => s.href.startsWith('http')).map((s) => s.href),
       slogan: 'Moving forward with precision.',
       address: {
         '@type': 'PostalAddress',

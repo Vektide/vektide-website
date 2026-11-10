@@ -1,0 +1,263 @@
+---
+// Contact form. The visitor first says what it's about; the form then asks the right question,
+// or, for a demo, hands them to /demo. Posts to Web3Forms (emails contact@vektide.com).
+// Without JS it still posts and Web3Forms redirects to /contact/sent; with JS it sends in place.
+import { phones } from '../data/contact';
+
+const key = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
+const redirect = new URL('/contact/sent', Astro.site).href;
+
+const topics = [
+  { kind: 'demo', label: 'A demo', prompt: '' },
+  { kind: 'project', label: 'A new project', prompt: "What does your business do, and what's still on paper?" },
+  { kind: 'support', label: 'Help with my system', prompt: "Which system is it, and what's going wrong?" },
+  { kind: 'other', label: 'Something else', prompt: 'What would you like to ask?' },
+];
+
+const fields = [
+  { name: 'name', label: 'Your name', type: 'text', required: true, autocomplete: 'name', placeholder: '' },
+  { name: 'business', label: 'Business', type: 'text', required: true, autocomplete: 'organization', placeholder: '' },
+  { name: 'phone', label: 'Phone', type: 'tel', required: true, autocomplete: 'tel', placeholder: '98XXXXXXXX' },
+  { name: 'email', label: 'Email (optional)', type: 'email', required: false, autocomplete: 'email', placeholder: 'you@business.com' },
+];
+
+const arrowRight = `<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+// Same underline as the demo form: draws in on load, turns ink on focus, rose when invalid.
+const input =
+  'peer block w-full bg-transparent pb-2 text-xl leading-[1.2] font-bold text-ink outline-none placeholder:font-medium placeholder:text-soft/55';
+const rule =
+  'pointer-events-none absolute inset-x-0 bottom-0 h-0.5 origin-left rounded-full bg-ink/15 transition-[background-color,height] duration-300 in-[.js]:opacity-0 peer-focus:h-[3px] peer-focus:bg-ink peer-aria-invalid:bg-rose-500';
+const inkButton =
+  'group/cta inline-flex cursor-pointer items-center gap-3 rounded-full bg-ink py-2 pr-2 pl-6 text-[15px] font-medium text-white transition-colors duration-300 hover:bg-lime hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink disabled:cursor-wait disabled:opacity-70';
+const arrowCircle =
+  'grid size-9 place-items-center rounded-full bg-white text-ink transition-transform duration-300 ease-out-expo group-hover/cta:translate-x-0.5 motion-reduce:transition-none [&_svg]:size-4';
+---
+
+<div id="message" class="scroll-mt-28 rounded-2xl bg-pill p-6 sm:p-10 lg:p-12">
+  <form data-contact-form action="https://api.web3forms.com/submit" method="POST">
+    <input type="hidden" name="access_key" value={key} />
+    <input type="hidden" name="subject" value="Message from vektide.com" />
+    <input type="hidden" name="from_name" value="vektide.com" />
+    <input type="hidden" name="redirect" value={redirect} />
+    <!-- Bots fill every box; people never see this one. -->
+    <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" />
+
+    <fieldset data-topics>
+      <legend class="text-2xl font-bold tracking-tight sm:text-[28px]">What's this about?</legend>
+      <div class="mt-5 flex flex-wrap gap-2">
+        {topics.map((t, i) => (
+          <label class="cursor-pointer">
+            <input type="radio" name="topic" value={t.label} data-kind={t.kind} data-prompt={t.prompt} required={i === 0} class="peer sr-only" />
+            <span class="inline-flex h-11 items-center rounded-full bg-white px-5 text-[15px] whitespace-nowrap text-soft shadow-xs transition-[background-color,color,box-shadow] duration-300 peer-checked:bg-lime peer-checked:text-ink peer-checked:shadow-none peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink peer-aria-invalid:ring-2 peer-aria-invalid:ring-rose-500/60 hover:text-ink">
+              {t.label}
+            </span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+
+    <!-- "A demo": the fields step aside for a pointer to the demo form. -->
+    <div data-demo-hint hidden class="overflow-hidden">
+      <div class="mt-10 rounded-xl bg-white p-6 sm:p-8">
+        <p class="text-xl font-bold tracking-tight">Demos have their own quick form.</p>
+        <p class="mt-1.5 max-w-md text-soft">Tell us who you are and we'll call to set a time. It takes 30 seconds.</p>
+        <a href="/demo" class={`${inkButton} mt-6`}>
+          Book a demo
+          <span class={arrowCircle}><Fragment set:html={arrowRight} /></span>
+        </a>
+      </div>
+    </div>
+
+    <div data-fields class="overflow-hidden">
+      <div class="mt-10 grid gap-x-8 gap-y-7 sm:grid-cols-2">
+        {fields.map((f) => (
+          <label class="block min-w-0">
+            <span class="text-[15px] text-soft">{f.label}</span>
+            <span class="relative mt-2 block">
+              <input
+                name={f.name}
+                type={f.type}
+                required={f.required}
+                autocomplete={f.autocomplete}
+                placeholder={f.placeholder}
+                spellcheck={f.type === 'text' ? 'false' : undefined}
+                inputmode={f.type === 'tel' ? 'tel' : undefined}
+                pattern={f.type === 'tel' ? '[0-9+\\-\\s]{7,20}' : undefined}
+                class:list={[input, f.type === 'tel' && 'tabular-nums']}
+              />
+              <span data-rule class={rule}></span>
+            </span>
+          </label>
+        ))}
+      </div>
+
+      <label class="mt-8 block">
+        <span class="text-[15px] text-soft">Your message</span>
+        <textarea
+          name="message"
+          required
+          rows="4"
+          placeholder="Tell us a little about what you need."
+          class="mt-3 block w-full resize-none rounded-xl bg-white px-4 py-3 text-base outline-none placeholder:text-soft/60 focus-visible:ring-2 focus-visible:ring-ink aria-invalid:ring-2 aria-invalid:ring-rose-500"
+        ></textarea>
+      </label>
+      <p data-urgent hidden class="mt-3 text-sm text-soft">
+        For anything urgent, call
+        <a href={phones[0].tel} class="font-medium text-ink tabular-nums underline decoration-line underline-offset-4 transition-colors hover:decoration-ink">{phones[0].display}</a>.
+      </p>
+
+      <p data-error aria-live="polite" class="mt-5 min-h-6 text-[15px] text-rose-600"></p>
+
+      <div class="mt-4 flex flex-wrap items-center gap-x-6 gap-y-4">
+        <button type="submit" data-submit class={inkButton}>
+          <span data-label>Send message</span>
+          <span class={arrowCircle}><Fragment set:html={arrowRight} /></span>
+        </button>
+        <p class="text-sm text-soft">We reply within one working day.</p>
+      </div>
+    </div>
+
+    <div data-success hidden class="flex items-start gap-4">
+      <span class="grid size-11 shrink-0 place-items-center rounded-full bg-lime">
+        <svg viewBox="0 0 20 20" aria-hidden="true" class="size-5"><path d="m5 10.5 3.2 3L15 6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+      </span>
+      <div>
+        <p class="text-2xl font-bold tracking-tight">Message sent.</p>
+        <p data-success-body class="mt-2 max-w-md text-soft"></p>
+      </div>
+    </div>
+  </form>
+</div>
+
+<script>
+  import gsap from 'gsap';
+  import { submitWeb3Forms } from '../scripts/web3forms';
+  import { officeStatus, pageClock, phones } from '../data/contact';
+
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]')!;
+  const topicsSet = form.querySelector<HTMLElement>('[data-topics]')!;
+  const radios = [...form.querySelectorAll<HTMLInputElement>('input[name="topic"]')];
+  const fieldsBox = form.querySelector<HTMLElement>('[data-fields]')!;
+  const demoHint = form.querySelector<HTMLElement>('[data-demo-hint]')!;
+  const urgent = form.querySelector<HTMLElement>('[data-urgent]')!;
+  const message = form.querySelector<HTMLTextAreaElement>('textarea[name="message"]')!;
+  const error = form.querySelector<HTMLElement>('[data-error]')!;
+  const submit = form.querySelector<HTMLButtonElement>('[data-submit]')!;
+  const label = submit.querySelector<HTMLElement>('[data-label]')!;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const now = pageClock();
+  const field = (name: string) => form.elements.namedItem(name) as HTMLInputElement;
+  const topic = () => radios.find((r) => r.checked);
+
+  // JS takes over validation so the messages can speak in the page's voice.
+  form.noValidate = true;
+
+  // Collapse one panel and open the other, easing the height so the change reads clearly.
+  function swap(hide: HTMLElement, show: HTMLElement) {
+    if (!show.hidden) return;
+    const d = reduce ? 0 : 1;
+    gsap.killTweensOf([hide, show]);
+    gsap
+      .timeline()
+      .to(hide, { height: 0, opacity: 0, duration: 0.35 * d, ease: 'power3.inOut', onComplete: () => (hide.hidden = true) })
+      .add(() => (show.hidden = false))
+      .fromTo(show, { height: 0, opacity: 0 }, { height: 'auto', opacity: 1, duration: 0.5 * d, ease: 'power3.out', clearProps: 'height' });
+  }
+
+  form.addEventListener('change', (e) => {
+    const r = e.target as HTMLInputElement;
+    if (r.name !== 'topic') return;
+    radios.forEach((x) => x.setAttribute('aria-invalid', 'false'));
+    if (r.dataset.kind === 'demo') {
+      error.textContent = '';
+      swap(fieldsBox, demoHint);
+      return;
+    }
+    swap(demoHint, fieldsBox);
+    message.placeholder = r.dataset.prompt!;
+    urgent.hidden = r.dataset.kind !== 'support';
+  });
+
+  const digits = (s: string) => s.replace(/\D/g, '').length;
+  const needs: [string, string][] = [
+    ['name', 'your name'],
+    ['business', 'your business name'],
+    ['phone', 'a phone number'],
+    ['message', 'a message'],
+  ];
+
+  function check() {
+    const missing = needs.filter(([n]) => !field(n).value.trim());
+    const phone = field('phone').value.trim();
+    const badPhone = !!phone && (digits(phone) < 7 || digits(phone) > 15);
+    const badEmail = !field('email').checkValidity();
+    const noTopic = !topic();
+
+    const invalid = new Set(missing.map(([n]) => n));
+    if (badPhone) invalid.add('phone');
+    if (badEmail) invalid.add('email');
+    ['name', 'business', 'phone', 'email', 'message'].forEach((n) => field(n).setAttribute('aria-invalid', String(invalid.has(n))));
+    radios.forEach((r) => r.setAttribute('aria-invalid', String(noTopic)));
+
+    const list = missing.map(([, t]) => t);
+    const joined = list.length > 1 ? `${list.slice(0, -1).join(', ')} and ${list.at(-1)}` : list[0];
+    let text = '';
+    if (noTopic && list.length) text = `Pick what your message is about, then add ${joined}.`;
+    else if (noTopic) text = 'Pick what your message is about.';
+    else if (list.length) text = `Add ${joined} so we can reply.`;
+    else if (badPhone) text = 'That phone number looks wrong. Use a 10-digit mobile, or a landline with its area code.';
+    else if (badEmail) text = 'Check the email address, or leave it blank.';
+
+    error.textContent = text;
+    if (noTopic) radios[0].focus();
+    else if (invalid.size) field([...invalid][0]).focus();
+    return !text;
+  }
+
+  // Once someone fixes a field, drop its red mark straight away.
+  form.addEventListener('input', (e) => {
+    const t = e.target as HTMLElement;
+    if (t.getAttribute('aria-invalid') === 'true') t.setAttribute('aria-invalid', 'false');
+  });
+
+  async function send() {
+    const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
+    if (data.botcheck) return; // a bot: pretend it worked
+    delete data.redirect;
+    data.subject = `Contact: ${data.topic}, ${data.business}`;
+    await submitWeb3Forms(data, 'contact');
+  }
+
+  function showSuccess(phone: string, email: string) {
+    const body = form.querySelector<HTMLElement>('[data-success-body]')!;
+    const sooner = officeStatus(now()).open ? " We're in now, so it may be sooner." : '';
+    body.textContent = `We'll reply within one working day, on ${phone}${email ? ` or at ${email}` : ''}.${sooner}`;
+    topicsSet.remove();
+    fieldsBox.remove();
+    demoHint.remove();
+    const success = form.querySelector<HTMLElement>('[data-success]')!;
+    success.hidden = false;
+    success.setAttribute('tabindex', '-1');
+    success.focus({ preventScroll: true });
+    if (!reduce) gsap.from(success, { opacity: 0, y: 16, duration: 0.6, ease: 'power3.out' });
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (submit.disabled || topic()?.dataset.kind === 'demo' || !check()) return;
+    submit.disabled = true;
+    label.textContent = 'Sending…';
+    try {
+      const phone = field('phone').value.trim();
+      const email = field('email').value.trim();
+      await send();
+      showSuccess(phone, email);
+    } catch (err) {
+      console.error('[contact] send failed', err);
+      error.textContent = `Couldn't send. Check your connection and try again, or call ${phones[0].display}.`;
+      submit.disabled = false;
+      label.textContent = 'Send message';
+    }
+  });
+</script>
