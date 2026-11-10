@@ -2,12 +2,46 @@
 
 @theme {
   --font-sans: 'Satoshi', system-ui, sans-serif;
-  --color-ink: #111;
-  --color-soft: #5c5c5c;
-  --color-line: #e4e4e4;
-  --color-pill: #f2f2f2;
-  --color-lime: #d4fb4f;
-  --color-brand: #1d3d95; /* logo blue */
-  --color-scrim: rgb(236 236 236 / 0.86);
+
+  /* Cool-shifted neutrals: greys lean slightly toward the logo blue so they sit with it */
+  --color-ink: #0f1424;
+  --color-soft: #5a6074;
+  --color-line: #e2e6ee;
+  --color-pill: #f1f3f8;
+  --color-scrim: rgb(233 237 246 / 0.86);
+
+  /* Brand scale, built on the logo blue #1d3d95 (hue ~224deg) */
+  --color-brand-50: #eef2fb; /* ice: selected/hover fills on white */
+  --color-brand-100: #dde5f7;
+  --color-brand-200: #bccbef; /* rings, soft borders */
+  --color-brand-300: #8fa6e0; /* accent text on navy */
+  --color-brand-400: #5b7bcc;
+  --color-brand-500: #3458b8;
+  --color-brand: #1d3d95; /* logo blue: 9.7:1 against white */
+  --color-brand-700: #183279; /* hover for brand buttons */
+  --color-brand-800: #13285f;
+  --color-brand-900: #0e1d45;
+  --color-brand-950: #080f26;
+  --color-tide: #7fa8ff; /* luminous blue: glows and small accents on dark panels only */
+
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Deep navy content panels (Featured, PCMS Proof, Custom Included, case-study results) */
+@utility bg-panel {
+  background:
+    radial-gradient(120% 80% at 0% 0%, rgb(127 168 255 / 0.14), transparent 55%),
+    linear-gradient(160deg, #13285f 0%, #0c1a3f 55%, #070e22 100%);
+}
+
+/* Footer: the logo tile itself, with a soft pool of light in the corner */
+@utility bg-panel-brand {
+  background:
+    radial-gradient(110% 90% at 0% 0%, rgb(255 255 255 / 0.12), transparent 55%),
+    linear-gradient(160deg, #2449a8 0%, #1d3d95 50%, #18337f 100%);
+}
+
+::selection {
+  background: var(--color-brand);
+  color: #fff;
 }
