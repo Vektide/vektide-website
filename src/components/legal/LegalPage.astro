@@ -50,7 +50,7 @@ const link = 'rounded-full px-3 py-1.5 text-[15px] leading-snug text-soft transi
       <ul class="mt-7 grid gap-x-12 gap-y-5 md:grid-cols-2">
         {data.summary.map((point) => (
           <li class="flex gap-3.5 text-lg leading-snug">
-            <span class="mt-px grid size-7 shrink-0 place-items-center rounded-full bg-white [&_svg]:size-4"><Fragment set:html={check} /></span>
+            <span class="mt-px grid size-7 shrink-0 place-items-center rounded-full bg-brand text-white [&_svg]:size-4"><Fragment set:html={check} /></span>
             {point}
           </li>
         ))}
