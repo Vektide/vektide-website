@@ -1,0 +1,43 @@
+---
+// Heading on the left; on the right one sentence that lights up letter by letter as it
+// scrolls (the same treatment as the home page). Used by PCMS ("Where clinics lose money")
+// and Custom Systems ("Who it's for").
+interface Props {
+  heading: string;
+  statement: string;
+}
+const { heading, statement } = Astro.props;
+---
+
+<section data-statement class="mx-auto grid max-w-[1280px] gap-10 px-4 py-24 sm:px-8 md:grid-cols-[1fr_1.6fr] md:gap-20 md:py-36">
+  <h2 class="text-5xl leading-[0.95] font-bold tracking-tighter sm:text-6xl">{heading}</h2>
+
+  <!-- Letters are split so they can light up one by one; screen readers get the plain sentence. -->
+  <p aria-label={statement} class="text-3xl leading-[1.12] font-bold tracking-tight text-balance sm:text-4xl lg:text-[44px]">
+    {statement.split(' ').map((word, i, words) => (
+      <>
+        <span aria-hidden="true" class="inline-block whitespace-nowrap">
+          {[...word].map((ch) => <span data-st-char>{ch}</span>)}
+        </span>
+        {i < words.length - 1 && ' '}
+      </>
+    ))}
+  </p>
+</section>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll<HTMLElement>('[data-statement]').forEach((section) =>
+      gsap.fromTo(
+        section.querySelectorAll('[data-st-char]'),
+        { opacity: 0.15 },
+        { opacity: 1, stagger: 0.04, ease: 'none', scrollTrigger: { trigger: section.querySelector('p'), start: 'top 80%', end: 'bottom 45%', scrub: true } },
+      ),
+    );
+  }
+</script>

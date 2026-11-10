@@ -181,48 +181,80 @@ Button: Book a demo
 
 ## Custom Systems
 
+This page says what we can build for you, not what we've built: PCMS is our only shipped product, so the page shows no example systems or screens. We build custom software, web apps, mobile apps (Android and iPhone), websites, and new features for software a business already uses. Every "Start a project" link goes to `/contact?topic=project`, which opens the contact form with "A new project" already picked.
+
 ### Hero
 
 Headline: Your workflow. Built as software.
 
-Subhead: No off-the-shelf tool fits exactly? We build systems around the way your business already runs — then host and maintain them for you.
+Subhead: Tell us what you need and we'll build it: software, web apps, mobile apps, websites or new features for what you already use. Then we host it and look after it for you.
 
-Button: Start a project
-
-### What we build
-
-- Inventory and stock — Track stock across stores, scan barcodes and QR codes, get low-stock alerts.
-- Billing and accounting — Invoices, VAT-ready records and clear daily reports.
-- Operations dashboards — See sales, dues and activity at a glance, on web or mobile.
-- Mobile apps — Android apps for your staff, field teams or customers.
-- Loyalty and rewards — Point systems, QR scanning and reward tracking.
-- Anything still on paper — If your team writes it down, we can digitize it.
+Buttons: Start a project · See what we build
 
 ### Who it's for
 
-Body: Importers, wholesalers, retailers, clinics, distributors — any business where the work is real but the tools are notebooks, Excel sheets or software that never quite fit.
+Heading: Who it's for.
+
+Statement: Importers, wholesalers, retailers, clinics and distributors: any business where the work is real but the tools are notebooks, Excel sheets or software that never quite fit.
+
+### What we can build
+
+Heading: What we can build
+
+Intro: If your business needs it, we can build it. Start with one thing and add more later.
+
+- Software for your business — A system built around how your team works: stock, billing, bookings, records, reports, whatever you keep track of today.
+- Web apps — They open in any browser on a computer, tablet or phone. Nothing to install, and every staff member gets their own login.
+- Mobile apps — Apps for Android and iPhone, for your staff out in the field or for your customers.
+- Websites — A clear, fast site that tells customers who you are, what you offer and how to reach you.
+- New features — Something missing from the software you already use? We can often add it, or build the piece that fills the gap.
+
+Closing line: Not sure what you need? Tell us how your business works and we'll suggest what to build.
+
+### What comes with every system
+
+- Works on phone and computer
+- Your own private system and database
+- Hosting, security and backups handled by us
+- Nepali dates and rupees built in
+- Staff training and simple guides
+- A direct line to the developers who built it
+
+Card: Built the same way: PCMS — Our polyclinic system, live at Gorkhakali Polyclinic. — Explore PCMS
 
 ### Our process
+
+Heading: From first call to launch
+
+Intro: Six steps, one team. The people you talk to on day one build and support your system.
 
 1. Discovery call — Free. We learn what you do and where it hurts.
 2. Workflow mapping — We document your process and agree on what to build.
 3. Estimate — A clear scope, timeline and price before any work starts.
 4. Build and review — You see progress regularly and give feedback as we go.
-5. Launch and training — We deploy, migrate your data and train your team.
+5. Launch and training — We set it up, move your data over and train your team.
 6. Ongoing support — Hosting, updates, backups and fixes.
 
-### What you get
+What it costs: A clear quote before any work starts: a one-time build fee plus a yearly plan for hosting, updates, backups and support. Billed in rupees.
 
-- Web and mobile access
-- Your own private system and database, with hosting, security and backups handled by us
-- Staff training and documentation
-- A direct line to the developers who built it
+Link: Book a discovery call
 
-### CTA
+### FAQ
+
+Heading: Questions, answered. · Intro: What business owners ask before starting a project.
+
+- How much does a custom system cost? It depends on what it needs to do. After a free discovery call you get a written quote: a one-time fee plus a yearly plan for hosting, updates and support, billed in rupees.
+- How long does it take? A website usually takes a few weeks. Software and apps depend on how much they need to do, and you get a timeline with the quote, before any work starts. [Confirm.]
+- Can you add features to software we already use? Often, yes. If the software lets other systems connect to it, or its makers will work with us, we can add what's missing. If not, we'll tell you on the discovery call and suggest another way.
+- Can you move our existing data over? Yes. Excel sheets, exports from old software, even paper registers. We bring it in during launch.
+- Can we start small? Yes. Start with the part that costs you the most, and add more once it's running.
+- Do we need a mobile app or a web app? It depends on who uses it and where. A web app works on any device with nothing to install; a mobile app suits staff in the field or customers on their phones. We'll recommend one on the discovery call.
+- Who owns the system and our data? Your data is always yours, and you can get a full export whenever you ask. The software is licensed to you, as our terms set out. (Matches terms §15 and §17.)
+- What happens after launch? We host it, update it, back it up and fix issues, usually remotely. You talk to the people who built it, [support hours], Nepal time.
+
+### CTA (footer)
 
 Heading: Tell us how your business works.
-
-Body: A 30-minute call is enough to know if we can help.
 
 Button: Book a discovery call
 
@@ -389,7 +421,7 @@ Bottom line: © 2026 Vektide Technologies Pvt. Ltd. · Lalitpur, Nepal
 |---|---|---|
 | Home | Vektide — Software for Nepali Businesses | Vektide builds and manages software that replaces manual workflows for clinics, importers and retailers in Nepal. |
 | PCMS | PCMS — Polyclinic Management System \| Vektide | Reception, lab and billing in one system. Track every consultation and lab fee. Your clinic's own private system and database, managed by Vektide. |
-| Custom Systems | Custom Business Software in Nepal \| Vektide | Inventory, billing, dashboards and mobile apps built around your workflow — hosted and maintained for you. |
+| Custom Systems | Custom Business Software in Nepal \| Vektide | Custom software, web apps, mobile apps and websites, built around what your business needs, then hosted and maintained for you. Made in Lalitpur for businesses across Nepal. |
 | About | About Vektide Technologies | A Lalitpur software company taking the manual work out of Nepali businesses, starting with healthcare. |
 | Privacy | Privacy policy \| Vektide | What vektide.com collects, how Vektide handles data in the systems it runs for clients, and who to ask about it. |
 | Terms | Terms of service \| Vektide | The terms for using vektide.com, and a plain summary of how licenses, hosting, fees and data work when you become a Vektide client. |

@@ -1,0 +1,32 @@
+---
+// Custom Systems hero: left-aligned and text only, like About.
+---
+
+<section class="mx-auto max-w-[1280px] px-4 pt-36 sm:px-8 md:pt-48">
+  <h1 data-ch-in class="max-w-5xl text-5xl leading-[0.95] font-bold tracking-tighter in-[.js]:opacity-0 sm:text-7xl lg:text-8xl">
+    Your workflow.<br />Built as software.
+  </h1>
+
+  <p data-ch-in class="mt-6 max-w-xl text-lg text-soft in-[.js]:opacity-0 sm:text-xl">
+    Tell us what you need and we’ll build it: software, web apps, mobile apps, websites or new features for what you already use.
+    Then we host it and look after it for you.
+  </p>
+
+  <div data-ch-in class="mt-9 flex flex-wrap gap-3 in-[.js]:opacity-0">
+    <a href="/contact?topic=project" class="rounded-full bg-ink px-6 py-3 text-[15px] font-medium text-white transition-colors duration-300 hover:bg-lime hover:text-ink">
+      Start a project
+    </a>
+    <a href="#what-we-build" class="rounded-full bg-pill px-6 py-3 text-[15px] font-medium transition-colors duration-300 hover:bg-line">
+      See what we build
+    </a>
+  </div>
+</section>
+
+<script>
+  import gsap from 'gsap';
+
+  // The heading, intro and buttons rise in once.
+  const intro = document.querySelectorAll<HTMLElement>('[data-ch-in]');
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) gsap.set(intro, { opacity: 1 });
+  else gsap.fromTo(intro, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.9, stagger: 0.08, ease: 'power3.out', delay: 0.1 });
+</script>

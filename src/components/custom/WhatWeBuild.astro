@@ -1,0 +1,61 @@
+---
+// What we can build: the kinds of work we take on, not things we've already shipped.
+// Title column on the left (sticky on desktop), a ruled list on the right. Not a
+// sequence, so icon tiles instead of numbers.
+const kinds = [
+  {
+    title: 'Software for your business',
+    body: 'A system built around how your team works: stock, billing, bookings, records, reports, whatever you keep track of today.',
+    icon: '<rect x="2" y="2.5" width="12" height="11" rx="1.5"/><path d="M2 5.5h12M5 8.5h6M5 11h3.5"/>',
+  },
+  {
+    title: 'Web apps',
+    body: 'They open in any browser on a computer, tablet or phone. Nothing to install, and every staff member gets their own login.',
+    icon: '<rect x="1.5" y="3" width="13" height="8.5" rx="1"/><path d="M5.5 14h5M8 11.5V14"/>',
+  },
+  {
+    title: 'Mobile apps',
+    body: 'Apps for Android and iPhone, for your staff out in the field or for your customers.',
+    icon: '<rect x="4.5" y="1.5" width="7" height="13" rx="1.5"/><path d="M7 12.5h2"/>',
+  },
+  {
+    title: 'Websites',
+    body: 'A clear, fast site that tells customers who you are, what you offer and how to reach you.',
+    icon: '<circle cx="8" cy="8" r="6"/><path d="M2 8h12M8 2c1.8 1.7 2.6 3.7 2.6 6S9.8 12.3 8 14M8 2C6.2 3.7 5.4 5.7 5.4 8S6.2 12.3 8 14"/>',
+  },
+  {
+    title: 'New features',
+    body: 'Something missing from the software you already use? We can often add it, or build the piece that fills the gap.',
+    icon: '<path d="M8 3v10M3 8h10"/>',
+  },
+];
+---
+
+<section id="what-we-build" class="relative z-10 scroll-mt-24 bg-white">
+  <div class="mx-auto grid max-w-[1280px] gap-14 px-4 py-24 sm:px-8 md:grid-cols-[1fr_1.6fr] md:gap-20 md:py-36">
+    <div class="md:sticky md:top-32 md:self-start">
+      <h2 class="text-5xl leading-[0.95] font-bold tracking-tighter sm:text-6xl">What we<br />can build</h2>
+      <p class="mt-6 max-w-xs text-soft">If your business needs it, we can build it. Start with one thing and add more later.</p>
+    </div>
+
+    <div>
+      <ul>
+        {kinds.map((k) => (
+          <li class="grid grid-cols-[auto_1fr] gap-5 border-t border-line py-9 sm:gap-7">
+            <span class="grid size-11 shrink-0 place-items-center rounded-lg bg-pill">
+              <svg viewBox="0 0 16 16" aria-hidden="true" class="size-5 fill-none stroke-current stroke-[1.4]" stroke-linecap="round" stroke-linejoin="round" set:html={k.icon} />
+            </span>
+            <div>
+              <h3 class="text-2xl font-bold tracking-tight sm:text-[28px]">{k.title}</h3>
+              <p class="mt-3 max-w-lg text-soft">{k.body}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <p class="border-t border-line pt-9 text-2xl leading-snug font-bold tracking-tight">
+        Not sure what you need? <span class="text-soft">Tell us how your business works and we’ll suggest what to build.</span>
+      </p>
+    </div>
+  </div>
+</section>

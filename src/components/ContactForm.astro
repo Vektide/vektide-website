@@ -183,6 +183,13 @@ const arrowCircle =
     urgent.hidden = r.dataset.kind !== 'support';
   });
 
+  // Links like /contact?topic=project arrive with that topic already picked.
+  const preset = radios.find((r) => r.dataset.kind === new URLSearchParams(location.search).get('topic'));
+  if (preset) {
+    preset.checked = true;
+    preset.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+
   const digits = (s: string) => s.replace(/\D/g, '').length;
   const needs: [string, string][] = [
     ['name', 'your name'],

@@ -1,0 +1,99 @@
+---
+// Custom Systems page. Copy: docs/website-copy.md, "Custom Systems".
+// It says what we can build for you, not what we've built: PCMS is our only shipped product.
+import Base from '../layouts/Base.astro';
+import Navbar from '../components/Navbar.astro';
+import CustomHero from '../components/custom/CustomHero.astro';
+import WhatWeBuild from '../components/custom/WhatWeBuild.astro';
+import Statement from '../components/Statement.astro';
+import Included from '../components/custom/Included.astro';
+import Process from '../components/Process.astro';
+import Faq from '../components/Faq.astro';
+import Footer from '../components/Footer.astro';
+import { hours } from '../data/contact';
+
+const title = 'Custom Business Software in Nepal | Vektide';
+const description =
+  'Custom software, web apps, mobile apps and websites, built around what your business needs, then hosted and maintained for you. Made in Lalitpur for businesses across Nepal.';
+const project = '/contact?topic=project';
+
+const steps: [string, string][] = [
+  ['Discovery call', 'Free. We learn what you do and where it hurts.'],
+  ['Workflow mapping', 'We document your process and agree on what to build.'],
+  ['Estimate', 'A clear scope, timeline and price before any work starts.'],
+  ['Build and review', 'You see progress regularly and give feedback as we go.'],
+  ['Launch and training', 'We set it up, move your data over and train your team.'],
+  ['Ongoing support', 'Hosting, updates, backups and fixes.'],
+];
+
+const faqs: [string, string][] = [
+  [
+    'How much does a custom system cost?',
+    'It depends on what it needs to do. After a free discovery call you get a written quote: a one-time fee plus a yearly plan for hosting, updates and support, billed in rupees.',
+  ],
+  [
+    'How long does it take?',
+    'A website usually takes a few weeks. Software and apps depend on how much they need to do, and you get a timeline with the quote, before any work starts.',
+  ],
+  [
+    'Can you add features to software we already use?',
+    'Often, yes. If the software lets other systems connect to it, or its makers will work with us, we can add what’s missing. If not, we’ll tell you on the discovery call and suggest another way.',
+  ],
+  ['Can you move our existing data over?', 'Yes. Excel sheets, exports from old software, even paper registers. We bring it in during launch.'],
+  ['Can we start small?', 'Yes. Start with the part that costs you the most, and add more once it’s running.'],
+  [
+    'Do we need a mobile app or a web app?',
+    'It depends on who uses it and where. A web app works on any device with nothing to install; a mobile app suits staff in the field or customers on their phones. We’ll recommend one on the discovery call.',
+  ],
+  [
+    'Who owns the system and our data?',
+    'Your data is always yours, and you can get a full export whenever you ask. The software is licensed to you, as our terms set out.',
+  ],
+  [
+    'What happens after launch?',
+    `We host it, update it, back it up and fix issues, usually remotely. You talk to the people who built it, ${hours.text}, Nepal time.`,
+  ],
+];
+
+// Describes the service for search engines; Vektide's own details come from Base.
+const service = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Custom Systems',
+  serviceType: 'Custom software development',
+  description,
+  url: new URL('/custom', Astro.site).href,
+  areaServed: { '@type': 'Country', name: 'Nepal' },
+  provider: { '@id': new URL('/#organization', Astro.site).href },
+};
+---
+
+<Base title={title} description={description}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(service)} />
+  <Navbar />
+  <main class="min-h-screen">
+    <CustomHero />
+    <Statement
+      heading="Who it’s for."
+      statement="Importers, wholesalers, retailers, clinics and distributors: any business where the work is real but the tools are notebooks, Excel sheets or software that never quite fit."
+    />
+    <WhatWeBuild />
+    <Included />
+    <Process
+      title="From first call<br />to launch"
+      intro="Six steps, one team. The people you talk to on day one build and support your system."
+      steps={steps}
+      link={{ href: project, text: 'Book a discovery call' }}
+    >
+      <div data-pr-in class="mt-10 max-w-xs border-t border-line pt-6">
+        <h3 class="font-bold">What it costs</h3>
+        <p class="mt-2 text-soft">
+          A clear quote before any work starts: a one-time build fee plus a yearly plan for hosting, updates, backups and support. Billed in
+          rupees.
+        </p>
+      </div>
+    </Process>
+    <Faq heading="Questions, answered." intro="What business owners ask before starting a project." faqs={faqs} />
+  </main>
+  <Footer headline="Tell us how your business works." ctaHref={project} ctaText="Book a discovery call" />
+</Base>
