@@ -1,0 +1,25 @@
+---
+// A paper OPD token slip, the paper PCMS prints at reception. Decoration only.
+interface Props {
+  token?: string;
+  class?: string;
+  style?: string;
+}
+const { token = '#3', class: cls, style } = Astro.props;
+---
+
+<div
+  aria-hidden="true"
+  style={style}
+  class:list={['w-[184px] rounded-md bg-white px-5 pt-4 pb-5 text-left text-ink shadow-[0_2px_4px_rgb(0_0_0/0.06),0_24px_40px_-16px_rgb(0_0_0/0.35)] ring-1 ring-black/5 lg:w-[208px]', cls]}
+>
+  <p class="text-[11px] font-medium text-soft">Himalayan Polyclinic</p>
+  <p class="mt-3 text-[13px] text-soft">OPD token</p>
+  <p data-slip-token class="text-6xl leading-none font-black tracking-tighter tabular-nums">{token}</p>
+  <p class="mt-3 text-[13px] leading-snug font-medium">Dr. Ram Bahadur Thapa</p>
+  <p class="text-[12px] text-soft">General Physician</p>
+  <div class="mt-4 flex items-baseline justify-between border-t border-dashed border-line pt-3 text-[13px]">
+    <span class="text-soft">Fee</span>
+    <span class="font-medium tabular-nums">NPR 500</span>
+  </div>
+</div>

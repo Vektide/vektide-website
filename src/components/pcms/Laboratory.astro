@@ -1,0 +1,91 @@
+---
+// Chapter 2 · Laboratory (add-on): a test moving from order to result beside the lab
+// dashboard, then the money side: unpaid tests and lab receipts.
+import Chapter from './Chapter.astro';
+import Window from './Window.astro';
+import lab from '../../assets/screens/desk-lab.png';
+
+const card = 'flex flex-col rounded-[28px] bg-pill p-6 sm:p-8';
+const steps = ['Ordered', 'Sample collected', 'Result ready'];
+const unpaid: [string, string, string][] = [
+  ['USG · Abdomen', 'Maya Tamang', 'NPR 1,800'],
+  ['Lab · Thyroid panel', 'Bikash Lama', 'NPR 1,400'],
+  ['ECG', 'Hari Shrestha', 'NPR 600'],
+];
+---
+
+<Chapter word="Laboratory." intro="Record tests, track results and see exactly which lab payments are still pending." tone="white" addOn>
+  <div class="grid gap-4 lg:grid-cols-[1fr_1.3fr] lg:gap-6">
+    <article data-reveal class={card}>
+      <h3 class="text-2xl font-bold tracking-tight">Orders and sample queue</h3>
+      <p class="mt-2 text-soft">Lab, X-ray, ultrasound and ECG orders land in one worklist.</p>
+      <div data-mock="test" aria-hidden="true" class="mt-8 flex-1 rounded-2xl bg-white p-5 ring-1 ring-line">
+        <p class="flex justify-between text-[13px]"><span class="font-medium">CBC · Anita Rai</span><span class="text-soft">Token #14</span></p>
+        <ol class="relative mt-6 space-y-6">
+          <span class="absolute top-2 bottom-2 left-[11px] w-px bg-line"></span>
+          <span data-fill class="absolute top-2 bottom-2 left-[11px] w-px origin-top bg-brand"></span>
+          {steps.map((s) => (
+            <li data-step class="relative flex items-center gap-4">
+              <span data-dot class="relative grid size-6 place-items-center rounded-full bg-brand text-[11px] text-white ring-4 ring-white">✓</span>
+              <span class="font-medium">{s}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </article>
+    <div data-reveal class="rounded-[28px] bg-pill p-4 sm:p-6">
+      <Window
+        src={lab}
+        alt="PCMS laboratory dashboard: tests waiting and done today, the waiting queue for lab and X-ray, unpaid work and reports ready to deliver"
+        title="Laboratory"
+        note="Today across the lab and X-ray rooms"
+        sizes="(min-width: 1280px) 680px, (min-width: 1024px) 55vw, calc(100vw - 64px)"
+      />
+    </div>
+  </div>
+
+  <h2 data-reveal class="mx-auto max-w-2xl text-center text-4xl leading-[0.95] font-bold tracking-tighter sm:text-5xl">Every lab fee, <span class="text-soft">accounted for.</span></h2>
+
+  <div class="grid gap-4 md:grid-cols-2 lg:gap-6">
+    <article data-reveal class={card}>
+      <h3 class="text-2xl font-bold tracking-tight">Pending lab payments</h3>
+      <p class="mt-2 text-soft">Unpaid tests stay on the list until they’re settled.</p>
+      <ul aria-hidden="true" class="mt-8 divide-y divide-line rounded-2xl bg-white px-5 ring-1 ring-line">
+        {unpaid.map(([test, who, amt]) => (
+          <li class="flex items-center justify-between gap-3 py-4 text-[14px]">
+            <span><span class="block font-medium">{test}</span><span class="text-[13px] text-soft">{who}</span></span>
+            <span class="flex items-center gap-3"><span class="tabular-nums">{amt}</span><span class="rounded-full bg-pill px-2.5 py-1 text-[12px] font-medium text-soft">Unpaid</span></span>
+          </li>
+        ))}
+      </ul>
+    </article>
+    <article data-reveal class={card}>
+      <h3 class="text-2xl font-bold tracking-tight">Lab billing</h3>
+      <p class="mt-2 text-soft">Lab income is tracked apart from consultations, and reported together.</p>
+      <div aria-hidden="true" class="mt-8 rounded-2xl bg-white p-5 text-[14px] ring-1 ring-line">
+        <p class="flex justify-between"><span class="font-medium">Receipt D46E5F16</span><span class="rounded-full bg-pill px-2.5 py-0.5 text-[12px] text-soft">Lab</span></p>
+        <p class="mt-4 flex justify-between border-t border-line pt-4"><span>CBC</span><span class="tabular-nums">NPR 500</span></p>
+        <p class="mt-2 flex justify-between"><span>Lipid profile</span><span class="tabular-nums">NPR 400</span></p>
+        <p class="mt-4 flex justify-between rounded-lg bg-brand px-3 py-2.5 font-medium text-white"><span>Paid · Cash</span><span class="tabular-nums">NPR 900</span></p>
+      </div>
+    </article>
+  </div>
+</Chapter>
+
+<script>
+  import gsap from 'gsap';
+  import { loop } from '../../scripts/reveal';
+
+  // The test walks down its steps: the rail fills and each step's dot pops in.
+  const el = document.querySelector<HTMLElement>('[data-mock="test"]')!;
+  const dots = el.querySelectorAll('[data-dot]');
+  const tl = gsap.timeline({ repeat: -1, repeatDelay: 2 });
+  tl.set(el.querySelectorAll('[data-step]'), { opacity: 0.35 })
+    .set(dots, { scale: 0 })
+    .set(el.querySelector('[data-fill]'), { scaleY: 0 });
+  el.querySelectorAll('[data-step]').forEach((step, i) => {
+    tl.to(step, { opacity: 1, duration: 0.3 }, `+=${i ? 0.5 : 0.4}`).to(dots[i], { scale: 1, duration: 0.4, ease: 'back.out(2.5)' }, '<');
+    if (i < dots.length - 1) tl.to(el.querySelector('[data-fill]'), { scaleY: (i + 1) / (dots.length - 1), duration: 0.6, ease: 'power2.inOut' });
+  });
+  loop(el, tl);
+</script>

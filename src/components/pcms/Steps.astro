@@ -1,0 +1,111 @@
+---
+// Getting started: the four steps as a numbered list; picking one swaps the card on the right,
+// whose checklist ticks itself in. The price line sits underneath.
+import { hours } from '../../data/contact';
+
+const steps: { name: string; body: string; checks: string[] }[] = [
+  { name: 'Demo', body: 'We show you PCMS with your clinic’s workflow in mind.', checks: ['Your reception flow', 'Your lab and tests', 'Your daily reports'] },
+  { name: 'Setup', body: 'We set up your clinic’s private system and configure doctors, tests, fees and staff accounts.', checks: ['Doctors', 'Tests', 'Fees', 'Staff accounts'] },
+  { name: 'Training', body: 'Your team learns it in a day.', checks: ['Reception', 'Laboratory', 'Admin'] },
+  { name: 'Go live', body: 'We stay on call while you switch over.', checks: ['Switch-over day, with us on call', `Support ${hours.text}`] },
+];
+---
+
+<section data-steps class="relative z-10 bg-white">
+  <div class="mx-auto max-w-[1280px] px-4 py-24 sm:px-8 md:py-36">
+    <div class="grid gap-6 md:grid-cols-2 md:items-end md:gap-16">
+      <h2 data-reveal class="text-5xl leading-[0.95] font-bold tracking-tighter sm:text-6xl">Getting <span class="text-soft">started.</span></h2>
+      <p data-reveal class="max-w-md text-lg text-soft">From first demo to a clinic running on PCMS, with the same team at every step.</p>
+    </div>
+
+    <div class="mt-14 grid gap-8 md:mt-20 lg:grid-cols-[1fr_1.3fr] lg:gap-16">
+      <ol data-reveal role="tablist" aria-label="Getting started" class="border-t border-line">
+        {steps.map((s, i) => (
+          <li class="border-b border-line">
+            <button
+              type="button"
+              role="tab"
+              id={`step-tab-${i}`}
+              aria-controls={`step-panel-${i}`}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              data-step-tab
+              class="group/step flex w-full cursor-pointer items-baseline gap-5 py-6 text-left text-3xl font-bold tracking-tight text-ink/25 transition-colors duration-400 hover:text-ink/60 aria-selected:text-ink sm:text-4xl"
+            >
+              <span class="text-[13px] font-medium tracking-normal tabular-nums text-soft group-aria-selected/step:text-brand">0{i + 1}</span>
+              {s.name}
+            </button>
+          </li>
+        ))}
+      </ol>
+
+      <div data-reveal class="grid rounded-[32px] bg-pill p-4 sm:p-8">
+        {steps.map((s, i) => (
+          <div
+            role="tabpanel"
+            id={`step-panel-${i}`}
+            aria-labelledby={`step-tab-${i}`}
+            data-step-panel
+            class:list={['col-start-1 row-start-1 self-center rounded-[24px] bg-white p-7 ring-1 ring-line sm:p-10', i > 0 && 'invisible opacity-0']}
+          >
+            <p class="text-[13px] font-medium tracking-[0.14em] text-brand uppercase">Step 0{i + 1}</p>
+            <h3 class="mt-3 text-3xl font-bold tracking-tight">{s.name}</h3>
+            <p class="mt-3 max-w-sm text-lg text-soft">{s.body}</p>
+            <ul class="mt-8 space-y-3">
+              {s.checks.map((c) => (
+                <li data-check class="flex items-center gap-3 rounded-xl bg-pill px-4 py-3">
+                  <span aria-hidden="true" class="grid size-6 shrink-0 place-items-center rounded-full bg-brand">
+                    <svg viewBox="0 0 12 12" class="size-3 fill-none stroke-white stroke-[1.8]" stroke-linecap="round" stroke-linejoin="round"><path d="m2.5 6.2 2.3 2.3 4.7-5" /></svg>
+                  </span>
+                  {c}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div data-reveal class="mt-16 max-w-md border-t border-line pt-6">
+      <h3 class="font-bold">What it costs</h3>
+      <p class="mt-2 text-soft">
+        A one-time license for the core system and the modules you choose, plus a yearly plan for hosting, updates, backups and support.
+        Billed in rupees.
+      </p>
+      <a href="/demo" class="mt-4 inline-block font-medium text-brand underline decoration-brand-200 underline-offset-4 transition-colors hover:decoration-brand">Get a quote</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  import gsap from 'gsap';
+
+  const section = document.querySelector<HTMLElement>('[data-steps]')!;
+  const tabs = [...section.querySelectorAll<HTMLElement>('[data-step-tab]')];
+  const panels = [...section.querySelectorAll<HTMLElement>('[data-step-panel]')];
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let active = 0;
+
+  function show(next: number) {
+    if (next === active) return;
+    const leaving = panels[active];
+    active = next;
+    tabs.forEach((t, i) => t.setAttribute('aria-selected', String(i === next)));
+    const d = reduce ? 0 : 1;
+    gsap.to(leaving, { autoAlpha: 0, y: -16, duration: 0.3 * d, ease: 'power2.in', overwrite: true });
+    gsap
+      .timeline()
+      .fromTo(panels[next], { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.6 * d, ease: 'power3.out', overwrite: true }, 0.15 * d)
+      .from(panels[next].querySelectorAll('[data-check]'), { autoAlpha: 0, x: -12, duration: 0.4 * d, stagger: 0.08 * d, ease: 'power3.out' }, 0.3 * d);
+  }
+
+  tabs.forEach((t, i) => t.addEventListener('click', () => show(i)));
+  // Arrow keys move between steps, as in any tab list.
+  section.querySelector('[role="tablist"]')!.addEventListener('keydown', (e) => {
+    const k = (e as KeyboardEvent).key;
+    if (k !== 'ArrowDown' && k !== 'ArrowUp') return;
+    e.preventDefault();
+    const next = (active + (k === 'ArrowDown' ? 1 : tabs.length - 1)) % tabs.length;
+    show(next);
+    tabs[next].focus();
+  });
+</script>

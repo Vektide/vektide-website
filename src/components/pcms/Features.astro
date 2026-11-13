@@ -1,64 +1,253 @@
 ---
-// Key features: a quiet, hairline-ruled list. Pending payments is the core pitch, so it
-// runs the full width with bigger type; the rest sit in two columns, and the managed-hosting
-// item (the longest) closes the list full width. No numbers: not a sequence.
-const [lead, ...rest] = [
-  {
-    title: 'Pending payment tracking',
-    body: 'Never lose a lab fee again. Every unpaid amount is visible until it’s settled.',
-    icon: '<path d="M4 2h8v12l-2-1.2L8 14l-2-1.2L4 14z"/><path d="M6 6h4M6 9h2.5"/>',
-  },
-  {
-    title: 'Token and queue management',
-    body: 'Patients know their turn; reception stays calm.',
-    icon: '<path d="M3 4h10M3 8h10M3 12h6"/>',
-  },
-  {
-    title: 'Separate money flows',
-    body: 'Consultation and lab income tracked independently, reported together.',
-    icon: '<path d="M2 5h9M8 2l3 3-3 3"/><path d="M14 11H5M8 8l-3 3 3 3"/>',
-  },
-  {
-    title: 'Role-based access',
-    body: 'Each staff member sees only what their job needs.',
-    icon: '<path d="M8 2 3 4v4c0 3 2.2 5.2 5 6 2.8-.8 5-3 5-6V4z"/>',
-  },
-  {
-    title: 'Daily and monthly reports',
-    body: 'Know your numbers without counting cash twice.',
-    icon: '<path d="M2 14h12"/><path d="M4 11V8M8 11V4M12 11V6"/>',
-  },
-  {
-    title: 'Your own private system, managed by us',
-    body: 'Your clinic gets its own system and its own database, kept completely separate from every other clinic. We handle hosting, updates, backups and security. Nothing to install.',
-    icon: '<rect x="2.5" y="2.5" width="11" height="4.5" rx="1"/><rect x="2.5" y="9" width="11" height="4.5" rx="1"/><path d="M5 4.75h.01M5 11.25h.01"/>',
-  },
+// The problem in one line, then the six key features. Each card carries a small live mockup
+// of PCMS (plain HTML, invented data) that plays while it is on screen.
+const card = 'flex flex-col rounded-[28px] bg-pill p-6 sm:p-8';
+const chip = 'w-fit rounded-full bg-white px-3 py-1 text-[13px] text-soft ring-1 ring-line';
+const mock = 'mt-7 h-64 overflow-hidden rounded-2xl bg-white p-5 text-[14px] ring-1 ring-line';
+const dues: [string, string, number][] = [
+  ['Lab · CBC', 'Anita Rai', 900],
+  ['X-ray · Chest', 'Ram Gurung', 1200],
+  ['Lab · Lipid profile', 'Sita KC', 1100],
 ];
-
-const tile = 'grid size-11 shrink-0 place-items-center rounded-lg bg-pill';
-const svg = 'size-5 fill-none stroke-current stroke-[1.4]';
+const queue = ['Anita Rai', 'Ram Gurung', 'Sita KC', 'Bikash Lama', 'Maya Tamang', 'Hari Shrestha'];
+const menu: [string, string][] = [
+  ['Dashboard', 'admin reception lab'],
+  ['Consultations', 'admin reception'],
+  ['Diagnostics', 'admin lab'],
+  ['Billing', 'admin reception'],
+  ['Analytics', 'admin'],
+  ['User management', 'admin'],
+];
+const npr = (n: number) => `NPR ${n.toLocaleString('en-IN')}`;
 ---
 
-<section class="mx-auto max-w-[1280px] px-4 py-24 sm:px-8 md:py-36">
-  <h2 class="max-w-2xl text-5xl text-balance leading-[0.95] font-bold tracking-tighter sm:text-6xl">What PCMS keeps track of.</h2>
-
-  <div class="mt-14 grid gap-x-16 md:mt-20 md:grid-cols-2">
-    <div class="grid gap-5 border-t border-line py-10 sm:grid-cols-[auto_1fr] sm:gap-7 md:col-span-2 md:py-12">
-      <span class={tile}><svg viewBox="0 0 16 16" aria-hidden="true" class={svg} stroke-linecap="round" stroke-linejoin="round" set:html={lead.icon} /></span>
-      <div>
-        <h3 class="text-3xl font-bold tracking-tight sm:text-4xl">{lead.title}</h3>
-        <p class="mt-3 max-w-xl text-lg text-soft sm:text-xl">{lead.body}</p>
-      </div>
+<section class="relative z-10 bg-white">
+  <div class="mx-auto max-w-[1280px] px-4 py-24 sm:px-8 md:py-36">
+    <div class="grid gap-6 md:grid-cols-2 md:items-end md:gap-16">
+      <h2 data-reveal class="text-5xl leading-[0.95] font-bold tracking-tighter sm:text-6xl">Where clinics <span class="text-soft">lose money.</span></h2>
+      <p data-reveal class="max-w-md text-lg text-soft">
+        Consultation slips, lab registers and cash books don’t talk to each other. Lab fees go unpaid, queues get messy, and at the end
+        of the day nobody knows the real numbers.
+      </p>
     </div>
 
-    {rest.map((f, i) => (
-      <div class:list={['grid grid-cols-[auto_1fr] gap-5 border-t border-line py-8 sm:gap-7', i === rest.length - 1 && 'md:col-span-2']}>
-        <span class={tile}><svg viewBox="0 0 16 16" aria-hidden="true" class={svg} stroke-linecap="round" stroke-linejoin="round" set:html={f.icon} /></span>
-        <div>
-          <h3 class="text-xl font-bold tracking-tight sm:text-2xl">{f.title}</h3>
-          <p class="mt-2 max-w-xl text-soft">{f.body}</p>
+    <div class="mt-14 grid gap-4 md:mt-20 md:grid-cols-2 lg:gap-6">
+      <!-- 1 · Pending payments -->
+      <article data-reveal class={card}>
+        <p class={chip}>Pending payments</p>
+        <h3 class="mt-5 text-2xl font-bold tracking-tight">Never lose a lab fee again.</h3>
+        <p class="mt-2 text-soft">Every unpaid amount is visible until it’s settled.</p>
+        <div data-mock="dues" aria-hidden="true" class={mock}>
+          <ul class="divide-y divide-line">
+            {dues.map(([test, who, amt]) => (
+              <li class="flex items-center justify-between gap-3 py-3 first:pt-0">
+                <span><span class="block font-medium">{test}</span><span class="text-[13px] text-soft">{who}</span></span>
+                <span class="flex items-center gap-3">
+                  <span class="tabular-nums">{npr(amt)}</span>
+                  <span class="relative grid w-[76px] text-center text-[12px] font-medium">
+                    <span data-pending class="col-start-1 row-start-1 rounded-full bg-pill px-2.5 py-1 text-soft">Pending</span>
+                    <span data-settled class="invisible col-start-1 row-start-1 rounded-full bg-brand px-2.5 py-1 text-white">Settled</span>
+                  </span>
+                </span>
+              </li>
+            ))}
+          </ul>
+          <p class="mt-3 flex justify-between border-t border-line pt-3 font-medium">
+            Still pending <span data-total data-values="3200,2300,1100,0" class="tabular-nums">NPR 3,200</span>
+          </p>
         </div>
-      </div>
-    ))}
+      </article>
+
+      <!-- 2 · Token and queue -->
+      <article data-reveal class={card}>
+        <p class={chip}>Token and queue</p>
+        <h3 class="mt-5 text-2xl font-bold tracking-tight">Patients know their turn.</h3>
+        <p class="mt-2 text-soft">Reception stays calm while the queue moves itself.</p>
+        <div data-mock="queue" aria-hidden="true" class:list={[mock, 'grid grid-cols-[auto_1fr] gap-6']}>
+          <div class="flex flex-col justify-center rounded-xl bg-brand px-5 text-white">
+            <p class="text-[12px] text-white/70">Now serving</p>
+            <div class="h-[1em] overflow-hidden text-6xl leading-none font-black tracking-tighter tabular-nums">
+              <div data-strip>{[14, 15, 16, 17].map((n) => <p class="h-[1em]">#{n}</p>)}</div>
+            </div>
+            <p class="mt-2 text-[12px] text-white/70">Dr. R. B. Thapa</p>
+          </div>
+          <div>
+            <p class="text-[12px] text-soft">Up next</p>
+            <div class="mt-2 h-[176px] overflow-hidden">
+              <ul data-list>
+                {queue.map((name, i) => (
+                  <li class="flex h-11 items-center justify-between border-b border-line">
+                    <span>{name}</span><span class="text-[13px] text-soft tabular-nums">#{15 + i}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 3 · Separate money flows -->
+      <article data-reveal class={card}>
+        <p class={chip}>Money flows</p>
+        <h3 class="mt-5 text-2xl font-bold tracking-tight">Tracked apart, reported together.</h3>
+        <p class="mt-2 text-soft">Consultation and lab income each have their own books.</p>
+        <div data-mock="income" aria-hidden="true" class={mock}>
+          {[['Consultation', 18500, '62%'], ['Laboratory', 14200, '48%']].map(([label, amt, w]) => (
+            <div class="mb-5">
+              <p class="flex justify-between"><span>{label}</span><span data-count={amt} class="font-medium tabular-nums">NPR {Number(amt).toLocaleString('en-IN')}</span></p>
+              <div class="mt-2 h-2.5 rounded-full bg-pill"><div data-bar style={`width:${w}`} class="h-full rounded-full bg-brand"></div></div>
+            </div>
+          ))}
+          <div data-sum class="mt-2 flex items-center justify-between rounded-xl bg-brand-50 px-4 py-3 text-brand">
+            <span class="font-medium">Today, together</span>
+            <span data-count="32700" class="text-xl font-bold tabular-nums">NPR 32,700</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- 4 · Role-based access -->
+      <article data-reveal class={card}>
+        <p class={chip}>Role-based access</p>
+        <h3 class="mt-5 text-2xl font-bold tracking-tight">Everyone sees only their job.</h3>
+        <p class="mt-2 text-soft">Admin, reception and lab each get their own view.</p>
+        <div data-mock="roles" aria-hidden="true" class={mock}>
+          <div class="flex gap-1 rounded-full bg-pill p-1 text-[13px]">
+            {['admin', 'reception', 'lab'].map((r, i) => (
+              <span data-tab={r} class:list={['flex-1 rounded-full py-1.5 text-center capitalize transition-colors duration-300', i === 0 ? 'bg-brand text-white' : 'text-soft']}>{r}</span>
+            ))}
+          </div>
+          <ul class="mt-4 grid grid-cols-2 gap-2">
+            {menu.map(([item, roles]) => (
+              <li data-item data-roles={roles} class="rounded-lg bg-pill px-3 py-2.5 transition-opacity duration-300">{item}</li>
+            ))}
+          </ul>
+        </div>
+      </article>
+
+      <!-- 5 · Reports -->
+      <article data-reveal class={card}>
+        <p class={chip}>Reports</p>
+        <h3 class="mt-5 text-2xl font-bold tracking-tight">Know your numbers without counting cash twice.</h3>
+        <p class="mt-2 text-soft">Daily and monthly reports, ready when you close.</p>
+        <div data-mock="report" aria-hidden="true" class={mock}>
+          <p class="flex justify-between text-[13px] text-soft"><span>Daily report</span><span>Tue, Nov 10</span></p>
+          <ul class="mt-3 divide-y divide-line">
+            <li data-row class="flex justify-between py-2.5"><span>Consultations · 34</span><span class="tabular-nums">NPR 17,000</span></li>
+            <li data-row class="flex justify-between py-2.5"><span>Lab tests · 21</span><span class="tabular-nums">NPR 15,700</span></li>
+            <li data-row class="flex justify-between py-2.5"><span>Refunds · 1</span><span class="tabular-nums text-soft">− NPR 500</span></li>
+            <li data-row class="flex justify-between py-2.5 text-lg font-bold"><span>Net takings</span><span class="tabular-nums text-brand">NPR 32,200</span></li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- 6 · Managed hosting -->
+      <article data-reveal class={card}>
+        <p class={chip}>Managed for you</p>
+        <h3 class="mt-5 text-2xl font-bold tracking-tight">Your own private system.</h3>
+        <p class="mt-2 text-soft">We handle hosting, updates, backups and security. Nothing to install.</p>
+        <div data-mock="backup" aria-hidden="true" class:list={[mock, 'font-mono text-[13px]']}>
+          <p class="flex justify-between text-soft"><span>himalayan-polyclinic</span><span>own database</span></p>
+          <div class="mt-4 h-2 rounded-full bg-pill"><div data-progress class="h-full w-full origin-left rounded-full bg-brand"></div></div>
+          <ul class="mt-4 space-y-2.5">
+            {[['02:00', 'Encrypted backup, off-site'], ['02:04', 'Backup verified'], ['03:00', 'Security update installed'], ['03:02', 'All systems running']].map(([t, line]) => (
+              <li data-log class="flex gap-3"><span class="text-soft">{t}</span><span class="flex-1">{line}</span><span class="text-brand">✓</span></li>
+            ))}
+          </ul>
+        </div>
+      </article>
+    </div>
   </div>
 </section>
+
+<script>
+  import gsap from 'gsap';
+  import { loop } from '../../scripts/reveal';
+
+  const $ = (sel: string) => document.querySelector<HTMLElement>(`[data-mock="${sel}"]`)!;
+  const npr = (n: number) => `NPR ${Math.round(n).toLocaleString('en-IN')}`;
+  // Counts a number up (or down) inside an element.
+  const count = (el: HTMLElement, from: number, to: number, duration = 0.8) => {
+    const o = { v: from };
+    return gsap.to(o, { v: to, duration, ease: 'power2.out', onUpdate: () => (el.textContent = npr(o.v)) });
+  };
+
+  // 1 · Each pending fee gets settled in turn; the total counts down to zero.
+  {
+    const el = $('dues');
+    const total = el.querySelector<HTMLElement>('[data-total]')!;
+    const values = total.dataset.values!.split(',').map(Number);
+    const tl = gsap.timeline({ repeat: -1, repeatDelay: 2 });
+    el.querySelectorAll('li').forEach((row, i) => {
+      tl.to(row.querySelector('[data-pending]'), { autoAlpha: 0, scale: 0.8, duration: 0.3 }, `+=${i ? 0.9 : 0.6}`)
+        .fromTo(row.querySelector('[data-settled]'), { autoAlpha: 0, scale: 0.8 }, { autoAlpha: 1, scale: 1, duration: 0.4, ease: 'back.out(2)' }, '<0.1')
+        .add(count(total, values[i], values[i + 1]), '<');
+    });
+    loop(el, tl);
+  }
+
+  // 2 · The token board ticks over and the queue shifts up one patient at a time.
+  {
+    const el = $('queue');
+    const tl = gsap.timeline({ repeat: -1, repeatDelay: 1.6 });
+    for (let i = 1; i <= 3; i++)
+      tl.to(el.querySelector('[data-strip]'), { y: `${-i}em`, duration: 0.6, ease: 'power3.inOut' }, `+=${i === 1 ? 1 : 1.6}`).to(
+        el.querySelector('[data-list]'),
+        { y: -44 * i, duration: 0.6, ease: 'power3.inOut' },
+        '<',
+      );
+    loop(el, tl);
+  }
+
+  // 3 · Both income bars fill and count up, then the combined total lands.
+  {
+    const el = $('income');
+    const tl = gsap.timeline({ repeat: -1, repeatDelay: 2.5 });
+    el.querySelectorAll<HTMLElement>('[data-bar]').forEach((bar, i) => {
+      const n = bar.parentElement!.previousElementSibling!.querySelector<HTMLElement>('[data-count]')!;
+      tl.from(bar, { scaleX: 0, transformOrigin: 'left', duration: 1, ease: 'power3.out' }, i * 0.3).add(count(n, 0, Number(n.dataset.count), 1), '<');
+    });
+    const sum = el.querySelector<HTMLElement>('[data-sum]')!;
+    const sumN = sum.querySelector<HTMLElement>('[data-count]')!;
+    tl.from(sum, { autoAlpha: 0, y: 12, duration: 0.5, ease: 'power3.out' }, '+=0.2').add(count(sumN, 0, 32700, 0.9), '<');
+    loop(el, tl);
+  }
+
+  // 4 · The role tabs cycle; screens a role can't use fade out.
+  {
+    const el = $('roles');
+    const tabs = [...el.querySelectorAll<HTMLElement>('[data-tab]')];
+    const items = [...el.querySelectorAll<HTMLElement>('[data-item]')];
+    const show = (role: string) => {
+      tabs.forEach((t) => {
+        const on = t.dataset.tab === role;
+        t.classList.toggle('bg-brand', on);
+        t.classList.toggle('text-white', on);
+        t.classList.toggle('text-soft', !on);
+      });
+      items.forEach((it) => (it.style.opacity = it.dataset.roles!.includes(role) ? '1' : '0.25'));
+    };
+    const tl = gsap.timeline({ repeat: -1 });
+    ['admin', 'reception', 'lab'].forEach((r) => tl.call(show, [r]).to({}, { duration: 1.8 }));
+    loop(el, tl);
+  }
+
+  // 5 · The daily report writes itself line by line.
+  {
+    const el = $('report');
+    const tl = gsap.timeline({ repeat: -1, repeatDelay: 2.5 });
+    tl.from(el.querySelectorAll('[data-row]'), { autoAlpha: 0, x: -12, duration: 0.5, stagger: 0.45, ease: 'power3.out' });
+    loop(el, tl);
+  }
+
+  // 6 · The nightly backup runs, then the log fills in.
+  {
+    const el = $('backup');
+    const tl = gsap.timeline({ repeat: -1, repeatDelay: 2.5 });
+    tl.from(el.querySelector('[data-progress]'), { scaleX: 0, duration: 1.4, ease: 'power1.inOut' }).from(
+      el.querySelectorAll('[data-log]'),
+      { autoAlpha: 0, y: 8, duration: 0.4, stagger: 0.35, ease: 'power3.out' },
+      '-=0.3',
+    );
+    loop(el, tl);
+  }
+</script>

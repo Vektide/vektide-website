@@ -1,0 +1,112 @@
+---
+// Chapter 4 · Hosted: each clinic wired to its own database (never a shared one), the four
+// trust points, then one patient's record with its visit history filling in.
+import Chapter from './Chapter.astro';
+import { hours } from '../../data/contact';
+
+const clinics = ['Himalayan Polyclinic', 'Your clinic', 'Another clinic'];
+const points: [string, string][] = [
+  ['Own database', 'Separate from every other clinic.'],
+  ['Encrypted backups', 'Stored off-site, every night.'],
+  ['Nothing to install', 'PCMS runs in the browser.'],
+  ['Direct support', `${hours.text}, Nepal time.`],
+];
+const history: [string, string, string][] = [
+  ['09:14', 'Visit registered', 'Token #14 · Dr. R. B. Thapa'],
+  ['09:15', 'Consultation fee paid', 'NPR 500 · Cash'],
+  ['09:52', 'Lab tests ordered', 'CBC, Lipid profile'],
+  ['10:05', 'Sample collected', 'Laboratory'],
+  ['11:40', 'Results entered', 'Ready to deliver'],
+  ['11:42', 'Lab bill settled', 'NPR 900 · Cash'],
+];
+---
+
+<Chapter word="Hosted." intro="Your clinic gets its own system and its own database. We handle hosting, updates, backups and security." tone="pill">
+  <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+    <div>
+      <p data-reveal class="text-[13px] font-medium tracking-[0.14em] text-brand uppercase">Your data</p>
+      <h2 data-reveal class="mt-4 text-4xl leading-[0.95] font-bold tracking-tighter sm:text-5xl">Kept apart. <span class="text-soft">Sent nowhere.</span></h2>
+      <p data-reveal class="mt-6 max-w-md text-lg text-soft">PCMS has no tracking and sends your patient and financial records nowhere. Your data belongs to you.</p>
+      <a data-reveal href="/demo" class="mt-8 inline-block rounded-full bg-brand px-6 py-3 text-[15px] font-medium text-white transition-colors duration-300 hover:bg-brand-700">Request a demo</a>
+    </div>
+
+    <div data-reveal aria-hidden="true" class="rounded-[32px] bg-white p-6 ring-1 ring-line sm:p-8">
+      <ul class="space-y-4">
+        {clinics.map((c, i) => (
+          <li class="grid grid-cols-[1fr_auto_auto] items-center gap-3 sm:gap-4">
+            <span class:list={['rounded-xl px-4 py-3 text-[14px] font-medium', i === 1 ? 'bg-brand text-white' : 'bg-pill']}>{c}</span>
+            <span data-wire class="h-0.5 w-10 bg-[repeating-linear-gradient(90deg,var(--color-brand-300)_0_6px,transparent_6px_12px)] bg-size-[12px_2px] sm:w-20"></span>
+            <span class:list={['flex items-center gap-2 rounded-xl px-3 py-3 text-[13px] ring-1', i === 1 ? 'bg-brand-50 text-brand ring-brand-200' : 'ring-line text-soft']}>
+              <svg viewBox="0 0 16 16" class="size-4 fill-none stroke-current stroke-[1.4]"><ellipse cx="8" cy="4" rx="5" ry="2" /><path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2" /></svg>
+              Own database
+            </span>
+          </li>
+        ))}
+      </ul>
+      <div class="mt-6 grid grid-cols-2 gap-3 border-t border-line pt-6 text-[13px]">
+        <p class="flex items-center gap-2 rounded-xl bg-pill px-3 py-3"><span class="text-brand">✓</span>Nightly backup, off-site</p>
+        <p class="flex items-center gap-2 rounded-xl bg-pill px-3 py-3"><span class="text-brand">✓</span>Update installed</p>
+      </div>
+    </div>
+  </div>
+
+  <ul class="grid gap-8 border-t border-line pt-10 sm:grid-cols-2 lg:grid-cols-4">
+    {points.map(([title, body]) => (
+      <li data-reveal>
+        <span aria-hidden="true" class="block h-0.5 w-8 bg-brand"></span>
+        <h3 class="mt-4 text-lg font-bold tracking-tight">{title}</h3>
+        <p class="mt-1 text-soft">{body}</p>
+      </li>
+    ))}
+  </ul>
+
+  <!-- One patient's record: summary on the left, the day's history filling in on the right -->
+  <div data-reveal aria-hidden="true" class="grid overflow-hidden rounded-[32px] bg-white ring-1 ring-line lg:grid-cols-[1fr_1.6fr]">
+    <div class="border-b border-line p-7 sm:p-10 lg:border-r lg:border-b-0">
+      <p class="text-[13px] font-medium tracking-[0.14em] text-soft uppercase">Patient</p>
+      <p class="mt-3 text-3xl font-bold tracking-tight">Anita Rai</p>
+      <p class="mt-1 text-soft">34 · Female · 98000 09682</p>
+      <dl class="mt-8 grid grid-cols-2 gap-4 text-[14px]">
+        <div class="rounded-xl bg-pill p-4"><dt class="text-soft">Visits</dt><dd class="mt-1 text-xl font-bold">6</dd></div>
+        <div class="rounded-xl bg-pill p-4"><dt class="text-soft">Paid today</dt><dd class="mt-1 text-xl font-bold tabular-nums">NPR 1,400</dd></div>
+        <div class="col-span-2 flex items-center justify-between rounded-xl bg-brand-50 p-4 text-brand"><dt class="font-medium">Still owed</dt><dd class="text-xl font-bold">Nothing</dd></div>
+      </dl>
+    </div>
+    <div data-history class="p-7 sm:p-10">
+      <p class="text-[13px] font-medium tracking-[0.14em] text-soft uppercase">Today’s visit</p>
+      <ol class="relative mt-6">
+        <span class="absolute top-2 bottom-2 left-[5px] w-px bg-line"></span>
+        {history.map(([time, what, note]) => (
+          <li data-event class="relative grid grid-cols-[auto_1fr] gap-x-5 pb-5 last:pb-0 sm:grid-cols-[auto_4rem_1fr]">
+            <span class="mt-1.5 size-[11px] rounded-full bg-brand ring-4 ring-white"></span>
+            <span class="hidden text-[13px] text-soft tabular-nums sm:block sm:pt-0.5">{time}</span>
+            <span><span class="block font-medium">{what}</span><span class="text-[14px] text-soft">{note}</span></span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</Chapter>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    // Data flows along each clinic's own wire.
+    gsap.to('[data-wire]', { backgroundPosition: '24px 0', duration: 1, ease: 'none', repeat: -1 });
+
+    // The visit history fills in, one event after another.
+    const history = document.querySelector<HTMLElement>('[data-history]')!;
+    gsap.from(history.querySelectorAll('[data-event]'), {
+      opacity: 0,
+      x: -16,
+      duration: 0.6,
+      stagger: 0.18,
+      ease: 'power3.out',
+      scrollTrigger: { trigger: history, start: 'top 75%', once: true },
+    });
+  }
+</script>

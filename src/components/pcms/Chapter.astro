@@ -1,0 +1,32 @@
+---
+// One PCMS chapter (Reception, Laboratory, Admin, Hosted): a giant dot-matrix word beside its
+// one-line intro, then the chapter's own content in the slot. Tone sets the background.
+interface Props {
+  word: string;
+  intro: string;
+  tone: 'white' | 'pill' | 'navy';
+  id?: string;
+  addOn?: boolean;
+}
+const { word, intro, tone, id, addOn = false } = Astro.props;
+const bg = { white: 'bg-white', pill: 'bg-pill', navy: 'bg-panel text-white' }[tone];
+---
+
+<section id={id} class:list={['relative z-10 scroll-mt-24 overflow-x-clip', bg]}>
+  <div class="mx-auto max-w-[1280px] space-y-16 px-4 py-24 sm:px-8 md:space-y-24 md:py-36">
+    <div class="grid items-center gap-8 lg:grid-cols-[1.25fr_1fr] lg:gap-16">
+      <h2
+        data-dots
+        style={tone === 'navy' ? '--dot-color: var(--color-tide)' : undefined}
+        class="text-dots text-[clamp(3.5rem,13vw,10.5rem)] leading-[0.9] font-black tracking-[-0.04em]"
+      >
+        {word}
+      </h2>
+      <div data-reveal>
+        {addOn && <p class="mb-4 w-fit rounded-full bg-white px-3 py-1 text-[13px] text-soft ring-1 ring-line">Add-on module</p>}
+        <p class:list={['max-w-md text-xl leading-snug sm:text-2xl', tone === 'navy' ? 'text-white/70' : 'text-soft']}>{intro}</p>
+      </div>
+    </div>
+    <slot />
+  </div>
+</section>

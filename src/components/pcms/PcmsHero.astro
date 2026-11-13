@@ -1,63 +1,74 @@
 ---
-// PCMS hero: headline, subhead, CTAs, then one wide PCMS window (src/assets/screens,
-// invented data). A paper token slip is tucked over its corner: the paper the system replaces.
-import { Image } from 'astro:assets';
+// PCMS hero: a PCMS window on a grey stage (left) beside the two-tone headline (right),
+// with a paper token slip dropping onto the window's corner. A trust strip closes the section.
+import Window from './Window.astro';
+import TokenSlip from './TokenSlip.astro';
 import analytics from '../../assets/screens/pcms-hero.png';
+
+const trust: [string, string, string][] = [
+  ['Own private database', 'Separate from every other clinic', '<rect x="2.5" y="2.5" width="11" height="4.5" rx="1"/><rect x="2.5" y="9" width="11" height="4.5" rx="1"/><path d="M5 4.75h.01M5 11.25h.01"/>'],
+  ['Encrypted backups', 'Stored off-site', '<rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/>'],
+  ['No tracking', 'Your data belongs to you', '<path d="M8 2 3 4v4c0 3 2.2 5.2 5 6 2.8-.8 5-3 5-6V4z"/><path d="m6 8 1.5 1.5L10.5 6.5"/>'],
+  ['Billed in rupees', 'Nepali dates built in', '<rect x="2.5" y="3.5" width="11" height="10" rx="1.5"/><path d="M2.5 6.5h11M5.5 2v3M10.5 2v3"/>'],
+];
 ---
 
-<section class="overflow-x-clip px-4 pt-36 pb-24 text-center sm:px-8 md:pt-48 md:pb-32">
-  <h1 data-ph-in class="mx-auto max-w-5xl text-5xl leading-[0.95] font-bold tracking-tighter text-balance in-[.js]:opacity-0 sm:text-7xl lg:text-8xl">
-    Run your polyclinic without the paperwork.
-  </h1>
+<section class="relative overflow-x-clip bg-pill">
+  <div class="mx-auto grid max-w-[1280px] items-center gap-14 px-4 pt-32 pb-20 sm:px-8 md:pt-40 lg:min-h-[92vh] lg:grid-cols-[1.15fr_1fr] lg:gap-16 lg:pb-24">
+    <div data-ph-shot class="relative order-2 in-[.js]:opacity-0 lg:order-1">
+      <div class="rounded-[32px] bg-white p-4 shadow-[0_1px_0_rgb(0_0_0/0.03)] ring-1 ring-line sm:p-6">
+        <Window
+          src={analytics}
+          alt="PCMS analytics: thirty days of revenue, money paid out, what the clinic kept and each doctor’s payout"
+          title="Analytics"
+          note="The last 30 days at Himalayan Polyclinic"
+          sizes="(min-width: 1280px) 640px, (min-width: 1024px) 52vw, calc(100vw - 64px)"
+          eager
+        />
+      </div>
+      <div data-ph-slip class="absolute -right-3 -bottom-16 hidden in-[.js]:opacity-0 sm:block lg:-right-10">
+        <TokenSlip class="origin-bottom-right scale-[0.82]" style="transform: rotate(6deg)" />
+      </div>
+    </div>
 
-  <p data-ph-in class="mx-auto mt-6 max-w-xl text-lg text-soft in-[.js]:opacity-0 sm:text-xl">
-    One system for reception, laboratory and admin, so every patient visit, test and rupee is accounted for.
-  </p>
-
-  <div data-ph-in class="mt-9 flex flex-wrap justify-center gap-3 in-[.js]:opacity-0">
-    <a href="/demo" class="rounded-full bg-brand px-6 py-3 text-[15px] font-medium text-white transition-colors duration-300 hover:bg-brand-700">
-      Book a demo
-    </a>
-    <a href="#how-it-works" class="rounded-full bg-pill px-6 py-3 text-[15px] font-medium transition-colors duration-300 hover:bg-brand-50 hover:text-brand">
-      See how it works
-    </a>
+    <div class="order-1 lg:order-2">
+      <p data-ph-in class="text-[13px] font-medium tracking-[0.14em] text-brand uppercase in-[.js]:opacity-0">PCMS by Vektide</p>
+      <h1 data-ph-in class="mt-5 text-5xl leading-[0.95] font-bold tracking-tighter text-balance in-[.js]:opacity-0 sm:text-7xl">
+        Run your polyclinic <span class="text-soft">without the paperwork.</span>
+      </h1>
+      <p data-ph-in class="mt-6 max-w-md text-lg text-soft in-[.js]:opacity-0 sm:text-xl">
+        One system for reception, laboratory and admin, so every patient visit, test and rupee is accounted for.
+      </p>
+      <div data-ph-in class="mt-9 flex flex-wrap gap-3 in-[.js]:opacity-0">
+        <a href="/demo" class="rounded-full bg-brand px-6 py-3 text-[15px] font-medium text-white transition-colors duration-300 hover:bg-brand-700">Request a demo</a>
+        <a href="#how-it-works" class="rounded-full bg-white px-6 py-3 text-[15px] font-medium ring-1 ring-line transition-colors duration-300 hover:bg-brand-50 hover:text-brand">See how it works</a>
+      </div>
+    </div>
   </div>
 
-  <div data-ph-shot class="relative mx-auto mt-16 max-w-[1180px] in-[.js]:opacity-0 sm:mt-20">
-    <article class="overflow-hidden rounded-xl border border-line bg-white text-left shadow-[0_30px_60px_-30px_rgb(0_0_0/0.18)]">
-      <header class="flex h-[34px] items-center gap-2 border-b border-line bg-pill/60 px-4 text-[13px] sm:h-[42px]">
-        <span class="size-2 rotate-45 rounded-[2px] bg-brand"></span>
-        <span class="font-medium">Analytics</span>
-        <span class="text-soft">· The last 30 days at Himalayan Polyclinic</span>
-      </header>
-      <Image
-        src={analytics}
-        alt="PCMS analytics: thirty days of revenue, money paid out, what the clinic kept and each doctor’s payout"
-        widths={[640, 960, 1280, 1920, 2360]}
-        sizes="(min-width: 1244px) 1180px, (min-width: 640px) calc(100vw - 64px), calc(100vw - 32px)"
-        quality={85}
-        loading="eager"
-        fetchpriority="high"
-        class="block aspect-[16/9] w-full"
-      />
-    </article>
-
-    <!-- Token slip: decoration only, the screenshot carries the information. -->
-    <div
-      data-ph-slip
-      aria-hidden="true"
-      style="transform: rotate(-6deg)"
-      class="absolute -bottom-10 -left-2 hidden w-[184px] rounded-md bg-white px-5 pt-4 pb-5 text-left shadow-[0_2px_4px_rgb(0_0_0/0.06),0_24px_40px_-16px_rgb(0_0_0/0.35)] ring-1 ring-black/5 in-[.js]:opacity-0 sm:block md:-left-8 lg:w-[208px]"
-    >
-      <p class="text-[11px] font-medium text-soft">Himalayan Polyclinic</p>
-      <p class="mt-3 text-[13px] text-soft">OPD token</p>
-      <p class="text-6xl leading-none font-black tracking-tighter tabular-nums">#3</p>
-      <p class="mt-3 text-[13px] leading-snug font-medium">Dr. Ram Bahadur Thapa</p>
-      <p class="text-[12px] text-soft">General Physician</p>
-      <div class="mt-4 flex items-baseline justify-between border-t border-dashed border-line pt-3 text-[13px]">
-        <span class="text-soft">Fee</span>
-        <span class="font-medium tabular-nums">NPR 500</span>
-      </div>
+  <!-- Trust strip -->
+  <div class="border-t border-line">
+    <div class="mx-auto max-w-[1280px] px-4 py-10 sm:px-8 md:py-12">
+      <ul class="grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-4">
+        {trust.map(([title, body, icon]) => (
+          <li data-reveal class="flex gap-4">
+            <span class="grid size-10 shrink-0 place-items-center rounded-lg bg-white text-brand ring-1 ring-line">
+              <svg viewBox="0 0 16 16" aria-hidden="true" class="size-5 fill-none stroke-current stroke-[1.4]" stroke-linecap="round" stroke-linejoin="round" set:html={icon} />
+            </span>
+            <span>
+              <span class="block font-medium">{title}</span>
+              <span class="block text-[15px] text-soft">{body}</span>
+            </span>
+          </li>
+        ))}
+      </ul>
+      <p data-reveal class="mt-10 flex items-center gap-3 text-[15px] text-soft">
+        <span class="relative flex size-2" aria-hidden="true">
+          <span class="absolute inline-flex size-full animate-ping rounded-full bg-brand-400 opacity-60 motion-reduce:animate-none"></span>
+          <span class="relative inline-flex size-2 rounded-full bg-brand"></span>
+        </span>
+        Live at <a href="/case-studies/gorkhakali-polyclinic" class="font-medium text-ink underline decoration-line underline-offset-4 transition-colors hover:decoration-ink">Gorkhakali Polyclinic</a>
+      </p>
     </div>
   </div>
 </section>
@@ -69,11 +80,12 @@ import analytics from '../../assets/screens/pcms-hero.png';
   const shot = document.querySelector<HTMLElement>('[data-ph-shot]')!;
   const slip = document.querySelector<HTMLElement>('[data-ph-slip]')!;
 
-  // One moment: copy rises in, then the window, then the slip drops onto its corner.
+  // Copy rises in, then the window slides up, then the slip drops onto its corner.
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) gsap.set([...intro, shot, slip], { opacity: 1 });
   else
     gsap
       .timeline({ delay: 0.1 })
-      .fromTo([...intro, shot], { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.9, stagger: 0.08, ease: 'power3.out' })
-      .fromTo(slip, { opacity: 0, y: -48, rotate: -16 }, { opacity: 1, y: 0, rotate: -6, duration: 0.9, ease: 'back.out(1.4)' }, '-=0.35');
+      .fromTo(intro, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.9, stagger: 0.08, ease: 'power3.out' })
+      .fromTo(shot, { opacity: 0, y: 40, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 1.1, ease: 'expo.out' }, 0.15)
+      .fromTo(slip, { opacity: 0, y: -60, rotate: 18 }, { opacity: 1, y: 0, rotate: 0, duration: 0.9, ease: 'back.out(1.4)' }, '-=0.5');
 </script>

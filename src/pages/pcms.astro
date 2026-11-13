@@ -1,15 +1,20 @@
 ---
 // PCMS product page. Copy: docs/website-copy.md, "PCMS — Polyclinic Management System".
-// The one big scroll moment is Desks; everything else stays quiet around it.
+// Layout modelled on 1centre.com: hero, features with live mockups, modules bento, four dot-matrix
+// chapters (Reception, Laboratory, Admin, Hosted), steps, proof, FAQ. Sections alternate white,
+// pill grey and navy panels.
 import Base from '../layouts/Base.astro';
 import Navbar from '../components/Navbar.astro';
 import PcmsHero from '../components/pcms/PcmsHero.astro';
-import PcmsProblem from '../components/pcms/PcmsProblem.astro';
-import Desks from '../components/pcms/Desks.astro';
 import Features from '../components/pcms/Features.astro';
 import Modules from '../components/pcms/Modules.astro';
+import Reception from '../components/pcms/Reception.astro';
+import Laboratory from '../components/pcms/Laboratory.astro';
+import Admin from '../components/pcms/Admin.astro';
+import Steps from '../components/pcms/Steps.astro';
+import Hosted from '../components/pcms/Hosted.astro';
 import Proof from '../components/pcms/Proof.astro';
-import Process from '../components/Process.astro';
+import FloatingCta from '../components/pcms/FloatingCta.astro';
 import Faq from '../components/Faq.astro';
 import Footer from '../components/Footer.astro';
 import { hours } from '../data/contact';
@@ -17,13 +22,6 @@ import { hours } from '../data/contact';
 const title = 'PCMS — Polyclinic Management System | Vektide';
 const description =
   "Reception, lab and billing in one system. Track every consultation and lab fee. Your clinic's own private system and database, managed by Vektide.";
-
-const steps: [string, string][] = [
-  ['Demo', 'We show you PCMS with your clinic’s workflow in mind.'],
-  ['Setup', 'We set up your clinic’s private system and configure doctors, tests, fees and staff accounts.'],
-  ['Training', 'Your team learns it in a day.'],
-  ['Go live', 'We stay on call while you switch over.'],
-];
 
 const faqs: [string, string][] = [
   ['Do we need our own server?', 'No. We host PCMS for you. Your clinic gets its own private system and database, and we set it up and maintain it.'],
@@ -63,21 +61,16 @@ const product = {
   <Navbar />
   <main class="min-h-screen">
     <PcmsHero />
-    <PcmsProblem />
-    <Desks />
     <Features />
     <Modules />
+    <Reception />
+    <Laboratory />
+    <Admin />
+    <Steps />
+    <Hosted />
     <Proof />
-    <Process title="Getting<br />started" intro="From first demo to a clinic running on PCMS, with the same team at every step." steps={steps} link={{ href: '/demo', text: 'Get a quote' }}>
-      <div data-pr-in class="mt-10 max-w-xs border-t border-line pt-6">
-        <h3 class="font-bold">What it costs</h3>
-        <p class="mt-2 text-soft">
-          A one-time license for the core system and the modules you choose, plus a yearly plan for hosting, updates,
-          backups and support. Billed in rupees.
-        </p>
-      </div>
-    </Process>
     <Faq heading="Questions, answered." intro="What clinic owners ask us most before switching to PCMS." faqs={faqs} />
   </main>
+  <FloatingCta />
   <Footer headline="See PCMS in your clinic." />
 </Base>

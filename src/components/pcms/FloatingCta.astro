@@ -1,0 +1,33 @@
+---
+// A small demo pill pinned to the bottom of the screen: it rises in once the hero has scrolled
+// away and drops out again when the footer (which has its own buttons) comes into view.
+---
+
+<div data-fcta class="pointer-events-none fixed inset-x-0 bottom-5 z-50 flex justify-center px-4 in-[.js]:invisible">
+  <div class="pointer-events-auto flex items-center gap-1 rounded-full bg-ink/90 p-1.5 pl-5 text-white shadow-[0_20px_40px_-12px_rgb(8_15_38/0.45)] ring-1 ring-white/10 backdrop-blur">
+    <span class="pr-3 text-[15px] text-white/80">PCMS by Vektide</span>
+    <a href="/demo" class="group/f inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-[15px] font-medium text-ink transition-colors duration-300 hover:bg-brand-50 hover:text-brand">
+      Request a demo <span class="transition-transform duration-300 group-hover/f:translate-x-0.5">→</span>
+    </a>
+  </div>
+</div>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const pill = document.querySelector<HTMLElement>('[data-fcta]')!;
+  const d = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 0.5;
+  gsap.set(pill, { autoAlpha: 0, y: 96 });
+  const show = (on: boolean) => gsap.to(pill, { autoAlpha: on ? 1 : 0, y: on ? 0 : 96, duration: d, ease: on ? 'power3.out' : 'power2.in', overwrite: true });
+
+  // Visible between the end of the first screen and the top of the footer.
+  ScrollTrigger.create({
+    start: () => innerHeight * 0.9,
+    endTrigger: 'footer',
+    end: 'top bottom',
+    onToggle: (self) => show(self.isActive),
+  });
+</script>

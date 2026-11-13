@@ -1,0 +1,60 @@
+---
+// Chapter 3 · Admin, on the navy panel: the owner's overview with today's total counting up,
+// then the billing ledger full width.
+import Chapter from './Chapter.astro';
+import Window from './Window.astro';
+import overview from '../../assets/screens/desk-admin.png';
+import billing from '../../assets/screens/billing.png';
+---
+
+<Chapter word="Admin." intro="Daily income, pending dues and clinic activity on one dashboard. Full control over users and settings." tone="navy">
+  <div class="grid items-center gap-12 lg:grid-cols-[1.2fr_1fr] lg:gap-16">
+    <div data-reveal class="relative">
+      <Window
+        src={overview}
+        alt="PCMS admin overview: collected today, doctors to pay, money still owed and a week of revenue"
+        title="Clinic overview"
+        note="Today’s money, end to end"
+        sizes="(min-width: 1280px) 640px, (min-width: 1024px) 52vw, calc(100vw - 32px)"
+      />
+      <div data-today aria-hidden="true" class="absolute -right-3 -bottom-8 rounded-2xl bg-white px-5 py-4 text-ink shadow-[0_24px_40px_-16px_rgb(0_0_0/0.5)] sm:-right-6">
+        <p class="text-[12px] text-soft">Collected today</p>
+        <p data-today-n class="text-3xl font-black tracking-tight tabular-nums">NPR 48,300</p>
+        <p class="mt-1 flex items-center gap-2 text-[13px] text-soft"><span class="size-1.5 rounded-full bg-brand"></span>2 dues pending</p>
+      </div>
+    </div>
+    <div>
+      <p data-reveal class="text-[13px] font-medium tracking-[0.14em] text-tide uppercase">Daily and monthly reports</p>
+      <h2 data-reveal class="mt-4 text-4xl leading-[0.95] font-bold tracking-tighter sm:text-5xl">Close the day <span class="text-white/50">knowing the numbers.</span></h2>
+      <p data-reveal class="mt-6 max-w-md text-lg text-white/70">Consultation and lab income, side by side, before the last patient leaves.</p>
+    </div>
+  </div>
+
+  <div data-reveal class="rounded-[32px] bg-white/5 p-3 ring-1 ring-white/10 sm:p-6">
+    <Window
+      src={billing}
+      alt="PCMS billing ledger: outstanding receivables, cash expected in the drawer, net takings and today’s receipts by patient"
+      title="Billing"
+      note="Everything collected and everything still owed"
+      sizes="(min-width: 1280px) 1180px, calc(100vw - 56px)"
+    />
+  </div>
+</Chapter>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Today's total counts up once the overview is on screen.
+  const card = document.querySelector<HTMLElement>('[data-today]')!;
+  const n = card.querySelector<HTMLElement>('[data-today-n]')!;
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const o = { v: 0 };
+    gsap
+      .timeline({ scrollTrigger: { trigger: card, start: 'top 85%', once: true } })
+      .from(card, { opacity: 0, y: 24, scale: 0.94, duration: 0.8, ease: 'back.out(1.6)' }, 0.3)
+      .to(o, { v: 48300, duration: 1.4, ease: 'power2.out', onUpdate: () => (n.textContent = `NPR ${Math.round(o.v).toLocaleString('en-IN')}`) }, 0.4);
+  }
+</script>

@@ -1,24 +1,74 @@
 ---
-// Proof: the dark panel from the home page, with the clinic that already runs PCMS and the
-// manager's words (src/data/testimonial.ts). Static: the home page animates this quote.
+// Proof, on the navy panel: the clinic already running PCMS, the manager's words
+// (src/data/testimonial.ts), and what changed, before and after.
 import { testimonial } from '../../data/testimonial';
+
+const rows: [string, string, string][] = [
+  ['Consultations', 'Paper slips', 'Token and receipt in seconds'],
+  ['Lab fees', 'A register, often unpaid', 'Pending until settled'],
+  ['The queue', 'A crowd at the desk', 'Patients know their turn'],
+  ['End of day', 'Counting cash twice', 'Daily report, ready'],
+];
 ---
 
-<section class="relative z-10 bg-panel text-white shadow-[0_-30px_60px_-20px_rgb(8_15_38/0.25)]">
-  <div class="mx-auto grid max-w-[1280px] gap-12 px-4 py-24 sm:px-8 md:grid-cols-[1fr_1.6fr] md:gap-20 md:py-36">
-    <div>
-      <h2 class="text-5xl leading-[0.95] font-bold tracking-tighter sm:text-6xl">Already running.</h2>
-      <p class="mt-6 max-w-sm text-lg text-white/60">
+<section data-proof class="relative z-10 overflow-hidden bg-panel text-white">
+  <div class="mx-auto max-w-[1280px] px-4 py-24 sm:px-8 md:py-36">
+    <div class="mx-auto max-w-2xl text-center">
+      <h2 data-reveal class="text-5xl leading-[0.95] font-bold tracking-tighter sm:text-6xl">Already running.</h2>
+      <p data-reveal class="mt-6 text-lg text-white/60">
         <span class="mr-2 inline-block size-1.5 -translate-y-0.5 rounded-full bg-tide ring-4 ring-tide/25" aria-hidden="true"></span>
         PCMS is live at {testimonial.clinic}, built alongside the people who use it every day.
       </p>
     </div>
 
-    <figure>
-      <blockquote class="text-3xl leading-[1.12] font-bold tracking-tight text-balance sm:text-4xl lg:text-[44px]">
-        “{testimonial.quote}”
+    <figure data-reveal class="mx-auto mt-16 max-w-4xl rounded-[32px] bg-white/5 p-8 text-center ring-1 ring-white/10 sm:p-14">
+      <blockquote data-quote class="text-3xl leading-[1.12] font-bold tracking-tight text-balance sm:text-4xl">
+        “{testimonial.quote.split(' ').map((w) => <span data-word>{w} </span>)}”
       </blockquote>
-      <figcaption class="mt-6 text-white/60">{testimonial.name}, {testimonial.role}, {testimonial.clinic}</figcaption>
+      <figcaption class="mt-8 text-white/60">{testimonial.name}, {testimonial.role}, {testimonial.clinic}</figcaption>
     </figure>
+
+    <div data-reveal class="mx-auto mt-16 max-w-4xl overflow-x-auto rounded-[24px] ring-1 ring-white/10">
+      <table class="w-full min-w-[520px] text-left">
+        <thead class="text-[13px] tracking-[0.14em] text-white/50 uppercase">
+          <tr><th class="p-5 font-medium"><span class="sr-only">Task</span></th><th class="p-5 font-medium">Before</th><th class="p-5 font-medium text-tide">With PCMS</th></tr>
+        </thead>
+        <tbody class="divide-y divide-white/10 border-t border-white/10">
+          {rows.map(([task, before, after]) => (
+            <tr data-row>
+              <th scope="row" class="p-5 font-medium">{task}</th>
+              <td class="p-5 text-white/50 line-through decoration-white/25">{before}</td>
+              <td class="p-5"><span class="mr-2 text-tide">✓</span>{after}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   </div>
 </section>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const section = document.querySelector<HTMLElement>('[data-proof]')!;
+    // The quote lights up word by word as it scrolls up the screen.
+    gsap.fromTo(
+      section.querySelectorAll('[data-word]'),
+      { opacity: 0.2 },
+      { opacity: 1, stagger: 0.05, ease: 'none', scrollTrigger: { trigger: section.querySelector('[data-quote]'), start: 'top 85%', end: 'bottom 50%', scrub: true } },
+    );
+    // Before/after rows slide in one by one.
+    gsap.from(section.querySelectorAll('[data-row]'), {
+      opacity: 0,
+      x: -20,
+      duration: 0.6,
+      stagger: 0.12,
+      ease: 'power3.out',
+      scrollTrigger: { trigger: section.querySelector('table'), start: 'top 80%', once: true },
+    });
+  }
+</script>
