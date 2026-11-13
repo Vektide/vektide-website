@@ -41,16 +41,6 @@
     linear-gradient(160deg, #2449a8 0%, #1d3d95 50%, #18337f 100%);
 }
 
-/* Dot-matrix lettering for the PCMS chapter words. Dot size and grid scale with the font;
-   --dot is tweened by GSAP so the letters form out of the dots. */
-@utility text-dots {
-  --dot: 0.021em;
-  background: radial-gradient(circle, var(--dot-color, var(--color-brand)) var(--dot), transparent calc(var(--dot) + 0.006em)) 0 0 / 0.052em 0.052em;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
 /* [data-reveal] elements start hidden only when GSAP will bring them in (scripts/reveal.ts) */
 @media (prefers-reduced-motion: no-preference) {
   .js [data-reveal] {
