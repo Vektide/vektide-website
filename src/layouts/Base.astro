@@ -19,7 +19,9 @@ const site = Astro.site!;
 const canonical = new URL(Astro.url.pathname, site).href;
 const imageUrl = new URL(image, site).href;
 
-// Who we are, for Google's knowledge panel and local results.
+const isHome = Astro.url.pathname === '/';
+
+// Who we are, for Google's knowledge panel, site name, and local results.
 const organization = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -27,7 +29,7 @@ const organization = {
       '@type': 'Organization',
       '@id': new URL('/#organization', site).href,
       name: 'Vektide Technologies Pvt. Ltd.',
-      alternateName: 'Vektide',
+      alternateName: ['Vektide Technologies', 'Vektide'],
       url: site.href,
       logo: new URL('/logo/vektide-logo-512.png', site).href,
       email,
@@ -53,14 +55,19 @@ const organization = {
       },
       areaServed: { '@type': 'Country', name: 'Nepal' },
     },
-    {
-      '@type': 'WebSite',
-      '@id': new URL('/#website', site).href,
-      name: 'Vektide',
-      url: site.href,
-      inLanguage: 'en',
-      publisher: { '@id': new URL('/#organization', site).href },
-    },
+    ...(isHome
+      ? [
+          {
+            '@type': 'WebSite',
+            '@id': new URL('/#website', site).href,
+            name: 'Vektide Technologies',
+            alternateName: ['Vektide', 'Vektide Technologies Pvt. Ltd.'],
+            url: site.href,
+            inLanguage: 'en',
+            publisher: { '@id': new URL('/#organization', site).href },
+          },
+        ]
+      : []),
   ],
 };
 ---
@@ -79,7 +86,7 @@ const organization = {
 
     <!-- Social previews (Facebook, LinkedIn, WhatsApp, X) -->
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Vektide" />
+    <meta property="og:site_name" content="Vektide Technologies" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -93,12 +100,12 @@ const organization = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={imageUrl} />
 
-    <!-- "-v3" in the names makes browsers and search engines fetch the new logo -->
-    <link rel="icon" href="/favicon-v3.ico" sizes="32x32" />
-    <link rel="icon" href="/favicon-16x16-v3.png" type="image/png" sizes="16x16" />
-    <link rel="icon" href="/favicon-32x32-v3.png" type="image/png" sizes="32x32" />
-    <link rel="icon" href="/android-chrome-192x192-v3.png" type="image/png" sizes="192x192" />
+    <!-- Google Search requires favicons to be multiples of 48px (48, 96, 192) or SVG; ICO holds 16/32/48 for browsers -->
+    <link rel="icon" href="/favicon-v3.ico" sizes="any" />
     <link rel="icon" href="/favicon-v3.svg" type="image/svg+xml" />
+    <link rel="icon" href="/logo/vektide-logo-48.png" type="image/png" sizes="48x48" />
+    <link rel="icon" href="/logo/vektide-logo-96.png" type="image/png" sizes="96x96" />
+    <link rel="icon" href="/android-chrome-192x192-v3.png" type="image/png" sizes="192x192" />
     <link rel="apple-touch-icon" href="/apple-touch-icon-v3.png" />
     <link rel="manifest" href="/site.webmanifest" />
 
