@@ -15,10 +15,9 @@ export const phones = [
   viber: `viber://chat?number=${encodeURIComponent(p.e164)}`,
 }));
 
-// TODO: Facebook page URL once it exists.
 export const socials = [
   { name: 'LinkedIn', href: 'https://www.linkedin.com/company/vektide-technologies/' },
-  { name: 'Facebook', href: '#' },
+  { name: 'Facebook', href: 'https://www.facebook.com/profile.php?id=61596160486345' },
   { name: 'Instagram', href: 'https://www.instagram.com/vektide/' },
 ];
 
