@@ -1,6 +1,6 @@
 ---
 title: Privacy policy
-metaTitle: Privacy policy | Vektide
+metaTitle: Privacy policy | Vektide Technologies
 description: What vektide.com collects, how Vektide handles data in the systems it runs for clients, and who to ask about it.
 lead: What we collect when you visit this site or write to us, and how we look after the data in the systems we run for our clients.
 updated: 2026-11-10

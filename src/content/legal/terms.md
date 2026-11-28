@@ -1,6 +1,6 @@
 ---
 title: Terms of service
-metaTitle: Terms of service | Vektide
+metaTitle: Terms of service | Vektide Technologies
 description: The terms for using vektide.com, and a plain summary of how licenses, hosting, fees and data work when you become a Vektide client.
 lead: The rules for using this website, and a plain summary of how things work once you become a client.
 updated: 2026-11-10

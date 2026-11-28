@@ -12,7 +12,7 @@ import { caseStudies } from '../../data/case-studies';
 import { testimonial } from '../../data/testimonial';
 
 const study = caseStudies.find((c) => c.slug === 'gorkhakali-polyclinic')!;
-const title = 'How Gorkhakali Polyclinic went paperless with PCMS | Vektide';
+const title = 'How Gorkhakali Polyclinic went paperless with PCMS | Vektide Technologies';
 const description = 'How an outpatient clinic moved reception, lab and billing from paper registers to PCMS, and what stayed the same.';
 
 const facts: [string, string][] = [
@@ -61,7 +61,11 @@ const article = {
 };
 ---
 
-<Base title={title} description={description}>
+<Base
+  title={title}
+  description={description}
+  breadcrumbs={[{ name: 'Case Studies', href: '/case-studies/' }, { name: 'Gorkhakali Polyclinic' }]}
+>
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(article)} />
   <Navbar />
   <main>

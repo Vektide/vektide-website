@@ -33,7 +33,7 @@ const check = `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 8.5 2.5 2
 const link = 'rounded-full px-3 py-1.5 text-[15px] leading-snug text-soft transition-colors duration-300 hover:text-ink aria-[current=true]:bg-brand-50 aria-[current=true]:text-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand';
 ---
 
-<Base title={data.metaTitle} description={data.description}>
+<Base title={data.metaTitle} description={data.description} breadcrumbs={[{ name: data.title }]}>
   <Navbar />
   <main class="mx-auto max-w-[1280px] px-4 pt-36 pb-24 sm:px-8 md:pt-48 md:pb-36">
     <header>

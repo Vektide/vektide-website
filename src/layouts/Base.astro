@@ -10,11 +10,22 @@ interface Props {
   description: string;
   /** Social share image, relative to the site root. */
   image?: string;
+  /** Alt text for the social share image. */
+  imageAlt?: string;
+  /** Breadcrumb trail after Home, used for BreadcrumbList structured data on inner pages. */
+  breadcrumbs?: { name: string; href?: string }[];
   /** Keep the page out of search results (404, thank-you pages). */
   noindex?: boolean;
 }
 
-const { title, description, image = '/og-image.jpg', noindex = false } = Astro.props;
+const {
+  title,
+  description,
+  image = '/og-image.jpg',
+  imageAlt = 'Vektide Technologies — Software for Nepali Businesses',
+  breadcrumbs,
+  noindex = false,
+} = Astro.props;
 const site = Astro.site!;
 const canonical = new URL(Astro.url.pathname, site).href;
 const imageUrl = new URL(image, site).href;
@@ -28,8 +39,9 @@ const organization = {
     {
       '@type': 'Organization',
       '@id': new URL('/#organization', site).href,
-      name: 'Vektide Technologies Pvt. Ltd.',
-      alternateName: ['Vektide Technologies', 'Vektide'],
+      name: 'Vektide Technologies',
+      legalName: 'Vektide Technologies Pvt. Ltd.',
+      alternateName: ['Vektide', 'Vektide Technologies Pvt. Ltd.'],
       url: site.href,
       logo: new URL('/logo/vektide-logo-512.png', site).href,
       email,
@@ -68,6 +80,22 @@ const organization = {
           },
         ]
       : []),
+    ...(breadcrumbs?.length
+      ? [
+          {
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Home', item: site.href },
+              ...breadcrumbs.map((b, i) => ({
+                '@type': 'ListItem',
+                position: i + 2,
+                name: b.name,
+                item: new URL(b.href ?? Astro.url.pathname, site).href,
+              })),
+            ],
+          },
+        ]
+      : []),
   ],
 };
 ---
@@ -94,7 +122,7 @@ const organization = {
     <meta property="og:image" content={imageUrl} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="The PCMS dashboard by Vektide" />
+    <meta property="og:image:alt" content={imageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />

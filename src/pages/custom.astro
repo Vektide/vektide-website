@@ -12,7 +12,7 @@ import Faq from '../components/Faq.astro';
 import Footer from '../components/Footer.astro';
 import { hours } from '../data/contact';
 
-const title = 'Custom Business Software in Nepal | Vektide';
+const title = 'Custom Business Software in Nepal | Vektide Technologies';
 const description =
   'Custom software, web apps, mobile apps and websites, built around what your business needs, then hosted and maintained for you. Made in Lalitpur for businesses across Nepal.';
 const project = '/contact?topic=project';
@@ -68,7 +68,7 @@ const service = {
 };
 ---
 
-<Base title={title} description={description}>
+<Base title={title} description={description} breadcrumbs={[{ name: 'Custom Systems' }]}>
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(service)} />
   <Navbar />
   <main class="min-h-screen">
